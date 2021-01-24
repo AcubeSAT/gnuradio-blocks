@@ -32,17 +32,16 @@ def hamming_distance(w1, w2):
 # Assumes binary code (can be modified fairly easily for arbitrary q)
 def convolutional_decode(word):
     # "de-puncture" codeword
-    codeword = ""
+    codeword = []
     j = 0
     for i in range((len(word)*rate_d)//rate_e):
         k = puncturing_patterns[i%b][(i//b)%N]
         if k == 0:
-            codeword += "X"
+            codeword.append(0.5)
         else:
-            codeword += word[j]
+            codeword.append(word[j])
             j += 1
     print(codeword)
-    
     pm = [float('inf') for i in range(2**(N-1))] # path metric
     pm[0] = 0
     paths = ["" for _ in range(2**(N-1))] # max likelihood path for each state
@@ -69,22 +68,21 @@ def convolutional_decode(word):
                     # Calculate path metric
                     # It's probably far more efficient to hard-code the transition matrix for relatively low
                     # values of N
-                    par = np.mod(np.dot(gen, tr_one), q)
-                    if par != int(transmitted_symbol[i_gen]):
-                        pm_one += 1
-                    par = np.mod(np.dot(gen, tr_zero), q) 
-                    if par != int(transmitted_symbol[i_gen]):
-                        pm_zero += 1
+                    par_one = np.mod(np.dot(gen, tr_one), q)
+                    pm_one += abs(par_one - transmitted_symbol[i_gen])
+
+                    par_zero = np.mod(np.dot(gen, tr_zero), q) 
+                    pm_zero += abs(par_zero - transmitted_symbol[i_gen])
                         
                 # Update paths
-                tot_pm_one = pm_one + pm[state]                
+                tot_pm_one = pm_one**2 + pm[state]                
                 next_state = int("".join( list("1" + bin_state)[:-1]), 2)
 
                 if t_pm[next_state] > tot_pm_one:
                     t_pm[next_state] = tot_pm_one
                     t_paths[next_state] = paths[state] + "1"
 
-                tot_pm_zero = pm_zero + pm[state]
+                tot_pm_zero = pm_zero**2 + pm[state]
                 next_state = int("".join( list("0" + bin_state)[:-1]), 2)
                 if t_pm[next_state] > tot_pm_zero:
                     t_pm[next_state] = tot_pm_zero
@@ -92,3 +90,4 @@ def convolutional_decode(word):
         pm = list(t_pm)
         paths = list(t_paths)
     return min(zip(pm, paths))[1]
+
