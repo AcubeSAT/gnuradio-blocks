@@ -91,4 +91,4 @@ def convolutional_decode(word):
                     t_paths[next_state] = paths[state] + "0"
         pm = list(t_pm)
         paths = list(t_paths)
-    return paths
+    return min(zip(pm, paths))[1]
