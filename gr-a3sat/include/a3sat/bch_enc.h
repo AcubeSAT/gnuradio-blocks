@@ -19,7 +19,7 @@ namespace gr {
     class A3SAT_API bch_enc : virtual public gr::block
     {
      public:
-      typedef std::shared_ptr<bch_enc> sptr;
+      typedef boost::shared_ptr<bch_enc> sptr;
 
       static sptr make();
     };
