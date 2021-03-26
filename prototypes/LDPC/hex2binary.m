@@ -31,8 +31,8 @@ for i=1:length(stringData)
 end
 
 
-final_binary_matrix = zeros(size_of(binary_matrix,1)/2, size_of(binary_matrix,2)*2);
-for i = 1:2:size_of(binary_matrix,1)
+final_binary_matrix = zeros(size(binary_matrix,1)/2, size(binary_matrix,2)*2);
+for i = 1:2:size(binary_matrix,1)
     final_binary_matrix(ceil(i/2),:) = [binary_matrix(i,:), binary_matrix(i+1,:)];
 end
 
@@ -41,24 +41,24 @@ end
 
 number_of_1s = sum(sum(binary_matrix));
 Parity_bits_for_Encoder = 0;
-position = 0;
+position_Encoder = 0;
 row_control = 1;
 for i=1:length(final_binary_matrix(:,1))
     column_control = mod(i,8);
     if column_control ~= 0
-        position = [position, length(Parity_bits_for_Encoder)];
+        position_Encoder = [position_Encoder, length(Parity_bits_for_Encoder)];
         temp = find(binary_matrix(i,:)==1)+(column_control-1)*128; 
         Parity_bits_for_Encoder = [Parity_bits_for_Encoder temp];
         
     else
         temp = find(binary_matrix(i,:)==1)+7*128; 
         Parity_bits_for_Encoder = [Parity_bits_for_Encoder temp];
-        position = [position, length(Parity_bits_for_Encoder)];
+        position_Encoder = [position_Encoder, length(Parity_bits_for_Encoder)];
         row_control = row_control+1;
     end
 end
 Parity_bits_for_Encoder = Parity_bits_for_Encoder(2:end); %size() must equal number_of_1s!
-position = position(2:end);
+position_Encoder = position_Encoder(2:end);
 
 
 %% WIP: IGNORE
