@@ -11,7 +11,7 @@
 % whole square matrix, but just the first line. Then in the encoder/decoder
 % we simply keep the positions of 1s in a vector. We must also keep the
 % position of the aforemention matrix that a new quasi matrix is examined.
-% To do that we 
+
 
 
 
@@ -47,52 +47,49 @@ for i=1:length(final_binary_matrix(:,1))
     column_control = mod(i,8);
     if column_control ~= 0
         position_Encoder = [position_Encoder, length(Parity_bits_for_Encoder)];
-        temp = find(binary_matrix(i,:)==1)+(column_control-1)*128; 
+        temp = find(final_binary_matrix(i,:)==1)+(column_control-1)*128; 
         Parity_bits_for_Encoder = [Parity_bits_for_Encoder temp];
         
     else
-        temp = find(binary_matrix(i,:)==1)+7*128; 
+        temp = find(final_binary_matrix(i,:)==1)+7*128; 
         Parity_bits_for_Encoder = [Parity_bits_for_Encoder temp];
         position_Encoder = [position_Encoder, length(Parity_bits_for_Encoder)];
         row_control = row_control+1;
     end
 end
-Parity_bits_for_Encoder = Parity_bits_for_Encoder(2:end); %size() must equal number_of_1s!
-position_Encoder = position_Encoder(2:end);
+Rows_Parity_bits = Parity_bits_for_Encoder(2:end); %size() must equal number_of_1s!
+position_Rows = position_Encoder(2:end);
 
 
-%% WIP: IGNORE
-% %% Create the Parity Matrix 
-% 
-% 
-% 
-% Parity_matrix = circshift(final_binary_matrix(1,:),1);
-% 
-% for i=2:length(final_binary_matrix(:,1))
-%     
-%     square_i_matrix = circshift(final_binary_matrix(i,:),1);
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% %% Create the quasicycle submatrices. 
-% %It is implemeted just for practice and is not used by the LDPC encoded
-% 
-% size_of = 512/2;
-% B = zeros(128,128,size_of);
-% 
-% for i=1:size_of
-%     B(1,:,i) = binary_matrix(i);
-%     for j=1:127
-%         B(j+1,:,i) = circshift(B(j,:,i),1);
-%     end
-% end
-%     
+%% Parity Matrix for Decoder
+
+length_of_parity = length(final_binary_matrix(:,1));
+B = zeros(128,128,length_of_parity);
+
+for i=1:length_of_parity
+    B(1,:,i) = final_binary_matrix(i,:);
+    for j=1:127
+        B(j+1,:,i) = circshift(B(j,:,i),1);
+    end
+end
+
+Column_Parity_bits = 0;
+position_Column = 0;
+for column=1:8
+    for row=1:32
+        if j==1
+            temp = find(B(:,1,column)==1);
+            Column_Parity_bits = [Column_Parity_bits; temp];
+            position_Column = [position_Column, length(Column_Parity_bits)];
+        else
+            temp = find(B(:,1,1+(row-1)*8)==1) + 128*(row-1);
+            Column_Parity_bits = [Column_Parity_bits; temp];
+            position_Column = [position_Column, length(Column_Parity_bits)];
+        end
+    end
+end
+ 
+Column_Parity_bits = Column_Parity_bits(2:end)';
+position_Column = position_Column(2:end)';
+
+ 
