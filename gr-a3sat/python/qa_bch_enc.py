@@ -5,10 +5,15 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
+import sys
+import os
 
+sys.path.append("./gr-a3sat/build/swig")
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import a3sat_swig as a3sat
+from numpy import array
+
 
 class qa_bch_enc(gr_unittest.TestCase):
 
@@ -19,9 +24,24 @@ class qa_bch_enc(gr_unittest.TestCase):
         self.tb = None
 
     def test_001_t(self):
-        # set up fg
+        vector_src = blocks.vector_source_b((1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
+                                             0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+                                             1, 0, 1, 0, 1, 0), False, 1, [])
+        expected_result = (
+            1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+            1,
+            0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0)
+        bch_enc = a3sat.bch_enc()
+        self.tb.connect((vector_src, 0), (bch_enc, 0))
+        # self.tb.connect(self.unpack, self.bch_enc)
+        dst = blocks.vector_sink_b(1, 128)
+        self.tb.connect((bch_enc, 0), (dst, 0))
+        print("OK")
         self.tb.run()
-        # check data
+        print("OK")
+        result_data = dst.data()
+        self.assertTupleEqual(expected_result, result_data, 64)
+        # self.assertEqual(len(expected_result), len(result_data))
 
 
 if __name__ == '__main__':

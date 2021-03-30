@@ -5,45 +5,89 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-
+#include <iostream>
+#include <fstream>
 #include <gnuradio/io_signature.h>
 #include "bch_enc_impl.h"
+#include <string>
+#include <cstring> // for memcpy
 
 namespace gr {
-  namespace a3sat {
+    namespace a3sat {
 
-    bch_enc::sptr
-    bch_enc::make()
-    {
-      return gnuradio::get_initial_sptr
-        (new bch_enc_impl());
-    }
+        bch_enc::sptr
+        bch_enc::make() {
+            return gnuradio::get_initial_sptr
+                    (new bch_enc_impl(56, 64));
+        }
 
 
-    bch_enc_impl::bch_enc_impl()
-      : gr::block("bch_enc",
-              gr::io_signature::make(56, 56, sizeof(bool)),
-              gr::io_signature::make(64, 64, sizeof(bool)))
-    {}
+        bch_enc_impl::bch_enc_impl(unsigned int k, unsigned int n)
+                : gr::block("bch_enc",
+                            gr::io_signature::make(1, 1, sizeof(char)),
+                            gr::io_signature::make(1, 1, sizeof(char)))
+                            {
+            set_output_multiple(n);
+            this->k_bch = k;
+            this->n_bch = n;
+        }
 
-    bch_enc_impl::~bch_enc_impl()
-    {
-    }
+        void bch_enc_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required) {
+            ninput_items_required[0] = (noutput_items / n_bch) * k_bch;
+        }
 
-    int
-    bch_enc_impl::general_work (int noutput_items,
-                       gr_vector_int &ninput_items,
-                       gr_vector_const_void_star &input_items,
-                       gr_vector_void_star &output_items)
-    {
-      const bool *in = (const bool*) input_items[0];
-      bool *out = (bool*) output_items[0];
+        bch_enc_impl::~bch_enc_impl() {
+        }
 
-      consume_each (noutput_items);
+        int
+        bch_enc_impl::general_work(int noutput_items,
+                                   gr_vector_int &ninput_items,
+                                   gr_vector_const_void_star &input_items,
+                                   gr_vector_void_star &output_items) {
+            uint8_t *in = (uint8_t *) input_items[0];
+            uint8_t *out = (uint8_t *) output_items[0];
+            uint8_t generator = 197;
+            uint8_t remainder=0;
+            uint8_t current_byte=0;
+            uint8_t temp =0;
+            if(in != NULL) {
+                for (int i = 0; i < noutput_items; i += get_n_bch()) {
+                    memcpy(out, in, sizeof(uint8_t) * get_k_bch());
+                    out += k_bch;
+                    for (int bytes = 0; bytes < get_k_bch() / 8; bytes++) {
+                        current_byte = 0;
+                        for (int e = 0; e < 8; e++) {
+                            temp = *in++;
+                            current_byte |= temp << (7 - e);
+                        }
+                        remainder ^= current_byte;
+                        for (int pos = 0; pos < 8; pos++) {
+                            if ((remainder & 0x80) != 0) {
+                                remainder = (uint8_t) (remainder ^ generator);
+                                if(pos!=7) {
+                                    remainder <<= 1;
+                                }
+                            } else {
+                                if(pos!=7)
+                                {
+                                    remainder <<= 1;
+                                }
+                            }
+                        }
+                    }
+                    for(int bit =7; bit>=0; bit--)
+                    *out++ = (uint8_t) bit<<i;
+                }
+                consume_each(noutput_items * get_n_bch() / get_k_bch());
+                return noutput_items;
+            }
 
-      return noutput_items;
-    }
+            else return noutput_items;
+           }
 
-  } /* namespace a3sat */
-} /* namespace gr */
+        int bch_enc_impl::get_n_bch() { return n_bch; }
 
+        int bch_enc_impl::get_k_bch() { return k_bch; }
+
+        } /* namespace a3sat */
+    } /* namespace gr */

@@ -41,24 +41,22 @@ def binary_poly_division(a, b):
     if b == 0:
         return
     if a == 0:
-        return (0, b)
+        return 0, b
 
     # TODO: Too expensive for no reason. Why log when you can shift??
     deg_a = math.floor(math.log(a, 2)) + 1
     deg_b = math.floor(math.log(b, 2)) + 1
-
     k = 0
     q = 0
-    
     while a >= b:
         q <<= 1
-        if a >> (deg_a - k - 1) & 1 == 1:        
+        if a >> (deg_a - k - 1) & 1 == 1:  
             a ^= b << (deg_a - deg_b - k)
             q += 1
         k += 1
     deg_r = math.floor(math.log(a, 2)) + 1
 
-    return (a, q << (deg_r - 1))
+    return a, q << (deg_r - 1)
 
 def encode_bch(m):
     """
@@ -66,10 +64,9 @@ def encode_bch(m):
     """
     # Shift the message polynomial
     p = m << (n-k)
-
     # get remainder of division of message polynomial with generator
     r = binary_poly_division(p, g)[0]
-    
+    print(bin(r))
     # add parity bits to the message polynomial
     # TODO (here?) - BCH(63, 56) is normally padded to 64 bits so a left shift might be needed
     # in the encoder and a right shift in the decoder to follow the standard
@@ -113,3 +110,7 @@ def decode_bch_63_56(c):
     else:
         return -1
     
+if __name__ == "__main__":
+ m = int('10101010101010101010101010101010101010101010101010101010', 2)
+ c = encode_bch(m)
+ print(bin(c))
