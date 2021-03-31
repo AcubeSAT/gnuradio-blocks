@@ -8,7 +8,7 @@
 import sys
 import os
 
-sys.path.append("./gr-a3sat/build/swig")
+sys.path.append("/home/konkapo/COMMS/error-correction-codes/gr-a3sat/build/swig")
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import a3sat_swig as a3sat
@@ -30,15 +30,14 @@ class qa_bch_enc(gr_unittest.TestCase):
         expected_result = (
             1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
             1,
-            0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0)
+            0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0)
         bch_enc = a3sat.bch_enc()
         self.tb.connect((vector_src, 0), (bch_enc, 0))
         # self.tb.connect(self.unpack, self.bch_enc)
         dst = blocks.vector_sink_b(1, 128)
         self.tb.connect((bch_enc, 0), (dst, 0))
-        print("OK")
         self.tb.run()
-        print("OK")
+        self.tb.stop()
         result_data = dst.data()
         self.assertTupleEqual(expected_result, result_data, 64)
         # self.assertEqual(len(expected_result), len(result_data))

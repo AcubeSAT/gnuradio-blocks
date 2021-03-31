@@ -50,35 +50,37 @@ namespace gr {
             uint8_t remainder=0;
             uint8_t current_byte=0;
             uint8_t temp =0;
+            uint8_t bit_pos[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
             if(in != NULL) {
                 for (int i = 0; i < noutput_items; i += get_n_bch()) {
                     memcpy(out, in, sizeof(uint8_t) * get_k_bch());
-                    out += k_bch;
+                    out += get_k_bch();
+
                     for (int bytes = 0; bytes < get_k_bch() / 8; bytes++) {
                         current_byte = 0;
-                        for (int e = 0; e < 8; e++) {
+
+                        for (int bit = 7; bit >=0; bit--) {
                             temp = *in++;
-                            current_byte |= temp << (7 - e);
+                            current_byte |= temp << bit;
                         }
+
                         remainder ^= current_byte;
                         for (int pos = 0; pos < 8; pos++) {
                             if ((remainder & 0x80) != 0) {
-                                remainder = (uint8_t) (remainder ^ generator);
-                                if(pos!=7) {
-                                    remainder <<= 1;
-                                }
-                            } else {
-                                if(pos!=7)
-                                {
-                                    remainder <<= 1;
-                                }
+                                remainder ^= generator;
+                                remainder <<= 1;
+                            }
+                            else{
+                                remainder <<= 1;
                             }
                         }
                     }
-                    for(int bit =7; bit>=0; bit--)
-                    *out++ = (uint8_t) bit<<i;
                 }
-                consume_each(noutput_items * get_n_bch() / get_k_bch());
+                for(int bit =7; bit>=0; bit--) {
+                    *out = (uint8_t) (remainder&bit_pos[bit]) != 0x00;
+                    out++;
+                }
+                consume_each(ninput_items[0]);
                 return noutput_items;
             }
 
