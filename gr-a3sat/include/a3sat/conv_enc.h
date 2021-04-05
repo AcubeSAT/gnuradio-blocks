@@ -29,7 +29,7 @@ namespace gr {
        * class. a3sat::conv_enc::make is the public interface for
        * creating new instances.
        */
-      static sptr make(bool puncturing_enabled);
+      static sptr make();
     };
 
   } // namespace a3sat
