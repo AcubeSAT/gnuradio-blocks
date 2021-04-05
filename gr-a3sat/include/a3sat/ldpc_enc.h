@@ -18,7 +18,7 @@ namespace gr {
     class A3SAT_API ldpc_enc : virtual public gr::block
     {
      public:
-      typedef std::shared_ptr<ldpc_enc> sptr;
+        typedef boost::shared_ptr<ldpc_enc> sptr;
 
       static sptr make();
     };

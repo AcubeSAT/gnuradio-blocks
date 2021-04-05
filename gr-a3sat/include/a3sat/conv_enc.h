@@ -19,7 +19,7 @@ namespace gr {
     class A3SAT_API conv_enc : virtual public gr::block
     {
      public:
-      typedef std::shared_ptr<conv_enc> sptr;
+      typedef boost::shared_ptr<conv_enc> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of a3sat::conv_enc.
@@ -29,7 +29,7 @@ namespace gr {
        * class. a3sat::conv_enc::make is the public interface for
        * creating new instances.
        */
-      static sptr make(bool puncturing_enabled);
+      static sptr make();
     };
 
   } // namespace a3sat
