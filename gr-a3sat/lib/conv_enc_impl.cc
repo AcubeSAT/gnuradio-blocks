@@ -24,7 +24,7 @@ namespace gr {
               gr::io_signature::make(1, 1, sizeof(bool)),
               gr::io_signature::make(1, 1, sizeof(bool)))
     {
-        set_output_multiple(6);
+        set_output_multiple(14);
         this->rate = rate;
         this->constraint_length = constraint_length;
     }
@@ -47,20 +47,20 @@ namespace gr {
       bool *in = (bool *) input_items[0];
       bool *out = (bool *) output_items[0];
 
-      bool generator[][3] = {{1, 1, 1}, {1, 1, 0}};
+      bool generator[][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
 
-      for (int j = 1; j < 3; j++){
-          for (int gen_k = 0; gen_k < 2; gen_k++) {
-            for (int i = 0; i < j; i++){
-                *out ^= in[i] * generator[gen_k][3 - j + i];
+      for (int i = 1; i < this->constraint_length; i++){
+          for (int gen_k = 0; gen_k < this->rate; gen_k++) {
+            for (int j = 0; j < i; j++){
+                *out ^= in[j] * generator[gen_k][this->constraint_length - i + j];
             }
             *out++;
         }
       }
 
-      for(int offset = 0; offset < ninput_items[0] - 2; offset++){
-          for (int gen_k = 0; gen_k < 2; gen_k++) {
-            for(int i = 0; i < 3; i++) {
+      for(int offset = 0; offset < ninput_items[0] - (this->constraint_length - 1); offset++){
+          for (int gen_k = 0; gen_k < this->rate; gen_k++) {
+            for(int i = 0; i < this->constraint_length; i++) {
                 *out ^= in[i + offset] * generator[gen_k][i];
             }
             *out++;
@@ -71,9 +71,6 @@ namespace gr {
 
       return noutput_items;
     }
-
-  int conv_enc_impl::get_rate() {return rate;}
-  int conv_enc_impl::get_constraint_length() {return constraint_length;}
 
   } /* namespace a3sat */
 } /* namespace gr */

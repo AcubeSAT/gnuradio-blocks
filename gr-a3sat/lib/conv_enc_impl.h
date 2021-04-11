@@ -10,9 +10,19 @@
 
 namespace gr {
   namespace a3sat {
-
+/*!
+ * \brief Implements a convolutional encoder
+ * \ingroup a3sat
+ *
+ * Input: 2048 bit frame
+ * Output: Encoded 4096 bit frame
+ */
     class conv_enc_impl : public conv_enc
     {
+        /*!
+         * \param rate The number of the generator polynomials.
+         * \param constraint_length The length of each generator polynomial.
+         */
      private:
         unsigned int rate;
         unsigned int constraint_length;
@@ -28,9 +38,6 @@ namespace gr {
 
       void forecast(int noutput_items,
             gr_vector_int &ninput_items_required);
-
-      int get_rate();
-      int get_constraint_length();
 
     };
 
