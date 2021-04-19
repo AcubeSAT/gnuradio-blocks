@@ -4,7 +4,8 @@
 # Copyright 2021 SpaceDot.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-#
+import sys
+sys.path.append("/home/konkapo/COMMS/error-correction-codes/gr-a3sat/build/swig")
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
@@ -19,9 +20,25 @@ class qa_bch_dec(gr_unittest.TestCase):
         self.tb = None
 
     def test_001_t(self):
-        # set up fg
+        data = (
+            1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+            1,
+            0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0)
+        vector_src = blocks.vector_source_b(data, False, 1, [])
+
+        expected_result = (1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
+                           0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+                           1, 0, 1, 0, 1, 0)
+        bch_enc = a3sat.bch_dec()
+        self.tb.connect((vector_src, 0), (bch_enc, 0))
+        # self.tb.connect(self.unpack, self.bch_enc)
+        dst = blocks.vector_sink_b(1, 128)
+        self.tb.connect((bch_enc, 0), (dst, 0))
         self.tb.run()
-        # check data
+        self.tb.stop()
+        result_data = dst.data()
+        self.assertTupleEqual(expected_result, result_data, 56)
+        # self.assertEqual(len(expected_result), len(result_data))
 
 
 if __name__ == '__main__':

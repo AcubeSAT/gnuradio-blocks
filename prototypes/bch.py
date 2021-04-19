@@ -49,6 +49,8 @@ def binary_poly_division(a, b):
     k = 0
     q = 0
     while a >= b:
+        print("polynomial division")
+        print(a)
         q <<= 1
         if a >> (deg_a - k - 1) & 1 == 1:  
             a ^= b << (deg_a - deg_b - k)
@@ -66,7 +68,7 @@ def encode_bch(m):
     p = m << (n-k)
     # get remainder of division of message polynomial with generator
     r = binary_poly_division(p, g)[0]
-    print(bin(r))
+    # print(bin(r))
     # add parity bits to the message polynomial
     # TODO (here?) - BCH(63, 56) is normally padded to 64 bits so a left shift might be needed
     # in the encoder and a right shift in the decoder to follow the standard
@@ -81,13 +83,15 @@ def calc_syndromes_63_56(r):
     i = 0
     while r:
         b = r & 1
+        print(s1)
         if b == 1:
             s1 ^= primitive_elements_bch_63_54[(i)%63]
-            s2 ^= primitive_elements_bch_63_54[(2*i)%63] 
+            s2 ^= primitive_elements_bch_63_54[(2*i)%63]
         i += 1
         r >>= 1
-
+    print(bin(s1))
     s1 = binary_poly_division(s1, g)[0]
+    print(s1)
     s2 = binary_poly_division(s2, g)[0]
     return [s1, s2]
 
@@ -99,18 +103,25 @@ def decode_bch_63_56(c):
     for the linear sum of the syndromes which results in 0.
     """
     s1 = calc_syndromes_63_56(c)[0]
+    print("syndrome")
     print(s1)
     # No detectable errors
     if s1 == 0:
+        print(bin(c))
         return bin(c)
     elif s1 in syndromes_hash:
         c ^= 2**(63 - syndromes_hash[s1]-1)
+        print(bin(c))
         return bin(c)
     # Can't decode
     else:
+        print(bin(c))
         return -1
     
 if __name__ == "__main__":
  m = int('10101010101010101010101010101010101010101010101010101010', 2)
  c = encode_bch(m)
- print(bin(c))
+#  print(bin(c))
+ print("----")
+ r = int('111010101010101010101010101010101010101010101010101010100101000', 2)
+ decode_bch_63_56(r)
