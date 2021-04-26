@@ -65,41 +65,46 @@ namespace gr {
         uint8_t *in = (uint8_t *) input_items[0];
         uint8_t *out = (uint8_t *) output_items[0];
         uint8_t generator = 197;
-        uint8_t temp = 0;
-        uint8_t syndrome = 0;
-        uint8_t i = 1;
-        while (i < n_bch) {
-            for (int bytes = 0; bytes < get_n_bch() / 8; bytes++) {
-                for (int bit = 7; bit >= 0; bit--) {
-                    temp = in[n_bch -1 - i];
-                    if (temp & 1 == 1) {
-                        syndrome ^= primitive_elements_bch_63_54[i - 1];
+        for (int j = 0; j < noutput_items; j += get_n_bch()) {
+            uint8_t temp = 0;
+            uint8_t syndrome = 0;
+            uint8_t i = 1;
+            while (i < n_bch) {
+                for (int bytes = 0; bytes < get_n_bch() / 8; bytes++) {
+                    for (int bit = 7; bit >= 0; bit--) {
+                        temp = in[n_bch - 1 - i];
+                        if (temp & 1 == 1) {
+                            syndrome ^= primitive_elements_bch_63_54[i - 1];
+                        }
+                        i++;
                     }
-                    i++;
                 }
             }
-        }
-        if(syndrome>generator) {
-            for (int pos = 0; pos < 8; pos++) {
-                if ((syndrome & 0x80) != 0) {
-                    syndrome ^= generator;
-                    syndrome <<= 1;
-                } else {
-                    syndrome <<= 1;
+            if (syndrome > generator) {
+                for (int pos = 0; pos < 8; pos++) {
+                    if ((syndrome & 0x80) != 0) {
+                        syndrome ^= generator;
+                        syndrome <<= 1;
+                    } else {
+                        syndrome <<= 1;
+                    }
                 }
             }
-        }
 
-        if (syndrome == 0) {
-            memcpy(out, in, sizeof(uint8_t) * get_k_bch());
+            if (syndrome == 0) {
+                memcpy(out, in, sizeof(uint8_t) * get_k_bch());
+            }
+            else if ((syndromes_hash.find(syndrome) == syndromes_hash.end())) {
+                out += get_k_bch();
+                break;
+            } else {
+                memcpy(out, in, sizeof(uint8_t) * get_k_bch());
+                out[syndromes_hash.at(syndrome)] ^= 1;
+            }
+            out += get_k_bch();
+            in += get_n_bch();
         }
-        else if ((syndromes_hash.find(syndrome) == syndromes_hash.end())) {
-       //TODO handle case where there are more than one errors
-        } else {
-            memcpy(out, in, sizeof(uint8_t) * get_k_bch());
-            out[syndromes_hash.at(syndrome)] ^=1;
-        }
-        consume_each(noutput_items);
+        consume_each(ninput_items[0]);
         return noutput_items;
     }
       int bch_dec_impl::get_n_bch() { return n_bch; }
