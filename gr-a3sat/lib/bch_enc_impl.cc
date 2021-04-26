@@ -47,12 +47,11 @@ namespace gr {
             uint8_t *in = (uint8_t *) input_items[0];
             uint8_t *out = (uint8_t *) output_items[0];
             uint8_t generator = 197;
-            uint8_t remainder=0;
-            uint8_t current_byte=0;
-            uint8_t temp =0;
             uint8_t bit_pos[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
-            if(in != NULL) {
                 for (int i = 0; i < noutput_items; i += get_n_bch()) {
+                    uint8_t remainder=0;
+                    uint8_t current_byte=0;
+                    uint8_t temp =0;
                     memcpy(out, in, sizeof(uint8_t) * get_k_bch());
                     out += get_k_bch();
 
@@ -75,17 +74,15 @@ namespace gr {
                             }
                         }
                     }
-                }
-                for(int bit =7; bit>=0; bit--) {
+                    for(int bit =7; bit>=0; bit--) {
                     *out = (uint8_t) (remainder&bit_pos[bit]) != 0x00;
                     out++;
                 }
+                }
+
                 consume_each(ninput_items[0]);
                 return noutput_items;
-            }
-
-            else return noutput_items;
-           }
+        }
 
         int bch_enc_impl::get_n_bch() { return n_bch; }
 
