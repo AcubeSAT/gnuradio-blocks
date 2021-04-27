@@ -8,7 +8,7 @@
 import sys
 import os
 
-sys.path.append("/home/konkapo/COMMS/error-correction-codes/gr-a3sat/build/swig")
+sys.path.append("../build/swig")
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import a3sat_swig as a3sat

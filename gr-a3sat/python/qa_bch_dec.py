@@ -5,7 +5,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 import sys
-sys.path.append("/home/konkapo/COMMS/error-correction-codes/gr-a3sat/build/swig")
+sys.path.append("../build/swig")
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks

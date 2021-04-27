@@ -18,18 +18,16 @@ namespace gr {
         bch_enc::sptr
         bch_enc::make() {
             return gnuradio::get_initial_sptr
-                    (new bch_enc_impl(56, 64));
+                    (new bch_enc_impl());
         }
 
 
-        bch_enc_impl::bch_enc_impl(unsigned int k, unsigned int n)
+        bch_enc_impl::bch_enc_impl()
                 : gr::block("bch_enc",
                             gr::io_signature::make(1, 1, sizeof(char)),
                             gr::io_signature::make(1, 1, sizeof(char)))
                             {
-            set_output_multiple(n);
-            this->k_bch = k;
-            this->n_bch = n;
+            set_output_multiple(n_bch);
         }
 
         void bch_enc_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required) {
@@ -46,16 +44,16 @@ namespace gr {
                                    gr_vector_void_star &output_items) {
             uint8_t *in = (uint8_t *) input_items[0];
             uint8_t *out = (uint8_t *) output_items[0];
-            uint8_t generator = 197;
-            uint8_t bit_pos[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
-                for (int i = 0; i < noutput_items; i += get_n_bch()) {
+            static const uint8_t generator = 197;
+            static const uint8_t bit_pos[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
+                for (int i = 0; i < noutput_items; i += n_bch) {
                     uint8_t remainder=0;
                     uint8_t current_byte=0;
                     uint8_t temp =0;
-                    memcpy(out, in, sizeof(uint8_t) * get_k_bch());
-                    out += get_k_bch();
+                    memcpy(out, in, sizeof(uint8_t) * k_bch);
+                    out += k_bch;
 
-                    for (int bytes = 0; bytes < get_k_bch() / 8; bytes++) {
+                    for (int bytes = 0; bytes < k_bch / 8; bytes++) {
                         current_byte = 0;
 
                         for (int bit = 7; bit >=0; bit--) {
@@ -83,10 +81,6 @@ namespace gr {
                 consume_each(ninput_items[0]);
                 return noutput_items;
         }
-
-        int bch_enc_impl::get_n_bch() { return n_bch; }
-
-        int bch_enc_impl::get_k_bch() { return k_bch; }
 
         } /* namespace a3sat */
     } /* namespace gr */
