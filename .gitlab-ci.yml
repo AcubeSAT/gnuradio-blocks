@@ -37,6 +37,9 @@ build:
     - ldconfig
     - cd ..
 
+  artifacts:
+    paths:
+      - build/
 # run tests using the binary built before
 test:
   image: ${GITLAB_CI_IMAGE_DEBIAN}
@@ -44,6 +47,5 @@ test:
   dependencies:
     - build
   script:
-    - cd gr-a3sat
     - cd build
     - make CTEST_OUTPUT_ON_FAILURE=1 test
