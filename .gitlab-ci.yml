@@ -35,7 +35,6 @@ build:
     - make
     - make install
     - ldconfig
-    - python -c "import a3sat"
     - cd ..
 
   artifacts:
