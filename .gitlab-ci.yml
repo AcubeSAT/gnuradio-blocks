@@ -9,7 +9,16 @@ build:
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
   before_script:
-    - apt-get update -qq && apt-get install -y -qq  libcppunit-dev cmake pkg-config build-essential libconfig++-dev valgrind doxygen gnuradio-dev libitpp-dev git swig python python-dev python3 python3-dev
+    - apt-get update -qq && apt-get install -y -qq  libcppunit-dev cmake pkg-config libconfig++-dev valgrind doxygen gnuradio-dev= libitpp-dev git swig python python-dev python3 python3-dev 
+    - apt-get -q update
+    - apt-get -qy install gnupg libcurl4
+    - echo "$GITLAB_CI_APT_REPOSITORY" > /etc/apt/sources.list.d/${GITLAB_CI_OBS_PROJECT}.list
+    - apt-key adv --fetch-keys "$GITLAB_CI_APT_KEY_URL"
+    - apt-get -q update
+    - >
+      apt-get -qy install
+      build-essential
+
   script:
     - cd gr-a3sat
     - mkdir -p build
