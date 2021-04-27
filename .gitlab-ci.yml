@@ -37,10 +37,6 @@ build:
     - ldconfig
     - cd ..
 
-  artifacts:
-    paths:
-      - build/
-
 # run tests using the binary built before
 test:
   stage: test
