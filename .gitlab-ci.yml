@@ -20,7 +20,7 @@ build:
     - python -c "import a3sat"
     - cd ..
 
-artifacts:
+  artifacts:
     paths:
         - build/
 
