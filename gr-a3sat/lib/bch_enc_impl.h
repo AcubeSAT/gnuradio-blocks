@@ -6,6 +6,7 @@
 #define INCLUDED_A3SAT_BCH_ENC_IMPL_H
 
 #include <a3sat/bch_enc.h>
+#include <unordered_map>
 
 namespace gr {
   namespace a3sat {
@@ -13,11 +14,12 @@ namespace gr {
     class bch_enc_impl : public bch_enc
     {
      private:
-        static const unsigned int n_bch=64;
-        static const unsigned int k_bch=56;
+        static const uint8_t n_bch=64;
+        static const uint8_t k_bch=56;
      public:
         bch_enc_impl();
       ~bch_enc_impl();
+
       void forecast(int noutput_items, gr_vector_int& ninput_items_required);
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,

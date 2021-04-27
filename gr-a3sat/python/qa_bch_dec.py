@@ -18,7 +18,7 @@ class qa_bch_dec(gr_unittest.TestCase):
 
     def tearDown(self):
         self.tb = None
-
+    # Decoding one codeword with error
     def test_001_t(self):
         data = (
             1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
@@ -38,6 +38,7 @@ class qa_bch_dec(gr_unittest.TestCase):
         result_data = dst.data()
         self.assertTupleEqual(expected_result, result_data)
 
+    # Decoding two codewords, the second has two errors
     def test_002_t(self):
         data = (
             1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,

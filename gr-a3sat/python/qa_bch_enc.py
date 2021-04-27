@@ -22,7 +22,7 @@ class qa_bch_enc(gr_unittest.TestCase):
 
     def tearDown(self):
         self.tb = None
-
+    # Encoding one codeword
     def test_001_t(self):
         vector_src = blocks.vector_source_b((1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
                                              0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
@@ -37,8 +37,8 @@ class qa_bch_enc(gr_unittest.TestCase):
         self.tb.run()
         self.tb.stop()
         result_data = dst.data()
-        self.assertTupleEqual(expected_result, result_data, 64)
-
+        self.assertTupleEqual(expected_result, result_data)
+    # Encoding two codewords
     def test_002_t(self):
         vector_src = blocks.vector_source_b((1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
                                              0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
