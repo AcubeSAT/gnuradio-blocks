@@ -10,7 +10,7 @@ variables:
   GITLAB_CI_OBS_PROJECT_UNSTABLE: 'home:librespace:satnogs-unstable'
 
 build:
-  image: debian:buster
+  image: ${GITLAB_CI_IMAGE_DEBIAN}
   stage: build
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
@@ -39,6 +39,7 @@ build:
 
 # run tests using the binary built before
 test:
+  image: ${GITLAB_CI_IMAGE_DEBIAN}
   stage: test
   dependencies:
     - build
