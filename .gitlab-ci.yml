@@ -39,7 +39,7 @@ build:
 
   artifacts:
     paths:
-      - build/
+      - gr-a3sat/build/
 # run tests using the binary built before
 test:
   image: ${GITLAB_CI_IMAGE_DEBIAN}
