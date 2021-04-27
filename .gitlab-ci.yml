@@ -45,6 +45,7 @@ test:
   dependencies:
     - build
   before_script:
+    - apt-get -q update
     - apt-get -qy install build-essential
   script:
     - cd gr-a3sat
