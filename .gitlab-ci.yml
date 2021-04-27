@@ -22,7 +22,7 @@ build:
 
   artifacts:
     paths:
-        - build/
+      - build/
 
 # run tests using the binary built before
 test:
