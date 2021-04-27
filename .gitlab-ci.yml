@@ -28,7 +28,7 @@ build:
 test:
   stage: test
   dependencies:
-    - a3sat_build
+    - build
   script:
     - cd build
     - make CTEST_OUTPUT_ON_FAILURE=1 test
