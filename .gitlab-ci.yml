@@ -18,7 +18,6 @@ build:
     - make install
     - ldconfig
     - python -c "import a3sat"
-    - cd ..
 
   artifacts:
     paths:
