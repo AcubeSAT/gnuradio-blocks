@@ -35,8 +35,10 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-      const bool *in = (const bool *) input_items[0];
-      bool *out = (bool *) output_items[0];
+      const bool *encoded_message = (const bool *) input_items[0];
+      bool *output_message = (bool *) output_items[0];
+
+
 
      consume_each (noutput_items);
 

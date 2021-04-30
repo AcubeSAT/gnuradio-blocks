@@ -36,8 +36,26 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-      const bool *in = (const bool*) input_items[0];
-      bool *out = (bool*) output_items[0];
+      const bool *message = (const bool*) input_items[0];
+      bool *encoded_message = (bool*) output_items[0];
+        for (int row = 0; row < Generator_rows; row++){
+            for (int column = 0; column < Generator_columns; column++){
+                uint16_t position_of_this_parity = position_Rows[row+column];
+                uint16_t position_of_next_parity = position_Rows[row+column+1];
+                int length_of_parity_submatrix = position_of_next_parity - position_of_this_parity;
+                for (int i = 0; i<length_of_parity_submatrix; i++){
+                    uint16_t parity = Rows_Parity_bits[position_of_this_parity+i-1]-1;
+                    uint16_t position_in_square_matrix = parity % size_square_cyclic_matrix;
+                    for (int j=0; j<size_square_cyclic_matrix; j++){
+                        if (position_in_square_matrix + j < size_square_cyclic_matrix){
+                            encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j] ^= message[size_square_cyclic_matrix*column + j];
+                        } else{
+                            encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j - size_square_cyclic_matrix] ^= message[size_square_cyclic_matrix*column + j];
+                        }
+                    }
+                }
+            }
+        }
       
       consume_each (noutput_items);
 

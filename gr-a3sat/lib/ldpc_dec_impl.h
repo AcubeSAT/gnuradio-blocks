@@ -13,6 +13,17 @@ namespace gr {
     class ldpc_dec_impl : public ldpc_dec
     {
      private:
+        static const uint16_t parity_Rows[];
+        static const uint16_t position_Rows[];
+        static const uint16_t parity_Columns[];
+        static const uint16_t position_Columns[];
+        static const uint16_t block_rows = 8;
+        static const uint16_t block_columns = 32;
+        constexpr static const double noise_var = 0.5;
+        static const uint16_t size_message = 1024;
+        static const uint16_t size_parity; // is equal to length(parity_Rows)
+        static const uint16_t width_parity_matrix = 4096;
+        static const uint16_t height_parity_matrix = 1024;
 
      public:
       ldpc_dec_impl();

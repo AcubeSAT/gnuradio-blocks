@@ -1,5 +1,6 @@
 #include <iostream>
 #include <valarray>
+#include "ldpc_check_decoder.h"
 
 void decoder(int * output, const int parity_rows[], int position_rows[], int size_parity, int parity_columns[], int position_columns[], const double received_message[], int block_rows, int block_columns, int size_message, double noise_variance){
     double decoded_message[size_message];
@@ -18,8 +19,8 @@ void decoder(int * output, const int parity_rows[], int position_rows[], int siz
         int temp = parity_rows[i];
         q_1[i] = decoded_message[temp];
     }
-
-    while (CHECK){
+    int limit = 10;
+    while (ldpc_check_decoder(output, position_columns, size_message, block_rows, limit)){
         int check_nodes[1024];
         for (int i = 0; i<1024; i++){
             check_nodes[i] = 0;
