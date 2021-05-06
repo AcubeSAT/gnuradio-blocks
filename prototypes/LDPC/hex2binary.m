@@ -49,8 +49,8 @@ for i=1:length(final_binary_matrix(:,1))
     temp = find(final_binary_matrix(i,:)==1)+(column_control)*size_quasi_cycle; 
     Rows_Parity_bits = [Rows_Parity_bits temp];
 end
-Rows_Parity_bits = Rows_Parity_bits(2:end) - matlab_to_cpp;
-position_Rows = position_Rows(2:end) - matlab_to_cpp;
+Rows_Parity_bits = Rows_Parity_bits(2:end);% - matlab_to_cpp;
+position_Rows = position_Rows(2:end);% - matlab_to_cpp;
 
 %full_Rows_Parity_bits = 0;
 
@@ -91,6 +91,20 @@ for i=1:length_of_parity
         B(j+1,:,i) = circshift(B(j,:,i),1);
     end
 end
+
+
+Generator_Matrix = zeros(4096, 1024);
+
+for i = 1:32
+    for j = 1:8
+        Generator_Matrix(((i-1)*128+1:i*128),((j-1)*128+1:j*128)) = B(:,:,(i-1)*8 + j);
+    end
+end
+
+Temp = eye(4096,4096);
+Generator_Matrix = [Temp, Generator_Matrix];
+
+return
 
 Column_Parity_bits = 0;
 full_Column_Parity_bits = 0;
