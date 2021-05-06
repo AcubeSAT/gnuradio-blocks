@@ -27,13 +27,13 @@ void encoder(const uint16_t Parity_positions[], const uint16_t position_of_Parit
             uint16_t position_of_next_parity = position_of_Parities[row+column+1];
             int length_of_parity_submatrix = position_of_next_parity - position_of_this_parity;
             for (int i = 0; i<length_of_parity_submatrix; i++){
-                uint16_t parity = Parity_positions[position_of_this_parity+i-1]-1;
+                uint16_t parity = Parity_positions[position_of_this_parity+i];
                 uint16_t position_in_square_matrix = parity % size_square_cyclic_matrix;
                 for (int j=0; j<size_square_cyclic_matrix; j++){
                     if (position_in_square_matrix + j < size_square_cyclic_matrix){
-                        encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j] ^= message[size_square_cyclic_matrix*column + j];
+                        encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j] ^= message[parity + j];
                     } else{
-                        encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j - size_square_cyclic_matrix] ^= message[size_square_cyclic_matrix*column + j]; //needs check, is currently wrong
+                        encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j - size_square_cyclic_matrix] ^= message[parity + j - size_square_cyclic_matrix]; 
                     }
                 }
             }
