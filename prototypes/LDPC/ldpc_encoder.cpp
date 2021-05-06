@@ -33,7 +33,7 @@ void encoder(const uint16_t Parity_positions[], const uint16_t position_of_Parit
                     if (position_in_square_matrix + j < size_square_cyclic_matrix){
                         encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j] ^= message[size_square_cyclic_matrix*column + j];
                     } else{
-                        encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j - size_square_cyclic_matrix] ^= message[size_square_cyclic_matrix*column + j];
+                        encoded_message[size_square_cyclic_matrix*column + position_in_square_matrix + j - size_square_cyclic_matrix] ^= message[size_square_cyclic_matrix*column + j]; //needs check, is currently wrong
                     }
                 }
             }
