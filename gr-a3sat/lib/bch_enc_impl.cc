@@ -5,6 +5,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
 #include <iostream>
 #include <fstream>
 #include <gnuradio/io_signature.h>
@@ -25,8 +26,7 @@ namespace gr {
         bch_enc_impl::bch_enc_impl()
                 : gr::block("bch_enc",
                             gr::io_signature::make(1, 1, sizeof(char)),
-                            gr::io_signature::make(1, 1, sizeof(char)))
-                            {
+                            gr::io_signature::make(1, 1, sizeof(char))) {
             set_output_multiple(n_bch);
         }
 
@@ -45,42 +45,41 @@ namespace gr {
             uint8_t *in = (uint8_t *) input_items[0];
             uint8_t *out = (uint8_t *) output_items[0];
             static const uint8_t generator = 197;
-            static const uint8_t bit_pos[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
-                for (int i = 0; i < noutput_items; i += n_bch) {
-                    uint8_t remainder=0;
-                    uint8_t current_byte=0;
-                    uint8_t temp =0;
-                    memcpy(out, in, sizeof(uint8_t) * k_bch);
-                    out += k_bch;
+            static const uint8_t bit_position[] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+            for (int i = 0; i < noutput_items; i += n_bch) {
+                uint8_t remainder = 0;
+                uint8_t current_byte = 0;
+                uint8_t temp = 0;
+                memcpy(out, in, sizeof(uint8_t) * k_bch);
+                out += k_bch;
 
-                    for (int bytes = 0; bytes < k_bch / 8; bytes++) {
-                        current_byte = 0;
+                for (int bytes = 0; bytes < k_bch / 8; bytes++) {
+                    current_byte = 0;
 
-                        for (int bit = 7; bit >=0; bit--) {
-                            temp = *in++;
-                            current_byte |= temp << bit;
-                        }
+                    for (int bit = 7; bit >= 0; bit--) {
+                        temp = *in++;
+                        current_byte |= temp << bit;
+                    }
 
-                        remainder ^= current_byte;
-                        for (int pos = 0; pos < 8; pos++) {
-                            if ((remainder & 0x80) != 0) {
-                                remainder ^= generator;
-                                remainder <<= 1;
-                            }
-                            else{
-                                remainder <<= 1;
-                            }
+                    remainder ^= current_byte;
+                    for (int position = 0; position < 8; position++) {
+                        if ((remainder & 0x80) != 0) {
+                            remainder ^= generator;
+                            remainder <<= 1;
+                        } else {
+                            remainder <<= 1;
                         }
                     }
-                    for(int bit =7; bit>=0; bit--) {
-                    *out = (uint8_t) (remainder&bit_pos[bit]) != 0x00;
+                }
+                for (int bit = 7; bit >= 0; bit--) {
+                    *out = (uint8_t) (remainder & bit_position[bit]) != 0x00;
                     out++;
                 }
-                }
+            }
 
-                consume_each(ninput_items[0]);
-                return noutput_items;
+            consume_each(ninput_items[0]);
+            return noutput_items;
         }
 
-        } /* namespace a3sat */
-    } /* namespace gr */
+    } /* namespace a3sat */
+} /* namespace gr */

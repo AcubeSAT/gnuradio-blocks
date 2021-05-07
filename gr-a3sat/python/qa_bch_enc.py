@@ -6,13 +6,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 import sys
-import os
 
 sys.path.append("../build/swig")
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import a3sat_swig as a3sat
-from numpy import array
 
 
 class qa_bch_enc(gr_unittest.TestCase):
@@ -22,6 +20,7 @@ class qa_bch_enc(gr_unittest.TestCase):
 
     def tearDown(self):
         self.tb = None
+
     # Encoding one codeword
     def test_001_t(self):
         vector_src = blocks.vector_source_b((1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
@@ -38,6 +37,7 @@ class qa_bch_enc(gr_unittest.TestCase):
         self.tb.stop()
         result_data = dst.data()
         self.assertTupleEqual(expected_result, result_data)
+
     # Encoding two codewords
     def test_002_t(self):
         vector_src = blocks.vector_source_b((1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,

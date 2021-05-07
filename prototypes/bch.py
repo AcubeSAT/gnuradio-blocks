@@ -4,7 +4,8 @@ import numpy as np
 import math
 
 
-g = int("11000101", 2) # generator polynomial for BCH(63, 56)
+g = int("11000101", 2)
+# generator polynomial for BCH(63, 56)
 # x^7 + x^6 + x^2 + 1 = 0
 n = 63
 k = 56

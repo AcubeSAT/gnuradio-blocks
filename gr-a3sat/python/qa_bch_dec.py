@@ -5,11 +5,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 import sys
+
 sys.path.append("../build/swig")
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import a3sat_swig as a3sat
+
 
 class qa_bch_dec(gr_unittest.TestCase):
 
@@ -18,6 +20,7 @@ class qa_bch_dec(gr_unittest.TestCase):
 
     def tearDown(self):
         self.tb = None
+
     # Decoding one codeword with error
     def test_001_t(self):
         data = (
@@ -49,7 +52,8 @@ class qa_bch_dec(gr_unittest.TestCase):
 
         expected_result = (1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
                            0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
-                           1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                           1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                           0,
                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         bch_enc = a3sat.bch_dec()
         self.tb.connect((vector_src, 0), (bch_enc, 0))
