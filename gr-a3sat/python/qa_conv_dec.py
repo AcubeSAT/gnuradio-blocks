@@ -5,10 +5,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-
+import os
 import sys
-sys.path.append("/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/build/swig")
-
+sys.path.append("../build/swig")
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
@@ -24,9 +23,9 @@ class qa_conv_dec(gr_unittest.TestCase):
 
     def test_001_t(self):
         # set up fg
-        src_data = (1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0)
+        src_data = (1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0)
         # src_data = (1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0)
-        expected_result = (1, 0, 1, 1, 0, 0)
+        expected_result = (1, 0, 1, 0, 1, 0)
         conv_dec = a3sat.conv_dec(True)
         src = blocks.vector_source_b(src_data, False, 1, [])
         self.tb.connect(src, conv_dec)
