@@ -19,6 +19,7 @@ namespace gr {
         static const uint16_t Generator_columns = 8;
         static const uint16_t size_square_cyclic_matrix = 128;
         static const uint16_t size_message = Generator_columns*size_square_cyclic_matrix;
+        static const uint16_t size_encoded_message = 5120;
 
 
      public:

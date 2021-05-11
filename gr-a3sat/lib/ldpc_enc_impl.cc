@@ -25,11 +25,16 @@ namespace gr {
 
         ldpc_enc_impl::ldpc_enc_impl()
       : gr::block("ldpc_enc",
-              gr::io_signature::make(4096, 4096, sizeof(bool)),
-              gr::io_signature::make(5120, 5120, sizeof(bool)))
+              gr::io_signature::make(1, 1, sizeof(bool)),
+              gr::io_signature::make(1, 1, sizeof(bool)))
     {}
 
-    ldpc_enc_impl::~ldpc_enc_impl()
+//        void ldpc_enc_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required) {
+//            ninput_items_required[0] = (noutput_items / n_bch) * k_bch;
+//        }
+
+
+        ldpc_enc_impl::~ldpc_enc_impl()
     {
     }
 
@@ -53,12 +58,12 @@ namespace gr {
                         if (position_in_square_matrix + j < size_square_cyclic_matrix) {
                             encoded_message[gr::a3sat::ldpc_enc_impl::size_square_cyclic_matrix * column +
                                             position_in_square_matrix + j] ^= message[
-                                    gr::a3sat::ldpc_enc_impl::size_square_cyclic_matrix * column + j];
+                                    parity + j];
                         } else {
                             encoded_message[gr::a3sat::ldpc_enc_impl::size_square_cyclic_matrix * column +
                                             position_in_square_matrix + j -
-                                            gr::a3sat::ldpc_enc_impl::size_square_cyclic_matrix] ^= message[
-                                    gr::a3sat::ldpc_enc_impl::size_square_cyclic_matrix * column + j];
+                                            gr::a3sat::ldpc_enc_impl::size_square_cyclic_matrix] ^= message[parity -
+                                    gr::a3sat::ldpc_enc_impl::size_square_cyclic_matrix + j];
                         };
                 }
             }
