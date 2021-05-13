@@ -11,7 +11,7 @@
 #include <gnuradio/io_signature.h>
 #include "bch_enc_impl.h"
 #include <string>
-#include <cstring> // for memcpy
+#include <cstring>
 
 namespace gr {
     namespace a3sat {
