@@ -1,4 +1,4 @@
-"""Binary BCH encoder/decoder prototype of the BCH(56,64) code that is  specified in CCSDS 231.0-B-3 using the
+"""Binary BCH encoder/decoder prototype of the BCH(56,63) code that is  specified in CCSDS 231.0-B-3 using the
 generator polynomial of the encoder is g(x) = x^7 + x^6 + x^2 + 1. We pre-compute the powers of the primitive
 elements so they are expressed in the basis {α, α^2, ..., α^k}. For example if the generator polynomial is x^7 + x^6
 + x^2 + 1 => α^7 + α^6 + α^2 + 1 = 0 =>  α^7 = α^6 + α^2 + 1. Then we find the error location based on the calculated
@@ -6,7 +6,7 @@ syndrome with the help of syndromes_hash table that matches the syndrome with th
 
 import math
 
-g = int("11000101", 2)
+generator_polynomial = int("11000101", 2)
 n = 63
 k = 56
 primitive_elements_bch_63_54 = [1, 2, 4, 8, 16, 32, 64, 69, 79, 91, 115, 35, 70, 73, 87, 107,
@@ -24,69 +24,68 @@ syndromes_hash = {
 }
 
 
-def binary_polynomial_division(a, b):
+def binary_polynomial_division(dividend, divisor):
     """
     Performs polynomial division in GF(2) - essentially long binary division.
     In this context, a and b are integers the binary representation of which
-    indicates their coefficients.
-
-    TODO? We could unroll and get rid of the extra conditional checks if we know
-    the generator beforehand.
+    indicates their coefficients. The remainder is saved in the dividend variable in the
+    end of the process.
     """
-    if b == 0:
+    # TODO? We could unroll and get rid of the extra conditional checks if we know the generator beforehand.
+    if divisor == 0:
         return
-    if a == 0:
-        return 0, b
+    if dividend == 0:
+        return 0, divisor
 
     # TODO: Too expensive for no reason. Why log when you can shift??
-    deg_a = math.floor(math.log(a, 2)) + 1
-    deg_b = math.floor(math.log(b, 2)) + 1
-    k = 0
-    q = 0
-    while a >= b:
-        q <<= 1
-        if a >> (deg_a - k - 1) & 1 == 1:
-            a ^= b << (deg_a - deg_b - k)
-            q += 1
-        k += 1
-    deg_r = math.floor(math.log(a, 2)) + 1
+    dividend_degree = math.floor(math.log(dividend, 2)) + 1
+    divisor_degree = math.floor(math.log(divisor, 2)) + 1
+    bit_position = 0
+    quotient = 0
+    while dividend >= divisor:
+        quotient <<= 1
+        if dividend >> (dividend_degree - bit_position - 1) & 1 == 1:
+            dividend ^= divisor << (dividend_degree - divisor_degree - bit_position)
+            quotient += 1
+        bit_position += 1
+    deg_r = math.floor(math.log(dividend, 2)) + 1
 
-    return a, q << (deg_r - 1)
+    return dividend, quotient << (deg_r - 1)
 
 
-def encode_bch(m):
+def encode_bch(message):
     """
     Implements a systematic binary BCH encoder. Assumes block size fits into supported data types.
-    We get the remainder of the division of the message polynomial with the generator and add parity bits to the message
-    polynomial
+    We get the remainder of the division of the message polynomial with the generator and add parity
+    bits to the message polynomial.
     """
-    p = m << (n - k)
-    r = binary_polynomial_division(p, g)[0]
+    p = message << (n - k)
+    remainder = binary_polynomial_division(p, generator_polynomial)[0]
 
     # TODO (here?) - BCH(63, 56) is normally padded to 64 bits so a left shift might be needed
     # in the encoder and a right shift in the decoder to follow the standard
-    return p | r
+    return p | remainder
 
 
-def calc_syndromes_63_56(r):
+def calc_syndromes_63_56(received_message):
     """
     Calculate syndromes given the received message r for BCH(63, 56)
     """
-    s1 = s2 = 0
-    i = 0
-    while r:
-        b = r & 1
-        if b == 1:
-            s1 ^= primitive_elements_bch_63_54[i % 63]
-            s2 ^= primitive_elements_bch_63_54[(2 * i) % 63]
-        i += 1
-        r >>= 1
-    s1 = binary_polynomial_division(s1, g)[0]
-    s2 = binary_polynomial_division(s2, g)[0]
-    return [s1, s2]
+    syndrome1 = syndrome2 = 0
+    index = 0
+    while received_message:
+        current_bit = received_message & 1
+        if current_bit == 1:
+            syndrome1 ^= primitive_elements_bch_63_54[index % 63]
+            syndrome2 ^= primitive_elements_bch_63_54[(2 * index) % 63]
+        index += 1
+        received_message >>= 1
+    syndrome1 = binary_polynomial_division(syndrome1, generator_polynomial)[0]
+    syndrome2 = binary_polynomial_division(syndrome2, generator_polynomial)[0]
+    return [syndrome1, syndrome2]
 
 
-def decode_bch_63_56(c):
+def decode_bch_63_56(codeword):
     """
     Decodes a BCH codeword with at most 1 error using a hash table. For the general case,
     the Berlekamp - Massey algorithm over a Galois field of characteristic 2 can be used.
@@ -95,11 +94,11 @@ def decode_bch_63_56(c):
     the sent data. If there is at most one error it corrects it and returns the sent data. If there is more
     than one errors it can't decode the codeword.
     """
-    s1 = calc_syndromes_63_56(c)[0]
-    if s1 == 0:
-        return bin(c)
-    elif s1 in syndromes_hash:
-        c ^= 2 ** (63 - syndromes_hash[s1] - 1)
-        return bin(c)
+    syndrome1 = calc_syndromes_63_56(codeword)[0]
+    if syndrome1 == 0:
+        return bin(codeword)
+    elif syndrome1 in syndromes_hash:
+        codeword ^= 2 ** (63 - syndromes_hash[syndrome1] - 1)
+        return bin(codeword)
     else:
         return -1
