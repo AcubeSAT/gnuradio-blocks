@@ -46,90 +46,87 @@ namespace gr {
             const bool *in = (const bool *) input_items[0];
             unsigned int *out = (unsigned int *) output_items[0];
 
-            for (int i = 0; i < pow(2, constraint_length - 1); i++) {
-                path_metric[i] = UINT_MAX;
+            for (int i = 0; i < pow(2, constraintLength - 1); i++) {
+                pathMetric[i] = UINT_MAX;
                 paths[i] = 0;
             }
 
-            path_metric[0] = 0;
+            pathMetric[0] = 0;
 
             for (int inputItem = 0; inputItem < noutput_items; inputItem++) {
 
-                for (int i = 0; i < pow(2, constraint_length - 1); i++) {
-                    t_path_metric[i] = UINT_MAX;
-                    t_paths[i] = 0;
+                for (int i = 0; i < pow(2, constraintLength - 1); i++) {
+                    branchMetric[i] = UINT_MAX;
+                    transmittedPaths[i] = 0;
                 }
 
                 bool transmitted_symbol[2] = {in[rate * inputItem], in[rate * inputItem + 1]};
 
-                for (int state = 0; state < pow(2, constraint_length - 1); state++) {
-                    if (path_metric[state] != UINT_MAX) {
+                for (int state = 0; state < pow(2, constraintLength - 1); state++) {
+                    if (pathMetric[state] != UINT_MAX) {
 
-                        // Convert each state to binary
-                        temp_state = state;
-                        for (int j = 1; j < constraint_length; j++) {
-                            if (temp_state > 0) {
-                                bin_state[constraint_length - j - 1] = temp_state % 2;
-                                temp_state = temp_state / 2;
-                            } else bin_state[constraint_length - j - 1] = 0;
+                        temporaryState = state;
+                        for (int j = 1; j < constraintLength; j++) {
+                            if (temporaryState > 0) {
+                                binaryState[constraintLength - j - 1] = temporaryState % 2;
+                                temporaryState = temporaryState / 2;
+                            } else binaryState[constraintLength - j - 1] = 0;
                         }
 
-                        tr_one[0] = 1;
-                        tr_zero[0] = 0;
+                        transmittedOne[0] = 1;
+                        transmittedZero[0] = 0;
 
-                        for (int i = 0; i < constraint_length - 1; i++) {
-                            tr_one[i + 1] = bin_state[i];
-                            tr_zero[i + 1] = bin_state[i];
+                        for (int i = 0; i < constraintLength - 1; i++) {
+                            transmittedOne[i + 1] = binaryState[i];
+                            transmittedZero[i + 1] = binaryState[i];
                         }
 
-                        pm_one = 0;
-                        pm_zero = 0;
+                        branchMetricOne = 0;
+                        branchMetricZero = 0;
 
-                        pm_one = calculate_path_metric(rate, constraint_length, tr_one, generator, transmitted_symbol);
-                        pm_zero = calculate_path_metric(rate, constraint_length, tr_zero, generator, transmitted_symbol);
+                        branchMetricOne = calculate_path_metric(rate, constraintLength, transmittedOne, generator, transmitted_symbol);
+                        branchMetricZero = calculate_path_metric(rate, constraintLength, transmittedZero, generator, transmitted_symbol);
 
-                        // Update paths
-                        tot_pm_one = pow(pm_one, 2) + path_metric[state];
-                        next_state = (state >> 1) ^ int(pow(2, constraint_length - 2));
+                        pathMetricOne = pow(branchMetricOne, 2) + pathMetric[state];
+                        nextState = (state >> 1) ^ int(pow(2, constraintLength - 2));
 
-                        if (t_path_metric[next_state] > tot_pm_one) {
-                            t_path_metric[next_state] = tot_pm_one;
-                            t_paths[next_state] = (paths[state] << 1) ^ 1;
+                        if (branchMetric[nextState] > pathMetricOne) {
+                            branchMetric[nextState] = pathMetricOne;
+                            transmittedPaths[nextState] = (paths[state] << 1) ^ 1;
                         }
 
-                        tot_pm_zero = pow(pm_zero, 2) + path_metric[state];
-                        next_state = state >> 1;
+                        pathMetricZero = pow(branchMetricZero, 2) + pathMetric[state];
+                        nextState = state >> 1;
 
-                        if (t_path_metric[next_state] > tot_pm_zero) {
-                            t_path_metric[next_state] = tot_pm_zero;
-                            t_paths[next_state] = paths[state] << 1;
+                        if (branchMetric[nextState] > pathMetricZero) {
+                            branchMetric[nextState] = pathMetricZero;
+                            transmittedPaths[nextState] = paths[state] << 1;
                         }
                     }
                 }
-                memcpy(path_metric, t_path_metric, sizeof(t_path_metric));
-                memcpy(paths, t_paths, sizeof(t_paths));
+                memcpy(pathMetric, branchMetric, sizeof(branchMetric));
+                memcpy(paths, transmittedPaths, sizeof(transmittedPaths));
             }
 
-            optimal_path = path_metric[0];
-            optimal_path_index = 0;
+            optimalPath = pathMetric[0];
+            optimalPathIndex = 0;
 
-            for (int i = 1; i < int(pow(2, (constraint_length - 1))); i++) {
-                if (path_metric[i] < optimal_path && paths[i] != 0) {
-                    optimal_path = path_metric[i];
-                    optimal_path_index = i;
+            for (int i = 1; i < int(pow(2, (constraintLength - 1))); i++) {
+                if (pathMetric[i] < optimalPath && paths[i] != 0) {
+                    optimalPath = pathMetric[i];
+                    optimalPathIndex = i;
                 }
             }
 
-            // Convert path_metric to binary for the output
             for (int j = 0; j < noutput_items; j++) {
-                if (paths[optimal_path_index] > 0) {
-                    binary_optimal_path[noutput_items - j - 1] = paths[optimal_path_index] % 2;
-                    paths[optimal_path_index] = paths[optimal_path_index] / 2;
-                } else binary_optimal_path[noutput_items - j - 1] = 0;
+                if (paths[optimalPathIndex] > 0) {
+                    binaryOptimalPath[noutput_items - j - 1] = paths[optimalPathIndex] % 2;
+                    paths[optimalPathIndex] = paths[optimalPathIndex] / 2;
+                } else binaryOptimalPath[noutput_items - j - 1] = 0;
             }
 
             for(int outIndex = 0; outIndex < noutput_items; outIndex++){
-                *out = binary_optimal_path[outIndex];
+                *out = binaryOptimalPath[outIndex];
                 out++;
             }
 
@@ -137,18 +134,18 @@ namespace gr {
             return noutput_items;
         }
 
-        int conv_dec_impl::calculate_path_metric(int rate, int constraint_length, bool *state, bool (*generator)[7], bool *transmitted_symbol) {
-            int parity_bit = 0;
-            int path_metric = 0;
+        int conv_dec_impl::calculate_path_metric(int rate, int constraint_length, bool *state, bool (*generator)[7], bool *transmittedSymbol) {
+            int parityBit = 0;
+            int pathMetric = 0;
 
             for (int gen_k = 0; gen_k < rate; gen_k++) {
-                parity_bit = 0;
+                parityBit = 0;
                 for (int state_bit = 0; state_bit < constraint_length; state_bit++) {
-                    parity_bit ^= state[state_bit] * generator[gen_k][state_bit];
+                    parityBit ^= state[state_bit] * generator[gen_k][state_bit];
                 }
-                path_metric += abs(parity_bit - transmitted_symbol[gen_k]);
+                pathMetric += abs(parityBit - transmittedSymbol[gen_k]);
             }
-            return path_metric;
+            return pathMetric;
         }
 
     } /* namespace a3sat */
