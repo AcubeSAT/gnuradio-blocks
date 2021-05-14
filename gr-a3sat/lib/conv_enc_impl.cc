@@ -6,68 +6,65 @@
 #include "conv_enc_impl.h"
 
 namespace gr {
-  namespace a3sat {
+    namespace a3sat {
 
-    conv_enc::sptr
-    conv_enc::make()
-    {
-      return gnuradio::get_initial_sptr
-        (new conv_enc_impl(2, 3));
-    }
-
-    conv_enc_impl::conv_enc_impl(unsigned int rate, unsigned int constraint_length)
-      : gr::block("conv_enc",
-              gr::io_signature::make(1, 1, sizeof(bool)),
-              gr::io_signature::make(1, 1, sizeof(bool)))
-    {
-        set_output_multiple(14);
-        this->rate = rate;
-        this->constraint_length = constraint_length;
-    }
-
-    void
-    conv_enc_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required)
-    {
-        ninput_items_required[0] =  noutput_items/this->rate;
-    }
-
-    conv_enc_impl::~conv_enc_impl(){
-    }
-
-    int
-    conv_enc_impl::general_work (int noutput_items,
-                       gr_vector_int &ninput_items,
-                       gr_vector_const_void_star &input_items,
-                       gr_vector_void_star &output_items)
-    {
-      bool *in = (bool *) input_items[0];
-      bool *out = (bool *) output_items[0];
-
-      bool generator[][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
-
-      for (int i = 1; i < this->constraint_length; i++){
-          for (int gen_k = 0; gen_k < this->rate; gen_k++) {
-            for (int j = 0; j < i; j++){
-                *out ^= in[j] * generator[gen_k][this->constraint_length - i + j];
-            }
-            *out++;
+        conv_enc::sptr
+        conv_enc::make()
+        {
+            return gnuradio::get_initial_sptr
+                    (new conv_enc_impl(2, 7));
         }
-      }
 
-      for(int offset = 0; offset < ninput_items[0] - (this->constraint_length - 1); offset++){
-          for (int gen_k = 0; gen_k < this->rate; gen_k++) {
-            for(int i = 0; i < this->constraint_length; i++) {
-                *out ^= in[i + offset] * generator[gen_k][i];
+        conv_enc_impl::conv_enc_impl(unsigned int rate, unsigned int constraintLength)
+                : gr::block("conv_enc",
+                            gr::io_signature::make(1, 1, sizeof(bool)),
+                            gr::io_signature::make(1, 1, sizeof(bool)))
+        {
+            set_output_multiple(18);
+            this->rate = rate;
+            this->constraintLength = constraintLength;
+        }
+
+        void
+        conv_enc_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required)
+        {
+            ninput_items_required[0] =  noutput_items/this->rate;
+        }
+
+        conv_enc_impl::~conv_enc_impl(){
+        }
+
+        int
+        conv_enc_impl::general_work (int noutput_items,
+                                     gr_vector_int &ninput_items,
+                                     gr_vector_const_void_star &input_items,
+                                     gr_vector_void_star &output_items)
+        {
+            bool *in = (bool *) input_items[0];
+            bool *out = (bool *) output_items[0];
+
+            for (int generatorBit = 1; generatorBit < this->constraintLength; generatorBit++){
+                for (int iGenerator = 0; iGenerator < this->rate; iGenerator++) {
+                    for (int stateBit = 0; stateBit < generatorBit; stateBit++){
+                        *out ^= in[stateBit] * this->generator[iGenerator][this->constraintLength - generatorBit + stateBit];
+                    }
+                    *out++;
+                }
             }
-            *out++;
-          }
-      }
 
-      consume_each (ninput_items[0]);
+            for(int generatorBit = 0; generatorBit < ninput_items[0] - (this->constraintLength - 1); generatorBit++){
+                for (int iGenerator = 0; iGenerator < this->rate; iGenerator++) {
+                    for(int stateBit = 0; stateBit < this->constraintLength; stateBit++) {
+                        *out ^= in[stateBit + generatorBit] * this->generator[iGenerator][stateBit];
+                    }
+                    *out++;
+                }
+            }
 
-      return noutput_items;
-    }
+            consume_each (ninput_items[0]);
 
-  } /* namespace a3sat */
+            return noutput_items;
+        }
+
+    } /* namespace a3sat */
 } /* namespace gr */
-

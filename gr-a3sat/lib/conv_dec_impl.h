@@ -15,46 +15,45 @@ namespace gr {
  */
         class conv_dec_impl : public conv_dec {
             /*!
-             * \param rate Number of the generator polynomials used for the encoding.
-             * \param constraint_length Length of each generator polynomial used for the encoding.
-             * \param constraint_length The length of each generator polynomial.
-             * \param paths
-             * \param path_metric The path metric of each path of the trellis
-             * \param t_paths
-             * \param t_path_metric The branch metric of each state in timestep t
-             * \param bin_state Current state in binary form
-             * \param next_state The following state in each case of 1 / 0 transmitted
-             * \param tr_one
-             * \param tr_zero
-             * \param tot_pm_one
-             * \param tot_pm_zero
-             * \param temp_state
-             * \param optimal_path
-             * \param optimal_path_index
-             * \param binary_optimal_path
+             * \param rate Number of the generator polynomials used for the encoding
+             * \param constraintLength Length of each generator polynomial used for the encoding
+             * \param generator The generator polynomials used for the encoding
+             * \param paths The paths of the trellis
+             * \param pathMetric The path metric of each path of the trellis
+             * \param transmittedPaths The paths calculated in each timestep t
+             * \param branchMetric The branch metric of each state in timestep t
+             * \param binaryState Current state in binary form
+             * \param nextState The following state in each case of 1 / 0 transmitted
+             * \param transmittedOne State if 1 was transmitted
+             * \param transmittedZero State if 0 was transmitted
+             * \param branchMetricOne Branch metric if 1 was transmitted
+             * \param branchMetricZero Branch metric if 0 was transmitted
+             * \param temporaryState Helpful variable used for the conversion of variable state to binary
+             * \param optimalPath The path with the minimum path metric
+             * \param optimalPathIndex The index of the path with the minimum path metric
+             * \param binaryOptimalPath The optimal path converted to binary
              */
         private:
             static const int rate = 2;
-            static const int constraint_length = 7;
+            static const int constraintLength = 7;
             bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1},
                                     {1, 0, 1, 1, 0, 1, 1}};
             unsigned int paths[64];
-            unsigned int path_metric[64];
-            unsigned int t_paths[64];
-            unsigned int t_path_metric[64];
-            bool bin_state[6] = {0};
-            unsigned int next_state = 0;
-            bool tr_one[7] = {0};
-            bool tr_zero[7] = {0};
-            unsigned int pm_one = 0;
-            unsigned int pm_zero = 0;
-            unsigned int tot_pm_one = 0;
-            unsigned int tot_pm_zero = 0;
-            int temp_state = 0;
-            unsigned int optimal_path = 0;
-            unsigned int optimal_path_index = 0;
-            unsigned int binary_optimal_path[6] = {};
-//            std::unordered_map<unsigned int, bool[]> binary_states;
+            unsigned int pathMetric[64];
+            unsigned int transmittedPaths[64];
+            unsigned int branchMetric[64];
+            bool binaryState[6] = {0};
+            unsigned int nextState = 0;
+            bool transmittedOne[7] = {0};
+            bool transmittedZero[7] = {0};
+            unsigned int branchMetricOne = 0;
+            unsigned int branchMetricZero = 0;
+            unsigned int pathMetricOne = 0;
+            unsigned int pathMetricZero = 0;
+            int temporaryState = 0;
+            unsigned int optimalPath = 0;
+            unsigned int optimalPathIndex = 0;
+            unsigned int binaryOptimalPath[6] = {};
 
         public:
             conv_dec_impl();
