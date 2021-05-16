@@ -18,6 +18,7 @@ namespace gr {
              * \param rate Number of the generator polynomials used for the encoding
              * \param constraintLength Length of each generator polynomial used for the encoding
              * \param generator The generator polynomials used for the encoding
+             * \param transmittedSymbol The received bits at each timestep
              * \param paths The paths of the trellis
              * \param pathMetric The path metric of each path of the trellis
              * \param transmittedPaths The paths calculated in each timestep t
@@ -31,29 +32,28 @@ namespace gr {
              * \param temporaryState Helpful variable used for the conversion of variable state to binary
              * \param optimalPath The path with the minimum path metric
              * \param optimalPathIndex The index of the path with the minimum path metric
-             * \param binaryOptimalPath The optimal path converted to binary
              */
         private:
             static const int rate = 2;
             static const int constraintLength = 7;
             bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1},
                                     {1, 0, 1, 1, 0, 1, 1}};
-            unsigned int paths[64];
+            bool transmittedSymbol[2];
+            unsigned int paths[64][6];
             unsigned int pathMetric[64];
-            unsigned int transmittedPaths[64];
+            unsigned int transmittedPaths[64][6];
             unsigned int branchMetric[64];
-            bool binaryState[6] = {0};
-            unsigned int nextState = 0;
-            bool transmittedOne[7] = {0};
-            bool transmittedZero[7] = {0};
-            unsigned int branchMetricOne = 0;
-            unsigned int branchMetricZero = 0;
-            unsigned int pathMetricOne = 0;
-            unsigned int pathMetricZero = 0;
-            int temporaryState = 0;
-            unsigned int optimalPath = 0;
-            unsigned int optimalPathIndex = 0;
-            unsigned int binaryOptimalPath[6] = {};
+            bool binaryState[6];
+            unsigned int nextState;
+            bool transmittedOne[7];
+            bool transmittedZero[7];
+            unsigned int branchMetricOne;
+            unsigned int branchMetricZero;
+            unsigned int pathMetricOne;
+            unsigned int pathMetricZero;
+            int temporaryState;
+            unsigned int optimalPath;
+            unsigned int optimalPathIndex;
 
         public:
             conv_dec_impl();
@@ -67,11 +67,10 @@ namespace gr {
 
             void forecast(int noutput_items, gr_vector_int &ninput_items_required);
 
-            int calculate_path_metric(int rate,
-                                      int constraint_length,
-                                      bool state[],
-                                      bool generator[][7],
-                                      bool transmitted_symbol[]);
+            /*
+             * @brief Calculates the branch metric to the next state.
+             */
+            int calculateBranchMetric(bool *state);
         };
 
     } // namespace a3sat
