@@ -62,7 +62,7 @@ namespace gr {
                 for (int state = 0; state < pow(2, constraintLength - 1); state++) {
                     if (pathMetric[state] != UINT_MAX) {
 
-                        /* TODO: Implement the below conversion of state to binary form using hashMaps
+                        /* TODO: Implement the below conversion of state to binary form using hashMaps */
                         temporaryState = state;
                         for (int j = 1; j < constraintLength; j++) {
                             if (temporaryState > 0) {
