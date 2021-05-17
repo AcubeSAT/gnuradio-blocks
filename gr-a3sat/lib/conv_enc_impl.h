@@ -11,34 +11,60 @@
 namespace gr {
     namespace a3sat {
 /*!
- * \brief Implements a convolutional encoder
- * \ingroup a3sat
+ * @brief The encoder of the convolutional code of rate 1/2 bits ber symbol as specified in CCSDS 131.0-B-3.
+ *        The generator polynomials of the encoder are g1(x) = x^6 + x^5 + x^4 + x^3 + 1    &   g2(x) = x^6 + x^4 + x^3 + x + 1
+ * @ingroup a3sat
  *
  * Input: 2048 bit frame
  * Output: Encoded 4096 bit frame
  */
         class conv_enc_impl : public conv_enc
         {
-            /*!
-             * \param generator The generator polynomials used for the encoding, but inversed
-             * \param rate The number of the generator polynomials
-             * \param constraintLength The length of each generator polynomial
+            /**
+             * @param generator The generator polynomials used for the encoding, but inversed
+             * @param rate The number of the generator polynomials
+             * @param constraintLength The length of each generator polynomial
+             * @param decodedCodewordLength The length of the encoded codeword
              */
-
         private:
-            bool generator[2][7] = {{1, 0, 0, 1, 1, 1, 1}, {1, 1, 0, 1, 1, 0, 1}};
-            unsigned int rate;
-            unsigned int constraintLength;
+            const bool generator[2][7] = {{1, 0, 0, 1, 1, 1, 1}, {1, 1, 0, 1, 1, 0, 1}};
+            static const uint8_t rate = 2;
+            static const uint8_t constraintLength = 7;
+            static const uint8_t encodedCodewordLength = 4096;
 
         public:
-            conv_enc_impl(unsigned int rate, unsigned int constraint_length);
+            /**
+             * Initializes an object of the class and sets the output to be a multiple of the encodedCodewordLength.
+             */
+            conv_enc_impl();
+
+            /*!
+            * Destroys the object of the class.
+            */
             ~conv_enc_impl();
 
+            /*!
+             * @brief Performs the encoding of the input data.
+             * Due to the forecast and set output multiple functions, the input data is a multiple of the output data and the rate of the encoder.
+             * The encoder looks at 7 (constraintLength) bits at a time and produces 2 (rate) parity bits, by multiplying the message bits
+             * with each of the generator polynomials.
+             * @param noutput_items The number of output bits
+             * @param ninput_items The number of input bits on each port
+             * @param input_items The input buffer
+             * @param output_items The output buffer
+             * @return noutput_items
+             */
             int general_work(int noutput_items,
                              gr_vector_int &ninput_items,
                              gr_vector_const_void_star &input_items,
                              gr_vector_void_star &output_items);
 
+            /*!
+             * @brief Defines the required input number of bits to produce a certain number of output bits.
+             * @details As the code is a Convolutional of rate 1/2, input/output = 1/2
+             * @param noutput_items
+             * @param ninput_items_required
+             */
             void forecast(int noutput_items,
                           gr_vector_int &ninput_items_required);
 

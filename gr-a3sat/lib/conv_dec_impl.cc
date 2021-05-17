@@ -25,7 +25,7 @@ namespace gr {
         conv_dec_impl::conv_dec_impl()
                 : gr::block("conv_dec",
                             gr::io_signature::make(1, 1, sizeof(bool)),
-                            gr::io_signature::make(1, 1, sizeof(char))) {
+                            gr::io_signature::make(1, 1, sizeof(uint8_t))) {
             set_output_multiple(6);
         }
 
@@ -44,7 +44,7 @@ namespace gr {
                                      gr_vector_const_void_star &input_items,
                                      gr_vector_void_star &output_items) {
             const bool *in = (const bool *) input_items[0];
-            char *out = (char *) output_items[0];
+            uint8_t *out = (uint8_t *) output_items[0];
 
             memset(pathMetric, UINT_MAX, sizeof(pathMetric));
             memset(paths, 0, sizeof(paths));

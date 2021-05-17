@@ -16,23 +16,21 @@ namespace gr {
         conv_enc::make()
         {
             return gnuradio::get_initial_sptr
-                    (new conv_enc_impl(2, 7));
+                    (new conv_enc_impl());
         }
 
-        conv_enc_impl::conv_enc_impl(unsigned int rate, unsigned int constraintLength)
+        conv_enc_impl::conv_enc_impl()
                 : gr::block("conv_enc",
                             gr::io_signature::make(1, 1, sizeof(bool)),
                             gr::io_signature::make(1, 1, sizeof(bool)))
         {
-            set_output_multiple(18);
-            this->rate = rate;
-            this->constraintLength = constraintLength;
+            set_output_multiple(encodedCodewordLength);
         }
 
         void
         conv_enc_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required)
         {
-            ninput_items_required[0] =  noutput_items/this->rate;
+            ninput_items_required[0] =  noutput_items/rate;
         }
 
         conv_enc_impl::~conv_enc_impl(){
@@ -47,19 +45,19 @@ namespace gr {
             bool *in = (bool *) input_items[0];
             bool *out = (bool *) output_items[0];
 
-            for (int generatorBit = 1; generatorBit < this->constraintLength; generatorBit++){
-                for (int iGenerator = 0; iGenerator < this->rate; iGenerator++) {
+            for (int generatorBit = 1; generatorBit < constraintLength; generatorBit++){
+                for (int iGenerator = 0; iGenerator < rate; iGenerator++) {
                     for (int stateBit = 0; stateBit < generatorBit; stateBit++){
-                        *out ^= in[stateBit] * this->generator[iGenerator][this->constraintLength - generatorBit + stateBit];
+                        *out ^= in[stateBit] * generator[iGenerator][constraintLength - generatorBit + stateBit];
                     }
                     *out++;
                 }
             }
 
-            for(int generatorBit = 0; generatorBit < ninput_items[0] - (this->constraintLength - 1); generatorBit++){
-                for (int iGenerator = 0; iGenerator < this->rate; iGenerator++) {
-                    for(int stateBit = 0; stateBit < this->constraintLength; stateBit++) {
-                        *out ^= in[stateBit + generatorBit] * this->generator[iGenerator][stateBit];
+            for(int generatorBit = 0; generatorBit < ninput_items[0] - (constraintLength - 1); generatorBit++){
+                for (int iGenerator = 0; iGenerator < rate; iGenerator++) {
+                    for(int stateBit = 0; stateBit < constraintLength; stateBit++) {
+                        *out ^= in[stateBit + generatorBit] * generator[iGenerator][stateBit];
                     }
                     *out++;
                 }
