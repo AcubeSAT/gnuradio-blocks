@@ -7,7 +7,7 @@
 namespace gr {
     namespace a3sat {
 /*!
- * \brief Implements a convolutional Viterbi soft decision decoder
+ * \brief The soft decision decoder of the convolutional code of rate 1/2 bits ber symbol as specified in CCSDS 131.0-B-3.
  * \ingroup a3sat
  *
  * Input: Convolutional encoded 4096 bit frame
@@ -27,8 +27,8 @@ namespace gr {
              * \param nextState The following state in each case of 1 / 0 transmitted
              * \param transmittedOne State if 1 was transmitted
              * \param transmittedZero State if 0 was transmitted
-             * \param branchMetricOne Branch metric if 1 was transmitted
-             * \param branchMetricZero Branch metric if 0 was transmitted
+             * \param branchMetricOne The “distance” between the transmitted symbol and the received symbol in case 1 was the next transmitted bit
+             * \param branchMetricZero The “distance” between the transmitted symbol and the received symbol in case 0 was the next transmitted bit
              * \param temporaryState Helpful variable used for the conversion of variable state to binary
              * \param optimalPath The path with the minimum path metric
              * \param optimalPathIndex The index of the path with the minimum path metric
@@ -39,36 +39,63 @@ namespace gr {
             bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1},
                                     {1, 0, 1, 1, 0, 1, 1}};
             bool transmittedSymbol[2];
-            unsigned int paths[64][6];
-            unsigned int pathMetric[64];
-            unsigned int transmittedPaths[64][6];
-            unsigned int branchMetric[64];
+            uint8_t paths[64][6];
+            uint8_t pathMetric[64];
+            uint8_t transmittedPaths[64][6];
+            uint8_t branchMetric[64];
             bool binaryState[6];
-            unsigned int nextState;
+            uint8_t nextState;
             bool transmittedOne[7];
             bool transmittedZero[7];
-            unsigned int branchMetricOne;
-            unsigned int branchMetricZero;
-            unsigned int pathMetricOne;
-            unsigned int pathMetricZero;
+            uint8_t branchMetricOne;
+            uint8_t branchMetricZero;
+            uint8_t pathMetricOne;
+            uint8_t pathMetricZero;
             int temporaryState;
-            unsigned int optimalPath;
-            unsigned int optimalPathIndex;
+            uint8_t optimalPath;
+            uint8_t optimalPathIndex;
 
         public:
+            /**
+             * Initializes an object of the class and sets the output to be a multiple of the encodedCodewordLength.
+             */
             conv_dec_impl();
 
+            /*!
+            * Destroys the object of the class.
+            */
             ~conv_dec_impl();
 
+            /*!
+             * @brief Performs the decoding of the input data.
+             * Due to the forecast and set output multiple functions, the input data is a multiple of the output data divided by the rate of the encoder.
+             * The decoder consists of two main steps. It calculates the branch metric for the next set of parity bits, and computes the path metric for the next column.
+             * In the end a Trellis diagram is created and the path with the minimum path metric is selected as the transmitted codeword.
+             * @param noutput_items
+             * @param ninput_items
+             * @param input_items
+             * @param output_items
+             * @return noutput_items
+             */
             int general_work(int noutput_items,
                              gr_vector_int &ninput_items,
                              gr_vector_const_void_star &input_items,
                              gr_vector_void_star &output_items);
 
+            /*!
+             * @brief Defines the required input number of bits to produce a certain number of output bits
+             * @details As the code is a Convolutional of rate 1/2, input/output = 2
+             * @param noutput_items
+             * @param ninput_items_required
+             */
             void forecast(int noutput_items, gr_vector_int &ninput_items_required);
 
-            /*
-             * @brief Calculates the branch metric to the next state.
+            /*!
+             * @brief Calculates the “distance” between the transmitted and the received symbols.
+             * It calculates the parity bits that should be produced given a specific state of the encoder
+             * and compares them with the received bits. Then it calculates the absolute difference between them.
+             * (i.e. If the received bits are 00 and the calculated parity bits are 11, the branch metric would be 2.)
+             * @param state The current sequence of bits which will be multiplied with the generator polynomials in order to produce the parity bits.
              */
             int calculateBranchMetric(bool *state);
         };
