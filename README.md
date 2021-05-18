@@ -17,6 +17,3 @@ This folder includes prototypes of the above error correction codes implemented 
 ## gr-a3sat
 
 This folder includes the `gr-a3sat` GNU Radio out-of-tree (OOT) modules implementing the CCSDS recommendations for telemetry and telecommand error correction techniques. 
-
-
-
