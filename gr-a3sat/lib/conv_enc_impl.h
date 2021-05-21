@@ -30,7 +30,7 @@ namespace gr {
             const bool generator[2][7] = {{1, 0, 0, 1, 1, 1, 1}, {1, 1, 0, 1, 1, 0, 1}};
             static const uint8_t rate = 2;
             static const uint8_t constraintLength = 7;
-            static const uint8_t encodedCodewordLength = 4096;
+            static const uint16_t encodedCodewordLength = 4096;
 
         public:
             /**

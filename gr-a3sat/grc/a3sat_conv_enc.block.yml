@@ -11,13 +11,14 @@ templates:
 #     * id (makes the value accessible as keyname, e.g. in the make entry)
 #     * label (label shown in the GUI)
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
-parameters:
-- id: ...
-  label: ...
-  dtype: ...
-- id: ...
-  label: ...
-  dtype: ...
+
+#parameters:
+#- id: frame_bits		
+#  label: Frame Bits 
+#  dtype: uint8_t
+#- id: start_state
+#  label: Start State
+#  dtype: int
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:

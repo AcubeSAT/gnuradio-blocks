@@ -42,10 +42,11 @@ namespace gr {
             static const int constraintLength = 7;
             bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1},
                                     {1, 0, 1, 1, 0, 1, 1}};
+            static const int decodedWordLength = 2048;
             bool transmittedSymbol[2];
-            uint8_t paths[64][6];
+            bool paths[64][decodedWordLength];
             uint8_t pathMetric[64];
-            uint8_t transmittedPaths[64][6];
+            bool transmittedPaths[64][decodedWordLength];
             uint8_t branchMetric[64];
             bool binaryState[6];
             uint8_t nextState;
