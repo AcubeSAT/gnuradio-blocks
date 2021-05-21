@@ -21,8 +21,8 @@ namespace gr {
         conv_dec_impl::conv_dec_impl()
                 : gr::block("conv_dec",
                             gr::io_signature::make(1, 1, sizeof(bool)),
-                            gr::io_signature::make(1, 1, sizeof(uint8_t))) {
-            set_output_multiple(6);
+                            gr::io_signature::make(1, 1, sizeof(bool))) {
+            set_output_multiple(decodedWordLength);
         }
 
         conv_dec_impl::~conv_dec_impl()
@@ -58,7 +58,6 @@ namespace gr {
                 for (int state = 0; state < pow(2, constraintLength - 1); state++) {
                     if (pathMetric[state] != UINT_MAX) {
 
-                        /* TODO: Implement the below conversion of state to binary form using hashMaps */
                         temporaryState = state;
                         for (int j = 1; j < constraintLength; j++) {
                             if (temporaryState > 0) {
