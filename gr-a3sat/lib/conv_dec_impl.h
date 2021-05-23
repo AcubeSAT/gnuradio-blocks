@@ -36,7 +36,7 @@ namespace gr {
         private:
             static const int rate = 2;
             static const int constraintLength = 7;
-            bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1},
+            inline static const bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1},
                                     {1, 0, 1, 1, 0, 1, 1}};
             static const int decodedWordLength = 2048;
             bool transmittedSymbol[2];
@@ -52,7 +52,7 @@ namespace gr {
             uint8_t branchMetricZero;
             uint8_t pathMetricOne;
             uint8_t pathMetricZero;
-            int temporaryState;
+            uint8_t temporaryState;
             uint8_t optimalPath;
             uint8_t optimalPathIndex;
 
@@ -97,8 +97,9 @@ namespace gr {
              * and compares them with the received bits. Then it calculates the absolute difference between them.
              * (i.e. If the received bits are 00 and the calculated parity bits are 11, the branch metric would be 2.)
              * @param state The current sequence of bits which will be multiplied with the generator polynomials in order to produce the parity bits.
+             * @return The calculated branch metric
              */
-            int calculateBranchMetric(bool *state);
+            uint8_t calculateBranchMetric(bool *state);
         };
 
     } // namespace a3sat

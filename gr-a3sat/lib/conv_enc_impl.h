@@ -42,7 +42,7 @@ namespace gr {
             /*!
              * @brief Performs the encoding of the input data.
              * Due to the forecast and set output multiple functions, the input data is a multiple of the output data and the rate of the encoder.
-             * The encoder looks at 7 (constraintLength) bits at a time and produces 2 (rate) parity bits, by multiplying the message bits
+             * The sliding window of the encoder contains 7 (constraintLength) bits and 2 (rate) parity bits are produced, by multiplying the message bits
              * with each of the generator polynomials.
              * @param noutput_items The number of output bits
              * @param ninput_items The number of input bits on each port

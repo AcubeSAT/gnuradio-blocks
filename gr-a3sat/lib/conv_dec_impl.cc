@@ -12,8 +12,7 @@ namespace gr {
     namespace a3sat {
 
         conv_dec::sptr
-        conv_dec::make(bool soft_decision_decoding)
-        {
+        conv_dec::make(bool soft_decision_decoding) {
             return gnuradio::get_initial_sptr
                     (new conv_dec_impl());
         }
@@ -25,8 +24,7 @@ namespace gr {
             set_output_multiple(decodedWordLength);
         }
 
-        conv_dec_impl::~conv_dec_impl()
-        {
+        conv_dec_impl::~conv_dec_impl() {
         }
 
         void
@@ -56,16 +54,25 @@ namespace gr {
                 transmittedSymbol[1] = in[rate * inputItem + 1];
 
                 for (int state = 0; state < pow(2, constraintLength - 1); state++) {
-                    if (pathMetric[state] != UINT_MAX) {
+                    if (pathMetric[state] != UINT8_MAX) {
 
+                        /*!
+                         * Converts the current state to binary array.
+                         */
                         temporaryState = state;
-                        for (int j = 1; j < constraintLength; j++) {
+                        for (int j = 0; j < constraintLength - 1; j++) {
                             if (temporaryState > 0) {
-                                binaryState[constraintLength - j - 1] = temporaryState % 2;
+                                binaryState[constraintLength - j - 2] = temporaryState % 2;
                                 temporaryState = temporaryState / 2;
-                            } else binaryState[constraintLength - j - 1] = 0;
+                            } else {
+                                binaryState[constraintLength - j - 2] = 0;
+                            }
                         }
 
+                        /*!
+                         * Calculates possible next states and the corresponding branch metric for each transmission.
+                         * Then updates transmitted paths in the trellis.
+                         */
                         transmittedOne[0] = 1;
                         transmittedZero[0] = 0;
 
@@ -73,9 +80,6 @@ namespace gr {
                             transmittedOne[i + 1] = binaryState[i];
                             transmittedZero[i + 1] = binaryState[i];
                         }
-
-                        branchMetricOne = 0;
-                        branchMetricZero = 0;
 
                         branchMetricOne = calculateBranchMetric(transmittedOne);
                         branchMetricZero = calculateBranchMetric(transmittedZero);
@@ -103,6 +107,9 @@ namespace gr {
                 memcpy(paths, transmittedPaths, sizeof(transmittedPaths));
             }
 
+            /*!
+             * Computes the path with the minimum path metric.
+             */
             optimalPath = pathMetric[0];
             optimalPathIndex = 0;
 
@@ -122,9 +129,9 @@ namespace gr {
             return noutput_items;
         }
 
-        int conv_dec_impl::calculateBranchMetric(bool *state) {
-            int parityBit = 0;
-            int branchMetric = 0;
+        uint8_t conv_dec_impl::calculateBranchMetric(bool *state) {
+            uint8_t parityBit = 0;
+            uint8_t branchMetric = 0;
 
             for (int iGenerator = 0; iGenerator < rate; iGenerator++) {
                 parityBit = 0;
