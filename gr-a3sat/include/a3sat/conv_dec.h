@@ -20,7 +20,7 @@ namespace gr {
     {
      public:
       typedef boost::shared_ptr<conv_dec> sptr;
-      static sptr make(bool soft_decision_decoding);
+      static sptr make();
     };
 
   } // namespace a3sat

@@ -40,8 +40,7 @@ namespace gr {
         private:
             static const int rate = 2;
             static const int constraintLength = 7;
-            inline static const bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1},
-                                    {1, 0, 1, 1, 0, 1, 1}};
+            static inline const bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
             static const int decodedWordLength = 2048;
             bool transmittedSymbol[2];
             bool paths[64][decodedWordLength];

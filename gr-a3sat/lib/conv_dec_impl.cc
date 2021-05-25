@@ -16,7 +16,7 @@ namespace gr {
     namespace a3sat {
 
         conv_dec::sptr
-        conv_dec::make(bool soft_decision_decoding) {
+        conv_dec::make() {
             return gnuradio::get_initial_sptr
                     (new conv_dec_impl());
         }
@@ -49,7 +49,7 @@ namespace gr {
 
             pathMetric[0] = 0;
 
-            for (int inputItem = 0; inputItem < noutput_items; inputItem++) {
+            for (uint8_t inputItem = 0; inputItem < noutput_items; inputItem++) {
 
                 memset(branchMetric, UINT_MAX, sizeof(branchMetric));
                 memset(transmittedPaths, 0, sizeof(transmittedPaths));
@@ -57,19 +57,19 @@ namespace gr {
                 transmittedSymbol[0] = in[rate * inputItem];
                 transmittedSymbol[1] = in[rate * inputItem + 1];
 
-                for (int state = 0; state < pow(2, constraintLength - 1); state++) {
+                for (uint8_t state = 0; state < pow(2, constraintLength - 1); state++) {
                     if (pathMetric[state] != UINT8_MAX) {
 
                         /*!
                          * Converts the current state to binary array.
                          */
                         temporaryState = state;
-                        for (int j = 0; j < constraintLength - 1; j++) {
+                        for (uint8_t i = 0; i < constraintLength - 1; i++) {
                             if (temporaryState > 0) {
-                                binaryState[constraintLength - j - 2] = temporaryState % 2;
+                                binaryState[constraintLength - i - 2] = temporaryState % 2;
                                 temporaryState = temporaryState / 2;
                             } else {
-                                binaryState[constraintLength - j - 2] = 0;
+                                binaryState[constraintLength - i - 2] = 0;
                             }
                         }
 
@@ -80,9 +80,9 @@ namespace gr {
                         transmittedOne[0] = 1;
                         transmittedZero[0] = 0;
 
-                        for (int i = 0; i < constraintLength - 1; i++) {
-                            transmittedOne[i + 1] = binaryState[i];
-                            transmittedZero[i + 1] = binaryState[i];
+                        for (uint8_t index = 0; index < constraintLength - 1; index++) {
+                            transmittedOne[index + 1] = binaryState[index];
+                            transmittedZero[index + 1] = binaryState[index];
                         }
 
                         branchMetricOne = calculateBranchMetric(transmittedOne);
@@ -117,14 +117,14 @@ namespace gr {
             optimalPath = pathMetric[0];
             optimalPathIndex = 0;
 
-            for (int i = 1; i < int(pow(2, (constraintLength - 1))); i++) {
-                if (pathMetric[i] < optimalPath) {
-                    optimalPath = pathMetric[i];
-                    optimalPathIndex = i;
+            for (uint8_t path = 1; path < int(pow(2, (constraintLength - 1))); path++) {
+                if (pathMetric[path] < optimalPath) {
+                    optimalPath = pathMetric[path];
+                    optimalPathIndex = path;
                 }
             }
 
-            for(int outIndex = 0; outIndex < noutput_items; outIndex++){
+            for(uint8_t outIndex = 0; outIndex < noutput_items; outIndex++){
                 *out = paths[optimalPathIndex][outIndex];
                 out++;
             }
@@ -137,9 +137,9 @@ namespace gr {
             uint8_t parityBit = 0;
             uint8_t branchMetric = 0;
 
-            for (int iGenerator = 0; iGenerator < rate; iGenerator++) {
+            for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
                 parityBit = 0;
-                for (int stateBit = 0; stateBit < constraintLength; stateBit++) {
+                for (uint8_t stateBit = 0; stateBit < constraintLength; stateBit++) {
                     parityBit ^= state[stateBit] * generator[iGenerator][stateBit];
                 }
                 branchMetric += abs(parityBit - transmittedSymbol[iGenerator]);
