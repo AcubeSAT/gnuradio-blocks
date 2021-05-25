@@ -4,7 +4,7 @@ category: '[a3sat]'
 
 templates:
   imports: import a3sat
-  make: a3sat.conv_dec(${soft_decision_decoding})
+  make: a3sat.conv_dec()
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:

@@ -43,9 +43,9 @@ namespace gr {
              * generator polynomials. This process iterates until the sliding window
              * of the encoder contains only message bits.
              */
-            for (int generatorBit = 1; generatorBit < constraintLength; generatorBit++) {
-                for (int iGenerator = 0; iGenerator < rate; iGenerator++) {
-                    for (int stateBit = 0; stateBit < generatorBit; stateBit++) {
+            for (uint8_t generatorBit = 1; generatorBit < constraintLength; generatorBit++) {
+                for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
+                    for (uint8_t stateBit = 0; stateBit < generatorBit; stateBit++) {
                         *out ^= in[stateBit] * generator[iGenerator][constraintLength - generatorBit + stateBit];
                     }
                     *out++;
@@ -55,9 +55,9 @@ namespace gr {
             /*!
              * @brief Multiplies the encoder's sliding window bits with each generator polynomial.
              */
-            for(int generatorBit = 0; generatorBit < ninput_items[0] - (constraintLength - 1); generatorBit++) {
-                for (int iGenerator = 0; iGenerator < rate; iGenerator++) {
-                    for(int stateBit = 0; stateBit < constraintLength; stateBit++) {
+            for(uint8_t generatorBit = 0; generatorBit < ninput_items[0] - (constraintLength - 1); generatorBit++) {
+                for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
+                    for(uint8_t stateBit = 0; stateBit < constraintLength; stateBit++) {
                         *out ^= in[stateBit + generatorBit] * generator[iGenerator][stateBit];
                     }
                     *out++;
