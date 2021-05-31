@@ -25,6 +25,7 @@ This folder includes the `gr-a3sat` GNU Radio out-of-tree (OOT) modules implemen
 
 ### Requirements
 
+
 GNU Radio ( = 3.8 )
 CMake ( > 3.1.0 )
 swig 
@@ -49,7 +50,6 @@ The first time installing the `gr-a3sat` module, you will have to run:
 
 
 ###Advanced
-=======
 
 By default, the gr-tutorial module will use the default installation prefix.
 This highly depends on the Linux distribution. You can use the CMAKE_INSTALL_PREFIX
