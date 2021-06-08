@@ -13,6 +13,8 @@ cmake_minimum_required(VERSION 3.8)
 project(gr-a3sat CXX C)
 enable_testing()
 
+set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
+
 # Install to PyBOMBS target prefix if defined
 if(DEFINED ENV{PYBOMBS_PREFIX})
     set(CMAKE_INSTALL_PREFIX $ENV{PYBOMBS_PREFIX})
@@ -73,7 +75,7 @@ ENDIF()
 ########################################################################
 # Install directories
 ########################################################################
-find_package(Gnuradio "3.9" REQUIRED)
+find_package(Gnuradio "3.8" REQUIRED)
 include(GrVersion)
 
 include(GrPlatform) #define LIB_SUFFIX
