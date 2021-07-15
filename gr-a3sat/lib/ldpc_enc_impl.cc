@@ -42,52 +42,56 @@ namespace gr {
 
             const char *input_message = (const char *) input_items[0];
             char *output_message = (char *) output_items[0];
-            bool message[sizeInitialMessage]; // 4096
-            for (int i = 0; i < sizeInitialMessage; i++) {
-                int temp = (int) input_message[i];
-                message[i] = temp % 2;
-            }
-            bool encodedMessage[sizeEncodedMessage]; //1024
-            for (bool &i : encodedMessage) {
-                i = false;
-            }
-            for (int row = 0; row < generatorRows; row++) {
-                for (int column = 0; column < generatorColumns; column++) {
-                    uint16_t index = row * generatorColumns + column;
-                    uint16_t thisParityPosition = positionRows[index];
-                    uint16_t lengthOfParity;
-                    if (thisParityPosition != positionRows[totalQuasiCyclicMatrices - 1]) {
-                        uint16_t nextParityPosition = positionRows[index + 1];
-                        lengthOfParity = nextParityPosition - thisParityPosition;
-                    } else {
-                        lengthOfParity = sizeParity - thisParityPosition;//positionRows[totalQuasiCyclicMatrices - 1] + 1 - thisParityPosition;
-                    }
-                    for (int i = 0; i < lengthOfParity; i++) {
-                        uint16_t initialParity =
-                                rowsParityBits[thisParityPosition + i] - column * sizeSquareCyclicMatrix;
-                        for (int j = 0; j < sizeSquareCyclicMatrix; j++) {
-                            uint16_t updatedParity = initialParity + j;
-                            if (updatedParity >= sizeSquareCyclicMatrix) {
-                                updatedParity -= sizeSquareCyclicMatrix;
+            for (int package = 0; package < ninput_items[0]; package += sizeInitialMessage) { //check
+                bool message[sizeInitialMessage]; // 4096
+                for (int i = 0; i < sizeInitialMessage; i++) {
+                    int temp = (int) input_message[i + package];
+                    message[i] = temp % 2;
+                }
+                bool encodedMessage[sizeEncodedMessage]; //1024
+                for (bool &i : encodedMessage) {
+                    i = false;
+                }
+                for (int row = 0; row < generatorRows; row++) {
+                    for (int column = 0; column < generatorColumns; column++) {
+                        uint16_t index = row * generatorColumns + column;
+                        uint16_t thisParityPosition = positionRows[index];
+                        uint16_t lengthOfParity;
+                        if (thisParityPosition != positionRows[totalQuasiCyclicMatrices - 1]) {
+                            uint16_t nextParityPosition = positionRows[index + 1];
+                            lengthOfParity = nextParityPosition - thisParityPosition;
+                        } else {
+                            lengthOfParity = sizeParity -
+                                             thisParityPosition;//positionRows[totalQuasiCyclicMatrices - 1] + 1 - thisParityPosition;
+                        }
+                        for (int i = 0; i < lengthOfParity; i++) {
+                            uint16_t initialParity =
+                                    rowsParityBits[thisParityPosition + i] - column * sizeSquareCyclicMatrix;
+                            for (int j = 0; j < sizeSquareCyclicMatrix; j++) {
+                                uint16_t updatedParity = initialParity + j;
+                                if (updatedParity >= sizeSquareCyclicMatrix) {
+                                    updatedParity -= sizeSquareCyclicMatrix;
+                                }
+                                encodedMessage[column * sizeSquareCyclicMatrix + updatedParity] ^= message[
+                                        row * sizeSquareCyclicMatrix + j];
                             }
-                            encodedMessage[column * sizeSquareCyclicMatrix + updatedParity] ^= message[
-                                    row * sizeSquareCyclicMatrix + j];
                         }
                     }
                 }
-            }
-            for (int i = 0; i < sizeMessage; i++) {
-                if (i < sizeInitialMessage) {
-                    if (message[i]) {
-                        output_message[i] = '\001';
+                for (int i = sizeMessage * (package / sizeInitialMessage);
+                     i < sizeMessage * (package / sizeInitialMessage + 1); i++) {
+                    if (i - (package/sizeInitialMessage)*sizeMessage  < sizeInitialMessage) {
+                        if (message[i - (package/sizeInitialMessage)*sizeMessage]) {
+                            output_message[i] = '\001';
+                        } else {
+                            output_message[i] = '\000';
+                        }
                     } else {
-                        output_message[i] = '\000';
-                    }
-                } else {
-                    if (encodedMessage[i]) {
-                        output_message[i] = '\001';
-                    } else {
-                        output_message[i] = '\000';
+                        if (encodedMessage[i - (package/sizeInitialMessage)*sizeMessage - sizeInitialMessage]) {
+                            output_message[i] = '\001';
+                        } else {
+                            output_message[i] = '\000';
+                        }
                     }
                 }
             }
