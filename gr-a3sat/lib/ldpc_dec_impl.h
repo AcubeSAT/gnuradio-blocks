@@ -16,17 +16,19 @@ namespace gr {
         class ldpc_dec_impl : public ldpc_dec {
         private:
 
-            constexpr static const uint16_t rowsParityBits[] = {0, 1, 2, 1, 3};
+            static const uint16_t sizeParity = 5;
+
+            inline static const uint16_t rowsParityBits[sizeParity] = {0, 1, 2, 1, 3};
 
             static const uint16_t sizePositionRows = 2; //check
 
-          //  constexpr static const uint8_t positionRows[sizePositionRows] = {0, 3};
+            inline static const uint8_t positionRows[sizePositionRows] = {0, 3};
 
-            constexpr static const uint16_t columnsParityBits[] = {0, 0, 1, 0, 1};
+            inline static const uint16_t columnsParityBits[sizeParity] = {0, 0, 1, 0, 1};
 
             static const uint8_t sizePositionColumns = 4;
 
-            constexpr static uint8_t positionColumns[sizePositionColumns] = {0, 1, 3, 4};
+            inline static const uint8_t positionColumns[sizePositionColumns] = {0, 1, 3, 4};
 
             constexpr static const float noiseVar = 0.2;
 
@@ -34,7 +36,7 @@ namespace gr {
 
             static const uint16_t sizeInitialMessage = 4;//4096;
 
-            static const uint16_t sizeParity = 5;
+
 
             //constexpr static const double *a = positionColumns;
 
