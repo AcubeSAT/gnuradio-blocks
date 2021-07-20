@@ -9,7 +9,7 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.11)
 project(gr-a3sat CXX C)
 enable_testing()
 
@@ -73,7 +73,7 @@ ENDIF()
 ########################################################################
 # Install directories
 ########################################################################
-find_package(Gnuradio "3.9" REQUIRED)
+find_package(Gnuradio "3.8" REQUIRED)
 include(GrVersion)
 
 include(GrPlatform) #define LIB_SUFFIX

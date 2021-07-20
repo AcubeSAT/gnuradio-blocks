@@ -19,8 +19,7 @@ namespace gr {
     class A3SAT_API conv_dec : virtual public gr::block
     {
      public:
-      typedef std::shared_ptr<conv_dec> sptr;
-
+      typedef boost::shared_ptr<conv_dec> sptr;
       static sptr make(bool soft_decision_decoding);
     };
 
