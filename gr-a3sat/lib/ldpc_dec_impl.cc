@@ -1,7 +1,3 @@
-/*
- * Copyright 2021 SpaceDot.
- */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

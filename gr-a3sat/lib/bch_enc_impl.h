@@ -1,7 +1,3 @@
-/*
- * Copyright 2021 SpaceDot.
- */
-
 #ifndef INCLUDED_A3SAT_BCH_ENC_IMPL_H
 #define INCLUDED_A3SAT_BCH_ENC_IMPL_H
 
