@@ -6,8 +6,8 @@
 #define INCLUDED_A3SAT_LDPC_DEC_IMPL_H
 
 #include <a3sat/ldpc_dec.h>
-//#include "a3sat/paritiesColumnsDecoder.h"
-//#include "a3sat/paritiesRowsDecoder.h"
+#include <a3sat/paritiesColumnms.h>
+#include <a3sat/paritiesRows.h>
 
 
 namespace gr {
@@ -15,8 +15,28 @@ namespace gr {
 
         class ldpc_dec_impl : public ldpc_dec {
         private:
+/*
+            uint32_t sizeParity = 2095360;
 
-            static const uint16_t sizeParity = 5;
+            uint16_t *rowsParityBits = paritiesRowsDecoder;
+
+            const uint32_t sizePositionRows = 1024; //check
+
+            uint64_t *positionRows = positionRowsDecoder;
+
+            uint16_t *columnsParityBits = paritiesColumnsDecoder;
+
+            const uint32_t sizePositionColumns = 5120;
+
+            uint64_t *positionColumns = positionColumnsDecoder;
+
+            float noiseVar = 0.2;
+
+            const uint16_t sizeReceivedMessage = 5120;
+
+            const uint16_t sizeInitialMessage = 4096; */
+
+           static const uint16_t sizeParity = 5;
 
             inline static const uint16_t rowsParityBits[sizeParity] = {0, 1, 2, 1, 3};
 
@@ -38,6 +58,7 @@ namespace gr {
 
 
 
+
             //constexpr static const double *a = positionColumns;
 
 
@@ -55,7 +76,7 @@ namespace gr {
                              gr_vector_const_void_star &input_items,
                              gr_vector_void_star &output_items);
 
-           bool checkDecoder(const bool decodedMessage[sizeInitialMessage]);
+            bool checkDecoder(const bool *decodedMessage);
         };
 
 

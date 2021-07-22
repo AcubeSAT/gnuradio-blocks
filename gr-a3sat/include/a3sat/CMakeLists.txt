@@ -10,11 +10,13 @@
 # Install public header files
 ########################################################################
 install(FILES
-    api.h
-    conv_enc.h
-    conv_dec.h
-    ldpc_enc.h
-    ldpc_dec.h
-    bch_enc.h
-    bch_dec.h DESTINATION include/a3sat
-)
+        api.h
+        conv_enc.h
+        conv_dec.h
+        ldpc_enc.h
+        ldpc_dec.h
+        paritiesColumnms.h
+        paritiesRows.h
+        bch_enc.h
+        bch_dec.h DESTINATION include/a3sat
+        )

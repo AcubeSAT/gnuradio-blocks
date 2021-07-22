@@ -35,26 +35,29 @@ namespace gr {
         ldpc_dec_impl::~ldpc_dec_impl() {
         }
 
-        bool ldpc_dec_impl::checkDecoder(const bool decodedMessage[sizeInitialMessage]) {
+        bool ldpc_dec_impl::checkDecoder(const bool *decodedMessage) {
 
+       //     uint32_t sizeParity = 2095360;
             int sum = std::accumulate(decodedMessage, decodedMessage + sizeInitialMessage, 0);
-            if (sum == 0){
+            if (sum == 0) {
                 return true;
             } else {
-                uint8_t totalSum = 0;
+                uint16_t totalSum = 0;
+                uint16_t partialSum = 0;
                 for (int i = 0; i < sizePositionRows; i++) {
-                    uint8_t thisParity = positionRows[i];;
-                    uint8_t nextParity;
+                    uint64_t thisParity = positionRows[i];;
+                    uint64_t nextParity;
                     if (thisParity != positionRows[sizePositionRows - 1]) {
                         nextParity = positionRows[i + 1];
                     } else {
                         nextParity = sizeParity;
                     }
-                    uint8_t lengthParity = nextParity - thisParity;
+                    uint64_t lengthParity = nextParity - thisParity;
                     for (int j = 0; j < lengthParity; j++) {
-                        uint8_t paritiy = rowsParityBits[thisParity + j];
-                        totalSum ^= decodedMessage[paritiy];
+                        uint16_t paritiy = rowsParityBits[thisParity + j];
+                        partialSum ^= decodedMessage[paritiy];
                     }
+                    totalSum += partialSum;
                 }
                 if (totalSum != 0) {
                     return true;
@@ -74,40 +77,42 @@ namespace gr {
             const auto *in = (const float *) input_items[0];
             char *output_message = (char *) output_items[0];
 
+           // uint32_t sizeParity = 2095360;
+
             for (int package = 0; package < ninput_items[0]; package += sizeReceivedMessage) {
 
-                bool out[4] = {false};
-                float initialDecodedMessage[sizeReceivedMessage];
+                bool out[sizeInitialMessage] = {false};
+                double initialDecodedMessage[sizeReceivedMessage];
                 for (int i = 0; i < sizeReceivedMessage; i++) {
                     initialDecodedMessage[i] = 1 / (1 + std::exp(-2 * in[i + package] / noiseVar));
                 }
-                double q0[sizeParity];
-                double q1[sizeParity];
-                double r0[sizeParity];
-                double r1[sizeParity];
-                double Q0[sizeInitialMessage];
-                double Q1[sizeInitialMessage];
+                auto *q0 = new double[sizeParity];
+                auto *q1 = new double[sizeParity];
+                auto *r0 = new double[sizeParity];
+                auto *r1 = new double[sizeParity];
+                auto *Q0 = new double[sizeReceivedMessage];
+                auto *Q1 = new double[sizeReceivedMessage];
 
                 for (int i = 0; i < sizeParity; i++) {
-                    uint8_t parity = rowsParityBits[i];
+                    uint64_t parity = rowsParityBits[i];
                     q1[i] = initialDecodedMessage[parity];
                     q0[i] = 1 - q1[i];
                 }
                 while (checkDecoder(out)) {
 
-                    uint8_t rowNode[sizePositionRows] = {0};
-                    uint8_t columnNode[sizePositionColumns] = {0};
+                    uint64_t rowNode[sizePositionRows] = {0};
+                    uint64_t columnNode[sizePositionColumns] = {0};
 
                     for (int i = 0; i < sizeParity; i++) {
-                        uint8_t positionOfParity = columnsParityBits[i];
-                        uint8_t thisParity = positionRows[positionOfParity];
-                        uint8_t nextParity;
+                        uint16_t positionOfParity = columnsParityBits[i];
+                        uint64_t thisParity = positionRows[positionOfParity];
+                        uint64_t nextParity;
                         if (thisParity != positionRows[sizePositionRows - 1]) {
                             nextParity = positionRows[positionOfParity + 1];
                         } else {
                             nextParity = sizeParity;
                         }
-                        uint8_t lengthOfParity = nextParity - thisParity;
+                        uint64_t lengthOfParity = nextParity - thisParity;
                         double vectorWithq1[lengthOfParity];
                         for (int j = 0; j < lengthOfParity; j++) {
                             vectorWithq1[j] = q1[thisParity + j];
@@ -117,24 +122,24 @@ namespace gr {
                         for (int k = 0; k < lengthOfParity; k++) {
                             if (k != rowNode[positionOfParity]) {
                                 possibility = 1 - 2 * vectorWithq1[k];
+                                temp *= possibility;
                             }
-                            temp *= possibility;
                         }
                         rowNode[positionOfParity] += 1;
                         r0[i] = 0.5 + 0.5 * temp;
                         r1[i] = 1 - r0[i];
                     }
                     for (int i = 0; i < sizeParity; i++) {
-                        uint8_t positionOfParity = rowsParityBits[i];
+                        uint16_t positionOfParity = rowsParityBits[i];
                         double possibility1 = initialDecodedMessage[positionOfParity];
-                        uint8_t thisParity = positionColumns[positionOfParity];
-                        uint8_t nextParity;
-                        if (thisParity != positionColumns[positionOfParity]) {
+                        uint64_t thisParity = positionColumns[positionOfParity];
+                        uint64_t nextParity;
+                        if (thisParity != positionColumns[sizePositionColumns - 1]) {
                             nextParity = positionColumns[positionOfParity + 1];
                         } else {
                             nextParity = sizeParity;
                         }
-                        uint8_t lengthOfParity = nextParity - thisParity;
+                        uint64_t lengthOfParity = nextParity - thisParity;
                         double vectorWithr1[lengthOfParity];
                         double vectorWithr0[lengthOfParity];
                         for (int j = 0; j < lengthOfParity; j++) {
@@ -148,29 +153,29 @@ namespace gr {
                                 temp0 *= vectorWithr0[k];
                                 temp1 *= vectorWithr1[k];
                             }
-                            if (temp0 < 1e-06 && temp1 < 1e-06) {
+                           /* if (temp0 < 1e-06 && temp1 < 1e-06) {
                                 temp0 *= 1e+06;
                                 temp1 *= 1e+06;
-                            }
-                            columnNode[positionOfParity]++;
-                            q0[i] = (1 - possibility1) * temp0;
-                            q1[i] = possibility1 * temp1;
-                            double K = 1 / (q1[i] + q0[k]);
-                            q0[i] *= K;
-                            q1[i] *= K;
+                            }*/
                         }
+                        columnNode[positionOfParity]++;
+                        q0[i] = (1 - possibility1) * temp0;
+                        q1[i] = possibility1 * temp1;
+                        double K = 1 / (q1[i] + q0[i]);
+                        q0[i] *= K;
+                        q1[i] *= K;
                     }
-                    for (int i = 0; i < sizeInitialMessage; i++) {
-                        uint8_t positionOfParity = rowsParityBits[i];
+                    for (int i = 0; i < sizeReceivedMessage; i++) {
+                        uint16_t positionOfParity = rowsParityBits[i];
                         double possibility1 = initialDecodedMessage[positionOfParity];
-                        uint8_t thisParity = positionColumns[positionOfParity];
-                        uint8_t nextParity;
-                        if (thisParity != positionColumns[positionOfParity]) {
+                        uint64_t thisParity = positionColumns[positionOfParity];
+                        uint64_t nextParity;
+                        if (thisParity != positionColumns[sizePositionColumns - 1]) {
                             nextParity = positionColumns[positionOfParity + 1];
                         } else {
                             nextParity = sizeParity;
                         }
-                        uint8_t lengthOfParity = nextParity - thisParity;
+                        uint64_t lengthOfParity = nextParity - thisParity;
                         double vectorWithr1[lengthOfParity];
                         double vectorWithr0[lengthOfParity];
                         for (int j = 0; j < lengthOfParity; j++) {
@@ -192,13 +197,19 @@ namespace gr {
                     for (int i = 0; i < sizeInitialMessage; i++) {
                         if (Q1[i] > Q0[i]) {
                             out[i] = true;
-                            output_message[i + (package/sizeReceivedMessage)*sizeInitialMessage] = '\001';
+                            output_message[i + (package / sizeReceivedMessage) * sizeInitialMessage] = '\001';
                         } else {
                             out[i] = false;
-                            output_message[i + (package/sizeReceivedMessage)*sizeInitialMessage] = '\000';
+                            output_message[i + (package / sizeReceivedMessage) * sizeInitialMessage] = '\000';
                         }
                     }
                 }
+                delete[]q0;
+                delete[]q1;
+                delete[]r0;
+                delete[]r1;
+                delete[]Q0;
+                delete[]Q1;
             }
             consume(0, ninput_items[0]);
 
