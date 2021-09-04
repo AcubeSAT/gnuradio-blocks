@@ -15,12 +15,12 @@ namespace gr {
 
         class ldpc_dec_impl : public ldpc_dec {
         private:
-/*
+
             uint32_t sizeParity = 2095360;
 
             uint16_t *rowsParityBits = paritiesRowsDecoder;
 
-            const uint32_t sizePositionRows = 1024; //check
+            const uint32_t sizePositionRows = 1024;
 
             uint64_t *positionRows = positionRowsDecoder;
 
@@ -34,32 +34,28 @@ namespace gr {
 
             const uint16_t sizeReceivedMessage = 5120;
 
-            const uint16_t sizeInitialMessage = 4096; */
+            const uint16_t sizeInitialMessage = 4096;
 
-           static const uint16_t sizeParity = 5;
+            /*static const uint16_t sizeParity = 9;
 
-            inline static const uint16_t rowsParityBits[sizeParity] = {0, 1, 2, 1, 3};
+            inline static const uint16_t rowsParityBits[sizeParity] = {1,2,0,1,3,0,4,1,5};
 
-            static const uint16_t sizePositionRows = 2; //check
+            static const uint16_t sizePositionRows = 4; //check
 
-            inline static const uint8_t positionRows[sizePositionRows] = {0, 3};
+            inline static const uint8_t positionRows[sizePositionRows] = {0,2,5,7};
 
-            inline static const uint16_t columnsParityBits[sizeParity] = {0, 0, 1, 0, 1};
+            inline static const uint16_t columnsParityBits[sizeParity] = {1,2,0,1,3,0,1,2,3};
 
-            static const uint8_t sizePositionColumns = 4;
+            static const uint8_t sizePositionColumns = 6;
 
-            inline static const uint8_t positionColumns[sizePositionColumns] = {0, 1, 3, 4};
+            inline static const uint8_t positionColumns[sizePositionColumns] = {0,2,5,6,7,8};
 
             constexpr static const float noiseVar = 0.2;
 
-            static const uint16_t sizeReceivedMessage = 4;//5120;
+            static const uint16_t sizeReceivedMessage = 6;//5120;
 
-            static const uint16_t sizeInitialMessage = 4;//4096;
+            static const uint16_t sizeInitialMessage = 2;//4096; */
 
-
-
-
-            //constexpr static const double *a = positionColumns;
 
 
 

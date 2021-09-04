@@ -37,15 +37,13 @@ namespace gr {
 
         bool ldpc_dec_impl::checkDecoder(const bool *decodedMessage) {
 
-       //     uint32_t sizeParity = 2095360;
             int sum = std::accumulate(decodedMessage, decodedMessage + sizeInitialMessage, 0);
             if (sum == 0) {
                 return true;
             } else {
                 uint16_t totalSum = 0;
-                uint16_t partialSum = 0;
                 for (int i = 0; i < sizePositionRows; i++) {
-                    uint64_t thisParity = positionRows[i];;
+                    uint64_t thisParity = positionRows[i];
                     uint64_t nextParity;
                     if (thisParity != positionRows[sizePositionRows - 1]) {
                         nextParity = positionRows[i + 1];
@@ -53,6 +51,7 @@ namespace gr {
                         nextParity = sizeParity;
                     }
                     uint64_t lengthParity = nextParity - thisParity;
+                    uint16_t partialSum = 0;
                     for (int j = 0; j < lengthParity; j++) {
                         uint16_t paritiy = rowsParityBits[thisParity + j];
                         partialSum ^= decodedMessage[paritiy];
@@ -77,26 +76,32 @@ namespace gr {
             const auto *in = (const float *) input_items[0];
             char *output_message = (char *) output_items[0];
 
-           // uint32_t sizeParity = 2095360;
-
             for (int package = 0; package < ninput_items[0]; package += sizeReceivedMessage) {
 
-                bool out[sizeInitialMessage] = {false};
+                bool out[sizeReceivedMessage] = {false};
                 double initialDecodedMessage[sizeReceivedMessage];
                 for (int i = 0; i < sizeReceivedMessage; i++) {
                     initialDecodedMessage[i] = 1 / (1 + std::exp(-2 * in[i + package] / noiseVar));
                 }
+              /*  double q0[sizeParity] = {0};
+                double q1[sizeParity] = {0};
+                double r0[sizeParity] = {0};
+                double r1[sizeParity] = {0};
+                double Q0[sizeReceivedMessage] = {0};
+                double Q1[sizeReceivedMessage] = {0};*/
                 auto *q0 = new double[sizeParity];
                 auto *q1 = new double[sizeParity];
                 auto *r0 = new double[sizeParity];
                 auto *r1 = new double[sizeParity];
                 auto *Q0 = new double[sizeReceivedMessage];
                 auto *Q1 = new double[sizeReceivedMessage];
+                double a;
 
                 for (int i = 0; i < sizeParity; i++) {
                     uint64_t parity = rowsParityBits[i];
                     q1[i] = initialDecodedMessage[parity];
                     q0[i] = 1 - q1[i];
+                    a = q1[i];
                 }
                 while (checkDecoder(out)) {
 
@@ -168,10 +173,10 @@ namespace gr {
                     for (int i = 0; i < sizeReceivedMessage; i++) {
                         uint16_t positionOfParity = rowsParityBits[i];
                         double possibility1 = initialDecodedMessage[positionOfParity];
-                        uint64_t thisParity = positionColumns[positionOfParity];
+                        uint64_t thisParity = positionColumns[i];
                         uint64_t nextParity;
                         if (thisParity != positionColumns[sizePositionColumns - 1]) {
-                            nextParity = positionColumns[positionOfParity + 1];
+                            nextParity = positionColumns[i + 1];
                         } else {
                             nextParity = sizeParity;
                         }
@@ -194,14 +199,19 @@ namespace gr {
                         Q1[i] *= K;
                         Q0[i] *= K;
                     }
-                    for (int i = 0; i < sizeInitialMessage; i++) {
+                    for (int i = 0; i < sizeReceivedMessage; i++) {
                         if (Q1[i] > Q0[i]) {
                             out[i] = true;
-                            output_message[i + (package / sizeReceivedMessage) * sizeInitialMessage] = '\001';
                         } else {
                             out[i] = false;
-                            output_message[i + (package / sizeReceivedMessage) * sizeInitialMessage] = '\000';
                         }
+                    }
+                }
+                for (int i = 0; i < sizeInitialMessage; i++){
+                    if (out[i]){
+                        output_message[i + (package / sizeReceivedMessage) * sizeInitialMessage] = '\001';
+                    } else {
+                        output_message[i + (package / sizeReceivedMessage) * sizeInitialMessage] = '\000';
                     }
                 }
                 delete[]q0;
