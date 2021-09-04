@@ -42,10 +42,10 @@ namespace gr {
                 return true;
             } else {
                 uint16_t totalSum = 0;
-                for (int i = 0; i < sizePositionRows; i++) {
+                for (int i = 0; i < totalRows; i++) {
                     uint64_t thisParity = positionRows[i];
                     uint64_t nextParity;
-                    if (thisParity != positionRows[sizePositionRows - 1]) {
+                    if (thisParity != positionRows[totalRows - 1]) {
                         nextParity = positionRows[i + 1];
                     } else {
                         nextParity = sizeParity;
@@ -83,36 +83,28 @@ namespace gr {
                 for (int i = 0; i < sizeReceivedMessage; i++) {
                     initialDecodedMessage[i] = 1 / (1 + std::exp(-2 * in[i + package] / noiseVar));
                 }
-              /*  double q0[sizeParity] = {0};
-                double q1[sizeParity] = {0};
-                double r0[sizeParity] = {0};
-                double r1[sizeParity] = {0};
-                double Q0[sizeReceivedMessage] = {0};
-                double Q1[sizeReceivedMessage] = {0};*/
                 auto *q0 = new double[sizeParity];
                 auto *q1 = new double[sizeParity];
                 auto *r0 = new double[sizeParity];
                 auto *r1 = new double[sizeParity];
                 auto *Q0 = new double[sizeReceivedMessage];
                 auto *Q1 = new double[sizeReceivedMessage];
-                double a;
 
                 for (int i = 0; i < sizeParity; i++) {
                     uint64_t parity = rowsParityBits[i];
                     q1[i] = initialDecodedMessage[parity];
                     q0[i] = 1 - q1[i];
-                    a = q1[i];
                 }
                 while (checkDecoder(out)) {
 
-                    uint64_t rowNode[sizePositionRows] = {0};
-                    uint64_t columnNode[sizePositionColumns] = {0};
+                    uint64_t rowNode[totalRows] = {0};
+                    uint64_t columnNode[totalColumns] = {0};
 
                     for (int i = 0; i < sizeParity; i++) {
                         uint16_t positionOfParity = columnsParityBits[i];
                         uint64_t thisParity = positionRows[positionOfParity];
                         uint64_t nextParity;
-                        if (thisParity != positionRows[sizePositionRows - 1]) {
+                        if (thisParity != positionRows[totalRows - 1]) {
                             nextParity = positionRows[positionOfParity + 1];
                         } else {
                             nextParity = sizeParity;
@@ -139,7 +131,7 @@ namespace gr {
                         double possibility1 = initialDecodedMessage[positionOfParity];
                         uint64_t thisParity = positionColumns[positionOfParity];
                         uint64_t nextParity;
-                        if (thisParity != positionColumns[sizePositionColumns - 1]) {
+                        if (thisParity != positionColumns[totalColumns - 1]) {
                             nextParity = positionColumns[positionOfParity + 1];
                         } else {
                             nextParity = sizeParity;
@@ -158,10 +150,6 @@ namespace gr {
                                 temp0 *= vectorWithr0[k];
                                 temp1 *= vectorWithr1[k];
                             }
-                           /* if (temp0 < 1e-06 && temp1 < 1e-06) {
-                                temp0 *= 1e+06;
-                                temp1 *= 1e+06;
-                            }*/
                         }
                         columnNode[positionOfParity]++;
                         q0[i] = (1 - possibility1) * temp0;
@@ -175,7 +163,7 @@ namespace gr {
                         double possibility1 = initialDecodedMessage[positionOfParity];
                         uint64_t thisParity = positionColumns[i];
                         uint64_t nextParity;
-                        if (thisParity != positionColumns[sizePositionColumns - 1]) {
+                        if (thisParity != positionColumns[totalColumns - 1]) {
                             nextParity = positionColumns[i + 1];
                         } else {
                             nextParity = sizeParity;
@@ -207,8 +195,8 @@ namespace gr {
                         }
                     }
                 }
-                for (int i = 0; i < sizeInitialMessage; i++){
-                    if (out[i]){
+                for (int i = 0; i < sizeInitialMessage; i++) {
+                    if (out[i]) {
                         output_message[i + (package / sizeReceivedMessage) * sizeInitialMessage] = '\001';
                     } else {
                         output_message[i + (package / sizeReceivedMessage) * sizeInitialMessage] = '\000';

@@ -11,7 +11,7 @@ namespace gr {
     namespace a3sat {
 
         /**
-         * LDPC Encoder with Generator Matrix (4096, 5120) based on CCSD 131.1-1-O-1
+         * LDPC Encoder with Generator Matrix (5120, 1024) based on CCSD 131.1-1-O-1
          */
         class ldpc_enc_impl : public ldpc_enc {
         private:
@@ -66,12 +66,32 @@ namespace gr {
 
 
         public:
+
+            /**
+             * Class initialiser. Sets the output to be multiple of sizeInitialMessage
+             */
             ldpc_enc_impl();
 
+            /**
+             * Class Destructor
+             */
             ~ldpc_enc_impl() override;
 
+            /**
+             * Defines the required input number of bits to produce a certain number of output bits
+             * @param noutput_items The number of output bits
+             * @param ninput_items_required The number of input bits needed to produce noutput_items
+             */
             void forecast(int noutput_items, gr_vector_int &ninput_items_required);
 
+            /**
+             * The encoding of the initial message
+             * @param noutput_items The number of output bits
+             * @param ninput_items The number of input bits on each port
+             * @param input_items The input buffer
+             * @param output_items The output buffer
+             * @return noutput_items
+             */
             int general_work(int noutput_items,
                              gr_vector_int &ninput_items,
                              gr_vector_const_void_star &input_items,
