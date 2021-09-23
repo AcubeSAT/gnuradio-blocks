@@ -44,6 +44,7 @@ namespace gr {
             const bool *in = (const bool *) input_items[0];
             uint8_t *out = (uint8_t *) output_items[0];
 
+            bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
             const int maxNumOfStates = int(pow(2, constraintLength - 2));
 
             memset(pathMetric, UINT_MAX, sizeof(pathMetric));
