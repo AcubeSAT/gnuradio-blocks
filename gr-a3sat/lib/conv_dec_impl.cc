@@ -44,6 +44,8 @@ namespace gr {
             const bool *in = (const bool *) input_items[0];
             uint8_t *out = (uint8_t *) output_items[0];
 
+            const int maxNumOfStates = int(pow(2, constraintLength - 2));
+
             memset(pathMetric, UINT_MAX, sizeof(pathMetric));
             memset(paths, 0, sizeof(paths));
 
@@ -89,7 +91,7 @@ namespace gr {
                         branchMetricZero = calculateBranchMetric(transmittedZero);
 
                         pathMetricOne = pow(branchMetricOne, 2) + pathMetric[state];
-                        nextState = (state >> 1) ^ int(pow(2, constraintLength - 2));
+                        nextState = (state >> 1) ^ maxNumOfStates;
 
                         if (branchMetric[nextState] > pathMetricOne) {
                             branchMetric[nextState] = pathMetricOne;
