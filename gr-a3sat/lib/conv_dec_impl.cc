@@ -16,7 +16,7 @@ namespace gr {
     namespace a3sat {
 
         conv_dec::sptr
-        conv_dec::make() {
+        conv_dec::make(bool soft_decision_decoding) {
             return gnuradio::get_initial_sptr
                     (new conv_dec_impl());
         }
@@ -49,7 +49,7 @@ namespace gr {
 
             pathMetric[0] = 0;
 
-            for (uint8_t inputItem = 0; inputItem < noutput_items; inputItem++) {
+            for (int inputItem = 0; inputItem < noutput_items; inputItem++) {
 
                 memset(branchMetric, UINT_MAX, sizeof(branchMetric));
                 memset(transmittedPaths, 0, sizeof(transmittedPaths));
@@ -124,7 +124,7 @@ namespace gr {
                 }
             }
 
-            for(uint8_t outIndex = 0; outIndex < noutput_items; outIndex++){
+            for(int outIndex = 0; outIndex < noutput_items; outIndex++){
                 *out = paths[optimalPathIndex][outIndex];
                 out++;
             }

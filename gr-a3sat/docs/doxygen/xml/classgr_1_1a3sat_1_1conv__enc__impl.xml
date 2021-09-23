@@ -1,0 +1,289 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="classgr_1_1a3sat_1_1conv__enc__impl" kind="class" language="C++" prot="public">
+    <compoundname>gr::a3sat::conv_enc_impl</compoundname>
+    <basecompoundref refid="classgr_1_1a3sat_1_1conv__enc" prot="public" virt="non-virtual">gr::a3sat::conv_enc</basecompoundref>
+    <includes refid="conv__enc__impl_8h" local="no">conv_enc_impl.h</includes>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classgr_1_1a3sat_1_1conv__enc__impl_1ad78af2d38b33e79a328244c481ab51a9" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr static const bool</type>
+        <definition>constexpr static const bool gr::a3sat::conv_enc_impl::generator[2][7]</definition>
+        <argsstring>[2][7]</argsstring>
+        <name>generator</name>
+        <initializer>= {{1, 0, 0, 1, 1, 1, 1}, {1, 1, 0, 1, 1, 0, 1}}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>generator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The generator polynomials used for the encoding, but inversed </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of the generator polynomials </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>constraintLength</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The length of each generator polynomial </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>decodedCodewordLength</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The length of the encoded codeword </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="30" column="41" bodyfile="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgr_1_1a3sat_1_1conv__enc__impl_1aed68b2d3fdc5ef7b9bae42338034776f" prot="private" static="yes" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t gr::a3sat::conv_enc_impl::rate</definition>
+        <argsstring></argsstring>
+        <name>rate</name>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="32" column="34" bodyfile="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgr_1_1a3sat_1_1conv__enc__impl_1a6c9a5a609365313cd495f82446dcc3db" prot="private" static="yes" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t gr::a3sat::conv_enc_impl::constraintLength</definition>
+        <argsstring></argsstring>
+        <name>constraintLength</name>
+        <initializer>= 7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="33" column="34" bodyfile="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classgr_1_1a3sat_1_1conv__enc__impl_1a233f824d51b7507e2e1ec40b7b7e09e5" prot="private" static="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t gr::a3sat::conv_enc_impl::encodedCodewordLength</definition>
+        <argsstring></argsstring>
+        <name>encodedCodewordLength</name>
+        <initializer>= 4096</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="34" column="35" bodyfile="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classgr_1_1a3sat_1_1conv__enc__impl_1aeaa486a604a37461c91af49308da15f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>gr::a3sat::conv_enc_impl::conv_enc_impl</definition>
+        <argsstring>()</argsstring>
+        <name>conv_enc_impl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes an object of the class and sets the output to be a multiple of the encodedCodewordLength. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="40" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classgr_1_1a3sat_1_1conv__enc__impl_1ae9c9be4e0fcfbc18809ea01df6a42650" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>gr::a3sat::conv_enc_impl::~conv_enc_impl</definition>
+        <argsstring>()</argsstring>
+        <name>~conv_enc_impl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Destroys the object of the class. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="45" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classgr_1_1a3sat_1_1conv__enc__impl_1accffd782966147533bc1cfd106c1b429" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int gr::a3sat::conv_enc_impl::general_work</definition>
+        <argsstring>(int noutput_items, gr_vector_int &amp;ninput_items, gr_vector_const_void_star &amp;input_items, gr_vector_void_star &amp;output_items)</argsstring>
+        <name>general_work</name>
+        <param>
+          <type>int</type>
+          <declname>noutput_items</declname>
+        </param>
+        <param>
+          <type>gr_vector_int &amp;</type>
+          <declname>ninput_items</declname>
+        </param>
+        <param>
+          <type>gr_vector_const_void_star &amp;</type>
+          <declname>input_items</declname>
+        </param>
+        <param>
+          <type>gr_vector_void_star &amp;</type>
+          <declname>output_items</declname>
+        </param>
+        <briefdescription>
+<para>Performs the encoding of the input data. Due to the forecast and set output multiple functions, the input data is a multiple of the output data and the rate of the encoder. The sliding window of the encoder contains 7 (constraintLength) bits and 2 (rate) parity bits are produced, by multiplying the message bits with each of the generator polynomials. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>noutput_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of output bits </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ninput_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of input bits on each port </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input buffer </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The output buffer </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>noutput_items </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="58" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classgr_1_1a3sat_1_1conv__enc__impl_1a5b16e40af8af52959c5ca9b2a8191ba9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void gr::a3sat::conv_enc_impl::forecast</definition>
+        <argsstring>(int noutput_items, gr_vector_int &amp;ninput_items_required)</argsstring>
+        <name>forecast</name>
+        <param>
+          <type>int</type>
+          <declname>noutput_items</declname>
+        </param>
+        <param>
+          <type>gr_vector_int &amp;</type>
+          <declname>ninput_items_required</declname>
+        </param>
+        <briefdescription>
+<para>Defines the required input number of bits to produce a certain number of output bits. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>As the code is a Convolutional of rate 1/2, input/output = 1/2 <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>noutput_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ninput_items_required</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="69" column="18"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>The encoder of the convolutional code of rate 1/2 bits ber symbol as specified in CCSDS 131.0-B-3. The generator polynomials of the encoder are g1(x) = x^6 + x^5 + x^4 + x^3 + 1 &amp; g2(x) = x^6 + x^4 + x^3 + x + 1. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Input: 2048 bit frame Output: Encoded 4096 bit frame </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>gr::a3sat::conv_enc</label>
+        <link refid="classgr_1_1a3sat_1_1conv__enc"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>gr::a3sat::conv_enc_impl</label>
+        <link refid="classgr_1_1a3sat_1_1conv__enc__impl"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>block</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>gr::a3sat::conv_enc</label>
+        <link refid="classgr_1_1a3sat_1_1conv__enc"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>gr::a3sat::conv_enc_impl</label>
+        <link refid="classgr_1_1a3sat_1_1conv__enc__impl"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>block</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" line="22" column="1" bodyfile="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.h" bodystart="21" bodyend="72"/>
+    <listofallmembers>
+      <member refid="classgr_1_1a3sat_1_1conv__enc__impl_1a6c9a5a609365313cd495f82446dcc3db" prot="private" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>constraintLength</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc__impl_1aeaa486a604a37461c91af49308da15f8" prot="public" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>conv_enc_impl</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc__impl_1a233f824d51b7507e2e1ec40b7b7e09e5" prot="private" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>encodedCodewordLength</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc__impl_1a5b16e40af8af52959c5ca9b2a8191ba9" prot="public" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>forecast</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc__impl_1accffd782966147533bc1cfd106c1b429" prot="public" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>general_work</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc__impl_1ad78af2d38b33e79a328244c481ab51a9" prot="private" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>generator</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc_1a0f056095ecafcedde231eab2d5075136" prot="public" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>make</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc__impl_1aed68b2d3fdc5ef7b9bae42338034776f" prot="private" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>rate</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc_1a2dee732c84159d79dee2ea3d89daff27" prot="public" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>sptr</name></member>
+      <member refid="classgr_1_1a3sat_1_1conv__enc__impl_1ae9c9be4e0fcfbc18809ea01df6a42650" prot="public" virt="non-virtual"><scope>gr::a3sat::conv_enc_impl</scope><name>~conv_enc_impl</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

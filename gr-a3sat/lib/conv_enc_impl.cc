@@ -41,30 +41,31 @@ namespace gr {
             bool *in = (bool *) input_items[0];
             bool *out = (bool *) output_items[0];
 
+            bool generator[2][7] = {{1, 0, 0, 1, 1, 1, 1}, {1, 1, 0, 1, 1, 0, 1}};
             /*!
              * @brief Ignores the padding bits added in the encoder's sliding window and
              * multiplies only the message bits with the respective bits of the
              * generator polynomials. This process iterates until the sliding window
              * of the encoder contains only message bits.
              */
-            for (uint8_t generatorBit = 1; generatorBit < constraintLength; generatorBit++) {
+            for (int generatorBit = 1; generatorBit < constraintLength; generatorBit++) {
                 for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
-                    for (uint8_t stateBit = 0; stateBit < generatorBit; stateBit++) {
+                    for (int stateBit = 0; stateBit < generatorBit; stateBit++) {
                         *out ^= in[stateBit] * generator[iGenerator][constraintLength - generatorBit + stateBit];
                     }
-                    *out++;
+                    out++;
                 }
             }
 
             /*!
              * @brief Multiplies the encoder's sliding window bits with each generator polynomial.
              */
-            for(uint8_t generatorBit = 0; generatorBit < ninput_items[0] - (constraintLength - 1); generatorBit++) {
+            for(int generatorBit = 0; generatorBit < ninput_items[0] - (constraintLength - 1); generatorBit++) {
                 for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
-                    for(uint8_t stateBit = 0; stateBit < constraintLength; stateBit++) {
-                        *out ^= in[stateBit + generatorBit] * generator[iGenerator][stateBit];
+                    for (int stateBit = 0; stateBit < constraintLength; stateBit++) {
+                        *out ^= in[generatorBit + stateBit] * generator[iGenerator][stateBit];
                     }
-                    *out++;
+                    out++;
                 }
             }
 

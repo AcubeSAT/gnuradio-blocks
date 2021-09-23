@@ -1,0 +1,42 @@
+[
+{
+  "directory": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib",
+  "command": "/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_a3sat_EXPORTS -I/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/../include -g -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-a3sat.dir/conv_enc_impl.cc.o -c /home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.cc",
+  "file": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_enc_impl.cc"
+},
+{
+  "directory": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib",
+  "command": "/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_a3sat_EXPORTS -I/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/../include -g -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-a3sat.dir/conv_dec_impl.cc.o -c /home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_dec_impl.cc",
+  "file": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/conv_dec_impl.cc"
+},
+{
+  "directory": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib",
+  "command": "/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_a3sat_EXPORTS -I/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/../include -g -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-a3sat.dir/ldpc_enc_impl.cc.o -c /home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/ldpc_enc_impl.cc",
+  "file": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/ldpc_enc_impl.cc"
+},
+{
+  "directory": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib",
+  "command": "/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_a3sat_EXPORTS -I/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/../include -g -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-a3sat.dir/ldpc_dec_impl.cc.o -c /home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/ldpc_dec_impl.cc",
+  "file": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/ldpc_dec_impl.cc"
+},
+{
+  "directory": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib",
+  "command": "/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_a3sat_EXPORTS -I/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/../include -g -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-a3sat.dir/bch_enc_impl.cc.o -c /home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/bch_enc_impl.cc",
+  "file": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/bch_enc_impl.cc"
+},
+{
+  "directory": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib",
+  "command": "/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_a3sat_EXPORTS -I/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/../include -g -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-a3sat.dir/bch_dec_impl.cc.o -c /home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/bch_dec_impl.cc",
+  "file": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/bch_dec_impl.cc"
+},
+{
+  "directory": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/swig",
+  "command": "/usr/bin/c++   -g   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/_a3sat_swig_doc_tag.dir/_a3sat_swig_doc_tag.cpp.o -c /home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/swig/_a3sat_swig_doc_tag.cpp",
+  "file": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/swig/_a3sat_swig_doc_tag.cpp"
+},
+{
+  "directory": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/swig",
+  "command": "/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Da3sat_swig_EXPORTS -I/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/swig -I/usr/include/gnuradio/swig -I/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/../include -isystem /usr/include/python3.8 -g -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/a3sat_swig.dir/CMakeFiles/a3sat_swig.dir/a3sat_swigPYTHON_wrap.cxx.o -c /home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/swig/CMakeFiles/a3sat_swig.dir/a3sat_swigPYTHON_wrap.cxx",
+  "file": "/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/swig/CMakeFiles/a3sat_swig.dir/a3sat_swigPYTHON_wrap.cxx"
+}
+]

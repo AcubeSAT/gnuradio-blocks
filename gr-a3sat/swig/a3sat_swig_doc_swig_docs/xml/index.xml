@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.17">
+  <compound refid="classgr_1_1a3sat_1_1bch__dec" kind="class"><name>gr::a3sat::bch_dec</name>
+    <member refid="classgr_1_1a3sat_1_1bch__dec_1a244748a65cb267220fe6d6073ec39e16" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1a3sat_1_1bch__dec_1ae9727f3b6d4548ce01f9afbcf278da8f" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="classgr_1_1a3sat_1_1bch__enc" kind="class"><name>gr::a3sat::bch_enc</name>
+    <member refid="classgr_1_1a3sat_1_1bch__enc_1abb8b8d1ad5ddda609b10dcf01e208290" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1a3sat_1_1bch__enc_1a28cfac6dffef8e2e1364b8f637a653b1" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="classgr_1_1a3sat_1_1conv__dec" kind="class"><name>gr::a3sat::conv_dec</name>
+    <member refid="classgr_1_1a3sat_1_1conv__dec_1a4c49f5dc5ea538e2e08ef164896589aa" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1a3sat_1_1conv__dec_1a1142f95372f8d7a241c385783dd99d91" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="classgr_1_1a3sat_1_1conv__enc" kind="class"><name>gr::a3sat::conv_enc</name>
+    <member refid="classgr_1_1a3sat_1_1conv__enc_1a2dee732c84159d79dee2ea3d89daff27" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1a3sat_1_1conv__enc_1a0f056095ecafcedde231eab2d5075136" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="classgr_1_1a3sat_1_1ldpc__dec" kind="class"><name>gr::a3sat::ldpc_dec</name>
+    <member refid="classgr_1_1a3sat_1_1ldpc__dec_1aefa1277ecaebfe8091696daaa83a6166" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1a3sat_1_1ldpc__dec_1a6d121427b06da662f19f83b4283f19f0" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="classgr_1_1a3sat_1_1ldpc__enc" kind="class"><name>gr::a3sat::ldpc_enc</name>
+    <member refid="classgr_1_1a3sat_1_1ldpc__enc_1a45146a3d3c30bcf0e567a2fb1da4687d" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1a3sat_1_1ldpc__enc_1aef0f5d380cccc03bba5888597916562e" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="namespacegr" kind="namespace"><name>gr</name>
+  </compound>
+  <compound refid="namespacegr_1_1a3sat" kind="namespace"><name>gr::a3sat</name>
+  </compound>
+  <compound refid="namespacestd" kind="namespace"><name>std</name>
+  </compound>
+  <compound refid="api_8h" kind="file"><name>api.h</name>
+    <member refid="api_8h_1ab55d3a7e5c0d48b690da81d1959fb5cd" kind="define"><name>A3SAT_API</name></member>
+  </compound>
+  <compound refid="bch__dec_8h" kind="file"><name>bch_dec.h</name>
+  </compound>
+  <compound refid="bch__enc_8h" kind="file"><name>bch_enc.h</name>
+  </compound>
+  <compound refid="conv__dec_8h" kind="file"><name>conv_dec.h</name>
+  </compound>
+  <compound refid="conv__enc_8h" kind="file"><name>conv_enc.h</name>
+  </compound>
+  <compound refid="ldpc__dec_8h" kind="file"><name>ldpc_dec.h</name>
+  </compound>
+  <compound refid="ldpc__enc_8h" kind="file"><name>ldpc_enc.h</name>
+  </compound>
+  <compound refid="dir_2a9c6df3110d26e14f99a95b6e914000" kind="dir"><name>a3sat</name>
+  </compound>
+  <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>include</name>
+  </compound>
+</doxygenindex>
