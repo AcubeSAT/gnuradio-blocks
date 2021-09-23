@@ -87,7 +87,6 @@ class qa_conv_dec(gr_unittest.TestCase):
 
         for i in range(number_of_bits):
             position = random.randint(0, 2048)
-            print(position)
             if message[position] == 1:
                 message[position] = 0
             else:
