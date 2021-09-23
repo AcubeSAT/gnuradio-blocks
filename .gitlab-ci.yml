@@ -1,0 +1,52 @@
+variables:
+  GITLAB_CI_IMAGE_DEBIAN: 'debian:buster'
+  GITLAB_CI_APT_REPOSITORY: 'deb http://download.opensuse.org/repositories/home:/librespace:/satnogs/Debian_10/ /'
+  GITLAB_CI_APT_KEY_URL: 'https://download.opensuse.org/repositories/home:librespace:satnogs/Debian_10/Release.key'
+  GITLAB_CI_OBS_PROJECT: 'home:librespace:satnogs'
+  GITLAB_CI_OBS_PROJECT_UNSTABLE: 'home:librespace:satnogs-unstable'
+
+build:
+  image: ${GITLAB_CI_IMAGE_DEBIAN}
+  stage: build
+
+  before_script:
+    - apt-get -q update
+    - apt-get -qy install gnupg libcurl4 git
+    - echo "$GITLAB_CI_APT_REPOSITORY" > /etc/apt/sources.list.d/${GITLAB_CI_OBS_PROJECT}.list
+    - apt-key adv --fetch-keys "$GITLAB_CI_APT_KEY_URL"
+    - apt-get -q update
+    - apt-get -qy install devscripts git-buildpackage
+    - apt-get update -qq && apt-get install -y -qq  libcppunit-dev cmake pkg-config libconfig++-dev valgrind doxygen gnuradio-dev libitpp-dev git swig python python-dev python3 python3-dev 
+    - apt-get -qy install gnupg libcurl4
+    - apt-get -qy install build-essential
+
+  script:
+    - cd gr-a3sat
+    - mkdir -p build
+    - cd build
+    - cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+    - make
+    - make install
+    - ldconfig
+    - cd ..
+
+  artifacts:
+    paths:
+      - gr-a3sat/build/
+
+test:
+  image: ${GITLAB_CI_IMAGE_DEBIAN}
+  stage: test
+  dependencies:
+    - build
+  before_script:
+    - apt-get -q update
+    - apt-get -qy install gnupg libcurl4 git
+    - echo "$GITLAB_CI_APT_REPOSITORY" > /etc/apt/sources.list.d/${GITLAB_CI_OBS_PROJECT}.list
+    - apt-key adv --fetch-keys "$GITLAB_CI_APT_KEY_URL"
+    - apt-get -qy install build-essential 
+    - apt-get update -qq && apt-get install -y -qq  libcppunit-dev cmake pkg-config libconfig++-dev valgrind doxygen gnuradio-dev libitpp-dev git swig python python-dev python3 python3-dev 
+  script:
+    - cd gr-a3sat
+    - cd build
+    - make CTEST_OUTPUT_ON_FAILURE=1 test
