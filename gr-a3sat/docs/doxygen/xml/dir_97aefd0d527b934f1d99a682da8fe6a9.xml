@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_97aefd0d527b934f1d99a682da8fe6a9" kind="dir">
+    <compoundname>lib</compoundname>
+    <innerfile refid="bch__dec__impl_8h">bch_dec_impl.h</innerfile>
+    <innerfile refid="bch__enc__impl_8h">bch_enc_impl.h</innerfile>
+    <innerfile refid="conv__dec__impl_8h">conv_dec_impl.h</innerfile>
+    <innerfile refid="conv__enc__impl_8h">conv_enc_impl.h</innerfile>
+    <innerfile refid="ldpc__dec__impl_8h">ldpc_dec_impl.h</innerfile>
+    <innerfile refid="ldpc__enc__impl_8h">ldpc_enc_impl.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/efthamar/CLionProjects/error-correction-codes/gr-a3sat/lib/"/>
+  </compounddef>
+</doxygen>

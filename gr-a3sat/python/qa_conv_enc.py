@@ -7,10 +7,13 @@
 #
 import sys
 
-sys.path.append("../build/swig")
+# sys.path.append('../cmake-build-debug/swig')
+sys.path.append('../build/swig')
+
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
+
 import a3sat_swig as a3sat
 
 
@@ -22,6 +25,10 @@ class qa_conv_enc(gr_unittest.TestCase):
     def tearDown(self):
         self.tb = None
 
+    """ 
+    This function tests the functionality of the convolutional encoding block.
+    First, it reads a bit stream contained in a file, then encodes it and compares the encoder's output with the initial stream. 
+    """
     def test_001_conv_enc(self):
         # Read message bit stream
         src_bit_stream = open(r"encoder_src_data", "r")
@@ -33,11 +40,14 @@ class qa_conv_enc(gr_unittest.TestCase):
         expected_result = tuple(map(int, dst_bit_stream.readlines()))
         dst_bit_stream.close()
 
+        print(expected_result)
+
         conv_enc = a3sat.conv_enc()
-        src = blocks.vector_source_b(src_data, 1, [])
+        src = blocks.vector_source_b(src_data, False, 1, [])
         self.tb.connect(src, conv_enc)
         dst = blocks.vector_sink_b()
         self.tb.connect(conv_enc, dst)
+        print("Run")
         self.tb.run()
         result_data = dst.data()
         self.assertTupleEqual(expected_result, result_data, "test failed")
