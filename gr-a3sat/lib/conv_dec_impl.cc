@@ -135,6 +135,7 @@ namespace gr {
         uint8_t conv_dec_impl::calculateBranchMetric(bool *state) {
             uint8_t parityBit = 0;
             uint8_t branchMetric = 0;
+            bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
 
             for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
                 parityBit = 0;
