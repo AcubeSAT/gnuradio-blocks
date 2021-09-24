@@ -65,7 +65,6 @@ class qa_conv_dec(gr_unittest.TestCase):
         self.tb.connect(src, conv_dec)
         dst = blocks.vector_sink_b()
         self.tb.connect(conv_dec, dst)
-        print("Run")
         self.tb.run()
         result_data = dst.data()
         self.assertTupleEqual(initial_message, result_data, "test failed")
