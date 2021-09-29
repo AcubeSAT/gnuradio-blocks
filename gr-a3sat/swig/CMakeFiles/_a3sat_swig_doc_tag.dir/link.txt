@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/_a3sat_swig_doc_tag.dir/_a3sat_swig_doc_tag.cpp.o -o _a3sat_swig_doc_tag 
