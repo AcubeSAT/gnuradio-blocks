@@ -1,5 +1,0 @@
-<map id="gr::a3sat::conv_enc_impl" name="gr::a3sat::conv_enc_impl">
-<area shape="rect" id="node1" title="The encoder of the convolutional code of rate 1/2 bits ber symbol as specified in CCSDS 131...." alt="" coords="5,155,189,181"/>
-<area shape="rect" id="node2" href="$classgr_1_1a3sat_1_1conv__enc.html" title="Convolutional Encoder based on CCSDS 130.1&#45;G&#45;3." alt="" coords="23,80,171,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="69,5,126,32"/>
-</map>
