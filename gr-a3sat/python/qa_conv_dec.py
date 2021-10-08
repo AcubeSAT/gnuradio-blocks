@@ -14,7 +14,6 @@ from gnuradio import blocks
 import a3sat_swig as a3sat
 import random
 
-
 class qa_conv_dec(gr_unittest.TestCase):
 
     def setUp(self):
@@ -39,14 +38,20 @@ class qa_conv_dec(gr_unittest.TestCase):
 
     def encode_stream_with_error(self, num_of_flipped_bits):
         # Generate random bits as message
-        message_bit_stream = []
+        encoder_bit_stream = []
+        decoder_bit_stream = []
 
-        for i in range(2048):
+        low_voltage = 0.2
+        high_voltage = 4.2
+
+        codeword_length = 2048
+
+        for i in range(codeword_length):
             bit = random.getrandbits(1)
-            message_bit_stream.append(bit)
+            encoder_bit_stream.append(bit)
 
         # Encode the message
-        initial_message = tuple(message_bit_stream)
+        initial_message = tuple(encoder_bit_stream)
 
         conv_enc = a3sat.conv_enc()
         encoder = blocks.vector_source_b(initial_message, False, 1, [])
@@ -56,12 +61,20 @@ class qa_conv_dec(gr_unittest.TestCase):
         self.tb.run()
         encoded_message = encoder_output.data()
 
+        for i in range(codeword_length*2):
+            if encoded_message[i] == 1:
+                decoder_bit_stream.append(high_voltage)
+            else:
+                decoder_bit_stream.append(low_voltage)
+
+        decoder_message = tuple(decoder_bit_stream)
+
         # Flip some bits and add errors to the initial message
-        corrupted_message = self.flip_bits(encoded_message, num_of_flipped_bits)
+        # corrupted_message = self.flip_bits(encoded_message, num_of_flipped_bits)
 
         # Decode the message
         conv_dec = a3sat.conv_dec(False)
-        src = blocks.vector_source_b(corrupted_message, False, 1, [])
+        src = blocks.vector_source_f(decoder_message, False, 1, [])
         self.tb.connect(src, conv_dec)
         dst = blocks.vector_sink_b()
         self.tb.connect(conv_dec, dst)
@@ -73,9 +86,9 @@ class qa_conv_dec(gr_unittest.TestCase):
     This function calls the encode_stream_with_error function 3 times with different num_of_flipped_bits param. 
     """
     def test_001_conv_dec(self):
-        for i in range(3):
-            for num_of_errors in range(1, 4):
-                self.encode_stream_with_error(num_of_errors)
+        # for i in range(3):
+        #     for num_of_errors in range(1, 4):
+        self.encode_stream_with_error(0)
 
     """
     A function that receives a message containing random bits and flips a certain number of bits in random positions. 

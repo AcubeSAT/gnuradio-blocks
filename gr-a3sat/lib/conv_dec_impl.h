@@ -7,6 +7,7 @@
 
 #include <a3sat/conv_dec.h>
 #include <unordered_map>
+#include <map>
 
 namespace gr {
     namespace a3sat {
@@ -43,20 +44,22 @@ namespace gr {
             static const int decodedWordLength = 2048;
             bool transmittedSymbol[2];
             bool paths[64][decodedWordLength];
-            uint8_t pathMetric[64];
+            float pathMetric[64];
             bool transmittedPaths[64][decodedWordLength];
-            uint8_t branchMetric[64];
+            float branchMetric[64];
             bool binaryState[6];
             uint8_t nextState;
             bool transmittedOne[7];
             bool transmittedZero[7];
-            uint8_t branchMetricOne;
-            uint8_t branchMetricZero;
-            uint8_t pathMetricOne;
-            uint8_t pathMetricZero;
+            float branchMetricOne;
+            float branchMetricZero;
+            float pathMetricOne;
+            float pathMetricZero;
             uint8_t temporaryState;
-            uint8_t optimalPath;
+            float optimalPath;
             uint8_t optimalPathIndex;
+
+            std::map<int, float> voltageReference = {{0, 0.2,}, {1, 4.2,}};
 
         public:
             /**
@@ -101,7 +104,7 @@ namespace gr {
              * @param state The current sequence of bits which will be multiplied with the generator polynomials in order to produce the parity bits.
              * @return The calculated branch metric
              */
-            uint8_t calculateBranchMetric(bool *state);
+            float calculateBranchMetric(bool *state);
         };
 
     } // namespace a3sat
