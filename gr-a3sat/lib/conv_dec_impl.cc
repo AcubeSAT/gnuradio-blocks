@@ -19,7 +19,7 @@ namespace gr {
 
         conv_dec_impl::conv_dec_impl()
                 : gr::block("conv_dec",
-                            gr::io_signature::make(1, 1, sizeof(bool)),
+                            gr::io_signature::make(1, 1, sizeof(float)),
                             gr::io_signature::make(1, 1, sizeof(bool))) {
             set_output_multiple(decodedWordLength);
         }
@@ -37,10 +37,9 @@ namespace gr {
                                      gr_vector_int &ninput_items,
                                      gr_vector_const_void_star &input_items,
                                      gr_vector_void_star &output_items) {
-            const bool *in = (const bool *) input_items[0];
+            const float *in = (const float *) input_items[0];
             uint8_t *out = (uint8_t *) output_items[0];
 
-            bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
             const int maxNumOfStates = int(pow(2, constraintLength - 2));
 
             memset(pathMetric, UINT_MAX, sizeof(pathMetric));
@@ -87,7 +86,7 @@ namespace gr {
                         branchMetricOne = calculateBranchMetric(transmittedOne);
                         branchMetricZero = calculateBranchMetric(transmittedZero);
 
-                        pathMetricOne = pow(branchMetricOne, 2) + pathMetric[state];
+                        pathMetricOne = branchMetricOne + pathMetric[state];
                         nextState = (state >> 1) ^ maxNumOfStates;
 
                         if (branchMetric[nextState] > pathMetricOne) {
@@ -96,7 +95,7 @@ namespace gr {
                             transmittedPaths[nextState][inputItem] = 1;
                         }
 
-                        pathMetricZero = pow(branchMetricZero, 2) + pathMetric[state];
+                        pathMetricZero = branchMetricZero + pathMetric[state];
                         nextState = state >> 1;
 
                         if (branchMetric[nextState] > pathMetricZero) {
@@ -132,9 +131,9 @@ namespace gr {
             return noutput_items;
         }
 
-        uint8_t conv_dec_impl::calculateBranchMetric(bool *state) {
+        float conv_dec_impl::calculateBranchMetric(bool *state) {
             uint8_t parityBit = 0;
-            uint8_t branchMetric = 0;
+            float branchMetric = 0.0;
             bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
 
             for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
@@ -142,7 +141,7 @@ namespace gr {
                 for (uint8_t stateBit = 0; stateBit < constraintLength; stateBit++) {
                     parityBit ^= state[stateBit] * generator[iGenerator][stateBit];
                 }
-                branchMetric += abs(parityBit - transmittedSymbol[iGenerator]);
+                branchMetric += pow(voltageReference[parityBit] - transmittedSymbol[iGenerator], 2);
             }
             return branchMetric;
         }
