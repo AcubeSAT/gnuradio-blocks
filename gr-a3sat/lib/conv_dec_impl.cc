@@ -3,9 +3,9 @@
 #endif
 
 #include <gnuradio/io_signature.h>
-#include <climits>
 #include "conv_dec_impl.h"
 #include <iostream>
+#include <cfloat>
 
 
 namespace gr {
@@ -42,21 +42,21 @@ namespace gr {
 
             const int maxNumOfStates = int(pow(2, constraintLength - 2));
 
-            memset(pathMetric, UINT_MAX, sizeof(pathMetric));
+            memset(pathMetric, static_cast<int>(FLT_MAX), sizeof(pathMetric));
             memset(paths, 0, sizeof(paths));
 
             pathMetric[0] = 0;
 
             for (int inputItem = 0; inputItem < noutput_items; inputItem++) {
 
-                memset(branchMetric, UINT_MAX, sizeof(branchMetric));
+                memset(branchMetric, static_cast<int>(FLT_MAX), sizeof(branchMetric));
                 memset(transmittedPaths, 0, sizeof(transmittedPaths));
 
                 transmittedSymbol[0] = in[rate * inputItem];
                 transmittedSymbol[1] = in[rate * inputItem + 1];
 
                 for (uint8_t state = 0; state < pow(2, constraintLength - 1); state++) {
-                    if (pathMetric[state] != UINT8_MAX) {
+                    if (pathMetric[state] != FLT_MAX) {
 
                         /*!
                          * Converts the current state to binary array.
@@ -115,7 +115,7 @@ namespace gr {
             optimalPath = pathMetric[0];
             optimalPathIndex = 0;
 
-            for (uint8_t path = 1; path < int(pow(2, (constraintLength - 1))); path++) {
+            for (int path = 1; path < int(pow(2, (constraintLength - 1))); path++) {
                 if (pathMetric[path] < optimalPath) {
                     optimalPath = pathMetric[path];
                     optimalPathIndex = path;
@@ -133,17 +133,20 @@ namespace gr {
 
         float conv_dec_impl::calculateBranchMetric(bool *state) {
             uint8_t parityBit = 0;
-            float branchMetric = 0.0;
+            float branchMetric_2 = 0.0;
             bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
+
+            voltageReference[0] = 0.2;
+            voltageReference[1] = 4.2;
 
             for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
                 parityBit = 0;
                 for (uint8_t stateBit = 0; stateBit < constraintLength; stateBit++) {
                     parityBit ^= state[stateBit] * generator[iGenerator][stateBit];
                 }
-                branchMetric += pow(voltageReference[parityBit] - transmittedSymbol[iGenerator], 2);
+                branchMetric_2 += float(pow(voltageReference[parityBit] - transmittedSymbol[iGenerator], 2));
             }
-            return branchMetric;
+            return branchMetric_2;
         }
 
     } /* namespace a3sat */

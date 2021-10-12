@@ -38,7 +38,7 @@ namespace gr {
             static const int rate = 2;
             static const int constraintLength = 7;
             static const int decodedWordLength = 2048;
-            bool transmittedSymbol[2];
+            float transmittedSymbol[2];
             bool paths[64][decodedWordLength];
             float pathMetric[64];
             bool transmittedPaths[64][decodedWordLength];
@@ -55,7 +55,8 @@ namespace gr {
             float optimalPath;
             uint8_t optimalPathIndex;
 
-            std::map<int, float> voltageReference = {{0, 0.2,}, {1, 4.2,}};
+//            std::map<int, float> voltageReference = {{0, 0.2,}, {1, 4.2,}};
+            float voltageReference[2];
 
         public:
             /**
