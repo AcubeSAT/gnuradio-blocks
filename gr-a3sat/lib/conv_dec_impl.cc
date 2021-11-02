@@ -6,6 +6,7 @@
 #include "conv_dec_impl.h"
 #include <iostream>
 #include <cfloat>
+#include <fstream>
 
 
 namespace gr {
@@ -42,21 +43,21 @@ namespace gr {
 
             const int maxNumOfStates = int(pow(2, constraintLength - 2));
 
-            memset(pathMetric, static_cast<int>(FLT_MAX), sizeof(pathMetric));
+            memset(pathMetric, INT8_MAX, sizeof(pathMetric));
             memset(paths, 0, sizeof(paths));
 
             pathMetric[0] = 0;
 
             for (int inputItem = 0; inputItem < noutput_items; inputItem++) {
 
-                memset(branchMetric, static_cast<int>(FLT_MAX), sizeof(branchMetric));
+                memset(branchMetric, INT8_MAX, sizeof(branchMetric));
                 memset(transmittedPaths, 0, sizeof(transmittedPaths));
 
                 transmittedSymbol[0] = in[rate * inputItem];
                 transmittedSymbol[1] = in[rate * inputItem + 1];
 
                 for (uint8_t state = 0; state < pow(2, constraintLength - 1); state++) {
-                    if (pathMetric[state] != FLT_MAX) {
+                    if (pathMetric[state] != INT8_MAX) {
 
                         /*!
                          * Converts the current state to binary array.
