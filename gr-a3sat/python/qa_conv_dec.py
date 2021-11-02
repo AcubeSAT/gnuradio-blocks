@@ -7,7 +7,7 @@
 #
 import sys
 
-sys.path.append('../build/swig')
+sys.path.append('../cmake-build-debug/swig')
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
