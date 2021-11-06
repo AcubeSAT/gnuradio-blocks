@@ -26,23 +26,13 @@ class qa_conv_dec(gr_unittest.TestCase):
     This function tests the functionality of the convolutional decoder block.
     It initializes a stream of 2048 random generated bits.
     Encodes them using the convolutional encoder block. 
-    Modifies the initial stream by flipping a number of bits in random position. 
     Then decodes the modified stream and compares it to the initial one. 
-    
-    Arguments
-    ---------
-    
-    num_of_flipped_bits: int
-        the number of bits to be flipped in the initial stream
     """
 
-    def encode_stream_with_error(self, num_of_flipped_bits):
+    def test_soft_decoding(self):
         # Generate random bits as message
         encoder_bit_stream = []
         decoder_bit_stream = []
-
-        low_voltage = 0.2
-        high_voltage = 4.2
 
         codeword_length = 2048
 
@@ -62,15 +52,12 @@ class qa_conv_dec(gr_unittest.TestCase):
         encoded_message = encoder_output.data()
 
         for i in range(codeword_length*2):
-            if encoded_message[i] == 1:
-                decoder_bit_stream.append(high_voltage)
+            if encoded_message[i] == 0:
+                decoder_bit_stream.append(round(random.uniform(0.0, 0.49), 4))
             else:
-                decoder_bit_stream.append(low_voltage)
+                decoder_bit_stream.append(round(random.uniform(0.5, 1.0), 4))
 
         decoder_message = tuple(decoder_bit_stream)
-
-        # Flip some bits and add errors to the initial message
-        # corrupted_message = self.flip_bits(encoded_message, num_of_flipped_bits)
 
         # Decode the message
         conv_dec = a3sat.conv_dec(False)
@@ -78,42 +65,9 @@ class qa_conv_dec(gr_unittest.TestCase):
         self.tb.connect(src, conv_dec)
         dst = blocks.vector_sink_b()
         self.tb.connect(conv_dec, dst)
-        print("run")
         self.tb.run()
         result_data = dst.data()
-        self.assertTupleEqual(initial_message, result_data, "test failed")
-
-    """
-    This function calls the encode_stream_with_error function 3 times with different num_of_flipped_bits param. 
-    """
-    def test_001_conv_dec(self):
-        # for i in range(3):
-        #     for num_of_errors in range(1, 4):
-        self.encode_stream_with_error(0)
-
-    """
-    A function that receives a message containing random bits and flips a certain number of bits in random positions. 
-    
-    Arguments
-    ---------
-    
-    message : tuple 
-        the message to be modified
-    number_of_bits: int
-        the number of bits to be flipped
-    """
-
-    def flip_bits(self, message, number_of_bits):
-        message = list(message)
-
-        for i in range(number_of_bits):
-            position = random.randint(0, 2048)
-            if message[position] == 1:
-                message[position] = 0
-            else:
-                message[position] = 1
-
-        return tuple(message)
+        self.assertTupleEqual(initial_message, result_data, "Test failed")
 
 
 if __name__ == '__main__':
