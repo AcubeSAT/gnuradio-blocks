@@ -11,6 +11,8 @@
 #include <iostream>
 #include <cfloat>
 #include <fstream>
+#include <cmath>
+
 
 
 namespace gr {
@@ -141,8 +143,8 @@ namespace gr {
             float branchMetric_2 = 0.0;
             bool generator[2][7] = {{1, 1, 1, 1, 0, 0, 1}, {1, 0, 1, 1, 0, 1, 1}};
 
-            voltageReference[0] = 0.2;
-            voltageReference[1] = 4.2;
+            voltageReference[0] = 0.0;
+            voltageReference[1] = 1.0;
 
             for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
                 parityBit = 0;

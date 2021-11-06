@@ -44,22 +44,20 @@ namespace gr {
             static const int decodedWordLength = 2048;
             float transmittedSymbol[2];
             bool paths[64][decodedWordLength];
-            float pathMetric[64];
+            double pathMetric[64];
             bool transmittedPaths[64][decodedWordLength];
-            float branchMetric[64];
+            double branchMetric[64];
             bool binaryState[6];
             uint8_t nextState;
             bool transmittedOne[7];
             bool transmittedZero[7];
-            float branchMetricOne;
-            float branchMetricZero;
-            float pathMetricOne;
-            float pathMetricZero;
+            double branchMetricOne;
+            double branchMetricZero;
+            double pathMetricOne;
+            double pathMetricZero;
             uint8_t temporaryState;
-            float optimalPath;
+            double optimalPath;
             uint8_t optimalPathIndex;
-
-//            std::map<int, float> voltageReference = {{0, 0.2,}, {1, 4.2,}};
             float voltageReference[2];
 
         public:
