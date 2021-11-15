@@ -73,7 +73,7 @@ namespace gr {
                 }
             }
 
-            consume_each(ninput_items[0]);
+            consume_each((noutput_items / n_bch) * k_bch);
             return noutput_items;
         }
 

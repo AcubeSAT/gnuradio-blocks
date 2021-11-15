@@ -32,10 +32,10 @@ class qa_bch_dec(gr_unittest.TestCase):
         expected_result = (1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
                            0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
                            1, 0, 1, 0, 1, 0)
-        bch_enc = a3sat.bch_dec()
-        self.tb.connect((vector_src, 0), (bch_enc, 0))
+        bch_dec = a3sat.bch_dec()
+        self.tb.connect((vector_src, 0), (bch_dec, 0))
         dst = blocks.vector_sink_b(1, 128)
-        self.tb.connect((bch_enc, 0), (dst, 0))
+        self.tb.connect((bch_dec, 0), (dst, 0))
         self.tb.run()
         self.tb.stop()
         result_data = dst.data()
@@ -63,6 +63,63 @@ class qa_bch_dec(gr_unittest.TestCase):
         self.tb.stop()
         result_data = dst.data()
         self.assertTupleEqual(expected_result, result_data)
+
+    def test_003_t(self):
+        data = (
+            1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+            1,
+            0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0)
+        vector_src = blocks.vector_source_b(data)
+
+        expected_result = (1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
+                           0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+                           1, 0, 1, 0, 1, 0)
+        bch_dec = a3sat.bch_dec()
+        self.tb.connect((vector_src, 0), (bch_dec, 0))
+        dst = blocks.vector_sink_b(1, 128)
+        self.tb.connect((bch_dec, 0), (dst, 0))
+        self.tb.run()
+        self.tb.stop()
+        result_data = dst.data()
+        self.assertTupleEqual(expected_result, result_data)
+
+    def test_004_t(self):
+        src_bit_stream = open("encoder_dst_data.txt", "r")
+        src_data = tuple(map(int, src_bit_stream.readlines()))
+        src_bit_stream.close()
+
+        # Read encoded bit stream
+        dst_bit_stream = open("encoder_src_data.txt", "r")
+        expected_result = tuple(map(int, dst_bit_stream.readlines()))
+        dst_bit_stream.close()
+
+        bch_dec = a3sat.bch_dec()
+        src = blocks.vector_source_b(src_data, False, 1, [])
+        self.tb.connect(src, bch_dec)
+        dst = blocks.vector_sink_b()
+        self.tb.connect(bch_dec, dst)
+        self.tb.run()
+        result_data = dst.data()
+        self.assertTupleEqual(expected_result, result_data, "test failed")
+
+    def test_005_t(self):
+        src_bit_stream = open("encoder_dst_data2.txt", "r")
+        src_data = tuple(map(int, src_bit_stream.readlines()))
+        src_bit_stream.close()
+
+        # Read encoded bit stream
+        dst_bit_stream = open("encoder_src_data2.txt", "r")
+        expected_result = tuple(map(int, dst_bit_stream.readlines()))
+        dst_bit_stream.close()
+
+        bch_dec = a3sat.bch_dec()
+        src = blocks.vector_source_b(src_data, False, 1, [])
+        self.tb.connect(src, bch_dec)
+        dst = blocks.vector_sink_b()
+        self.tb.connect(bch_dec, dst)
+        self.tb.run()
+        result_data = dst.data()
+        self.assertTupleEqual(expected_result, result_data, "test failed")
 
 
 if __name__ == '__main__':

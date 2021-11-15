@@ -1,5 +1,5 @@
 id: a3sat_bch_enc
-label: bch_enc
+label: CCSDS BCH ENCODER
 category: '[a3sat]'
 
 templates:
