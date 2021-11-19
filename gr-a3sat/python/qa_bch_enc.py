@@ -61,12 +61,12 @@ class qa_bch_enc(gr_unittest.TestCase):
         self.assertTupleEqual(expected_result, result_data)
 
     def test_003_t(self):
-        src_bit_stream = open("encoder_src_data.txt", "r")
+        src_bit_stream = open(r"../../python/encoder_src_data.txt", "r")
         src_data = tuple(map(int, src_bit_stream.readlines()))
         src_bit_stream.close()
 
             # Read encoded bit stream
-        dst_bit_stream = open("encoder_dst_data.txt", "r")
+        dst_bit_stream = open(r"../../python/encoder_dst_data.txt", "r")
         expected_result = tuple(map(int, dst_bit_stream.readlines()))
         dst_bit_stream.close()
 
@@ -80,12 +80,12 @@ class qa_bch_enc(gr_unittest.TestCase):
         self.assertTupleEqual(expected_result, result_data, "test failed")
 
     def test_004_t(self):
-        src_bit_stream = open("encoder_src_data2.txt", "r")
+        src_bit_stream = open(r"../../python/encoder_src_data2.txt", "r")
         src_data = tuple(map(int, src_bit_stream.readlines()))
         src_bit_stream.close()
 
         # Read encoded bit stream
-        dst_bit_stream = open("encoder_dst_data2.txt", "r")
+        dst_bit_stream = open(r"../../python/encoder_dst_data2.txt", "r")
         expected_result = tuple(map(int, dst_bit_stream.readlines()))
         dst_bit_stream.close()
 
