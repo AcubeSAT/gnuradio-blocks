@@ -16,7 +16,7 @@ namespace gr {
         class ldpc_enc_impl : public ldpc_enc {
         private:
             /**
-             * the number of rows with square quise-cyclic matricies in the Gnerator Matrix
+             * the number of rows with square quasi-cyclic matrices in the Generator Matrix
              */
             static const uint8_t generatorRows = 32;
 
