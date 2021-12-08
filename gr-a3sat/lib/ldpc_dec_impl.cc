@@ -53,8 +53,8 @@ namespace gr {
                     uint64_t lengthParity = nextParity - thisParity;
                     uint16_t partialSum = 0;
                     for (int j = 0; j < lengthParity; j++) {
-                        uint16_t paritiy = rowsParityBits[thisParity + j];
-                        partialSum ^= decodedMessage[paritiy];
+                        uint16_t parity = rowsParityBits[thisParity + j];
+                        partialSum ^= decodedMessage[parity];
                     }
                     totalSum += partialSum;
                 }

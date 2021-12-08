@@ -43,7 +43,7 @@ namespace gr {
             const char *input_message = (const char *) input_items[0];
             char *output_message = (char *) output_items[0];
             for (int package = 0; package < ninput_items[0]; package += sizeInitialMessage) { //check
-                bool message[sizeInitialMessage]; // 4096
+                bool message[sizeInitialMessage];
                 for (int i = 0; i < sizeInitialMessage; i++) {
                     int temp = (int) input_message[i + package];
                     message[i] = temp % 2;
@@ -62,7 +62,7 @@ namespace gr {
                             lengthOfParity = nextParityPosition - thisParityPosition;
                         } else {
                             lengthOfParity = sizeParity -
-                                             thisParityPosition;//positionRows[totalQuasiCyclicMatrices - 1] + 1 - thisParityPosition;
+                                             thisParityPosition;
                         }
                         for (int i = 0; i < lengthOfParity; i++) {
                             uint16_t initialParity =
