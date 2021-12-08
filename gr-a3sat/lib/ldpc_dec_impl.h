@@ -52,7 +52,7 @@ namespace gr {
             const uint16_t totalColumns = 5120;
 
             /**
-             * The positions in columnsParityButs in which a new Column starts
+             * The positions in columnsParityBits in which a new Column starts
              */
             uint64_t *positionColumns = positionColumnsDecoder;
 
