@@ -209,7 +209,7 @@ namespace gr {
                 delete[]Q0;
                 delete[]Q1;
             }
-            consume(0, ninput_items[0]);
+            consume(0, (noutput_items / sizeInitialMessage) * sizeReceivedMessage);
 
             return noutput_items;
         }

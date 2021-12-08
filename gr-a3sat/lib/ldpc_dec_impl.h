@@ -24,7 +24,7 @@ namespace gr {
             /**
              * The total number of parity bits that are found in the Parity Matrix
              */
-            uint32_t sizeParity = 2095360;
+            const uint32_t sizeParity = 2095360;
 
             /**
              * The position of parity bits in the Rows of the Parity Matrix

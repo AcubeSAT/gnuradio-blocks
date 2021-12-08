@@ -49,7 +49,7 @@ namespace gr {
                     message[i] = temp % 2;
                 }
                 bool encodedMessage[sizeEncodedMessage]; //1024
-                for (bool &i : encodedMessage) {
+                for (bool &i: encodedMessage) {
                     i = false;
                 }
                 for (int row = 0; row < generatorRows; row++) {
@@ -80,14 +80,14 @@ namespace gr {
                 }
                 for (int i = sizeMessage * (package / sizeInitialMessage);
                      i < sizeMessage * (package / sizeInitialMessage + 1); i++) {
-                    if (i - (package/sizeInitialMessage)*sizeMessage  < sizeInitialMessage) {
-                        if (message[i - (package/sizeInitialMessage)*sizeMessage]) {
+                    if (i - (package / sizeInitialMessage) * sizeMessage < sizeInitialMessage) {
+                        if (message[i - (package / sizeInitialMessage) * sizeMessage]) {
                             output_message[i] = '\001';
                         } else {
                             output_message[i] = '\000';
                         }
                     } else {
-                        if (encodedMessage[i - (package/sizeInitialMessage)*sizeMessage - sizeInitialMessage]) {
+                        if (encodedMessage[i - (package / sizeInitialMessage) * sizeMessage - sizeInitialMessage]) {
                             output_message[i] = '\001';
                         } else {
                             output_message[i] = '\000';
@@ -95,7 +95,7 @@ namespace gr {
                     }
                 }
             }
-            consume(0, ninput_items[0]);
+            consume(0, (noutput_items / sizeMessage) * sizeInitialMessage);
             return noutput_items;
         }
 
