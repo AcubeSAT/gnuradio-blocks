@@ -60,7 +60,7 @@ namespace gr {
                 memset(transmittedPaths, 0, sizeof(transmittedPaths));
 
                 transmittedSymbol[0] = in[rate * inputItem];
-                transmittedSymbol[1] = in[rate * inputItem + 1];
+                transmittedSymbol[1] = -in[rate * inputItem + 1];
 
                 for (uint8_t state = 0; state < pow(2, constraintLength - 1); state++) {
                     if (pathMetric[state] != INT8_MAX) {
