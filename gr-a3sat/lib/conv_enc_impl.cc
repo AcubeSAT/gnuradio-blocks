@@ -53,6 +53,7 @@ namespace gr {
                     for (int stateBit = 0; stateBit < generatorBit; stateBit++) {
                         *out ^= in[stateBit] * generator[iGenerator][constraintLength - generatorBit + stateBit];
                     }
+                    *out *= ((-1)^iGenerator);
                     out++;
                 }
             }
@@ -65,6 +66,7 @@ namespace gr {
                     for (int stateBit = 0; stateBit < constraintLength; stateBit++) {
                         *out ^= in[generatorBit + stateBit] * generator[iGenerator][stateBit];
                     }
+                    *out *= ((-1)^iGenerator);
                     out++;
                 }
             }
