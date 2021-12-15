@@ -45,7 +45,9 @@ namespace gr {
             /*!
              * @brief Ignores the padding bits added in the encoder's sliding window and
              * multiplies only the message bits with the respective bits of the
-             * generator polynomials. This process iterates until the sliding window
+             * generator polynomials.
+             * The bit generated from the second generator is inversed according to the CCSDS 131.0-B-3.
+             * This process iterates until the sliding window
              * of the encoder contains only message bits.
              */
             for (int generatorBit = 1; generatorBit < constraintLength; generatorBit++) {
@@ -53,20 +55,21 @@ namespace gr {
                     for (int stateBit = 0; stateBit < generatorBit; stateBit++) {
                         *out ^= in[stateBit] * generator[iGenerator][constraintLength - generatorBit + stateBit];
                     }
-                    *out ^= 1;
+                    *out ^= iGenerator;
                     out++;
                 }
             }
 
             /*!
              * @brief Multiplies the encoder's sliding window bits with each generator polynomial.
+             * The bit generated from the second generator is inversed according to the CCSDS 131.0-B-3
              */
             for(int generatorBit = 0; generatorBit < ninput_items[0] - (constraintLength - 1); generatorBit++) {
                 for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
                     for (int stateBit = 0; stateBit < constraintLength; stateBit++) {
                         *out ^= in[generatorBit + stateBit] * generator[iGenerator][stateBit];
                     }
-                    *out ^= 1;
+                    *out ^= iGenerator;
                     out++;
                 }
             }
