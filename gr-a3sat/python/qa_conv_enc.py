@@ -29,12 +29,12 @@ class qa_conv_enc(gr_unittest.TestCase):
     """
     def test_001_conv_enc(self):
         # Read message bit stream
-        src_bit_stream = open(r"encoder_src_data", "r")
+        src_bit_stream = open(r"../../python/encoder_src_data", "r")
         src_data = tuple(map(int, src_bit_stream.readlines()))
         src_bit_stream.close()
 
         # Read encoded bit stream
-        dst_bit_stream = open(r"encoder_dst_data", "r")
+        dst_bit_stream = open(r"../../python/encoder_dst_data", "r")
         expected_result = tuple(map(int, dst_bit_stream.readlines()))
         dst_bit_stream.close()
 
