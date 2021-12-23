@@ -37,9 +37,9 @@ namespace gr {
              * \param optimalPathIndex The index of the path with the minimum path metric
              */
         private:
-            static const int rate = 2;
-            static const int constraintLength = 7;
-            static const int decodedWordLength = 2048;
+            static const uint8_t rate = 2;
+            static const uint8_t constraintLength = 7;
+            static const uint16_t decodedWordLength = 2048;
             float transmittedSymbol[2];
             bool paths[64][decodedWordLength];
             double pathMetric[64];
@@ -80,7 +80,7 @@ namespace gr {
              * @param output_items
              * @return noutput_items
              */
-            int general_work(uint16_t noutput_items,
+            uint8_t general_work(uint16_t noutput_items,
                              gr_vector_int &ninput_items,
                              gr_vector_const_void_star &input_items,
                              gr_vector_void_star &output_items);
