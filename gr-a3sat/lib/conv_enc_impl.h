@@ -13,6 +13,7 @@ namespace gr {
 /*!
  * @brief The encoder of the convolutional code of rate 1/2 bits ber symbol as specified in CCSDS 131.0-B-3.
  *        The generator polynomials of the encoder are g1(x) = x^6 + x^5 + x^4 + x^3 + 1    &   g2(x) = x^6 + x^4 + x^3 + x + 1
+ *        The bit generated from the second generator is inversed as described in 3.3.2 section of CCSDS 131.0-B-3.
  * @ingroup a3sat
  *
  * Input: 2048 bit frame
@@ -55,7 +56,7 @@ namespace gr {
              * @param output_items The output buffer
              * @return noutput_items
              */
-            int general_work(int noutput_items,
+            int general_work(uint16_t noutput_items,
                              gr_vector_int &ninput_items,
                              gr_vector_const_void_star &input_items,
                              gr_vector_void_star &output_items);
@@ -66,7 +67,7 @@ namespace gr {
              * @param noutput_items
              * @param ninput_items_required
              */
-            void forecast(int noutput_items,
+            void forecast(uint16_t noutput_items,
                           gr_vector_int &ninput_items_required);
 
         };
