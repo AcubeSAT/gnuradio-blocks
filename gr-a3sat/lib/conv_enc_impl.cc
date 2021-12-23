@@ -22,7 +22,7 @@ namespace gr {
         }
 
         void
-        conv_enc_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required) {
+        conv_enc_impl::forecast(uint16_t noutput_items, gr_vector_int &ninput_items_required) {
             ninput_items_required[0] =  noutput_items/rate;
         }
 
@@ -30,7 +30,7 @@ namespace gr {
         }
 
         int
-        conv_enc_impl::general_work (int noutput_items,
+        conv_enc_impl::general_work (uint16_t noutput_items,
                                      gr_vector_int &ninput_items,
                                      gr_vector_const_void_star &input_items,
                                      gr_vector_void_star &output_items) {
@@ -51,7 +51,12 @@ namespace gr {
                     for (int stateBit = 0; stateBit < generatorBit; stateBit++) {
                         *out ^= in[stateBit] * generator[iGenerator][constraintLength - generatorBit + stateBit];
                     }
-                    *out ^= iGenerator;
+                    if (iGenerator == 1){
+                        *out ^= 1;
+                    }
+                    else{
+                        *out ^= 0;
+                    }
                     out++;
                 }
             }
@@ -65,7 +70,12 @@ namespace gr {
                     for (int stateBit = 0; stateBit < constraintLength; stateBit++) {
                         *out ^= in[generatorBit + stateBit] * generator[iGenerator][stateBit];
                     }
-                    *out ^= iGenerator;
+                    if (iGenerator == 1){
+                        *out ^= 1;
+                    }
+                    else{
+                        *out ^= 0;
+                    }
                     out++;
                 }
             }

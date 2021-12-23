@@ -5,11 +5,7 @@
 #include <gnuradio/io_signature.h>
 #include "conv_dec_impl.h"
 #include <iostream>
-#include <cfloat>
-#include <fstream>
 #include <cmath>
-
-
 
 namespace gr {
     namespace a3sat {
@@ -31,12 +27,12 @@ namespace gr {
         }
 
         void
-        conv_dec_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required) {
+        conv_dec_impl::forecast(uint16_t noutput_items, gr_vector_int &ninput_items_required) {
             ninput_items_required[0] = noutput_items * rate;
         }
 
         int
-        conv_dec_impl::general_work (int noutput_items,
+        conv_dec_impl::general_work (uint16_t noutput_items,
                                      gr_vector_int &ninput_items,
                                      gr_vector_const_void_star &input_items,
                                      gr_vector_void_star &output_items) {
@@ -68,15 +64,16 @@ namespace gr {
                         for (uint8_t i = 0; i < constraintLength - 1; i++) {
                             if (temporaryState > 0) {
                                 binaryState[constraintLength - i - 2] = temporaryState % 2;
-                                temporaryState = temporaryState / 2;
+                                temporaryState /= 2;
                             } else {
                                 binaryState[constraintLength - i - 2] = 0;
                             }
                         }
 
                         /*!
-                         * Calculates possible next states and the corresponding branch metric for each transmission.
-                         * Then updates transmitted paths in the trellis.
+                         * Performs pre-padding in the transmitted codeword based on the previous state.
+                         * Then it calculates the corresponding branch metric for each case (0/ 1 transmission) for any of the possible next states.
+                         * Finally it updates transmitted paths in the trellis diagram.
                          */
                         transmittedOne[0] = 1;
                         transmittedZero[0] = 0;
