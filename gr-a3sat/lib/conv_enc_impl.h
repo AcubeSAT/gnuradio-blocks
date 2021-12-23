@@ -52,7 +52,7 @@ namespace gr {
              * @param output_items The output buffer
              * @return noutput_items
              */
-            int general_work(uint16_t noutput_items,
+            bool general_work(uint16_t noutput_items,
                              gr_vector_int &ninput_items,
                              gr_vector_const_void_star &input_items,
                              gr_vector_void_star &output_items);

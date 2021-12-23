@@ -31,7 +31,7 @@ namespace gr {
             ninput_items_required[0] = noutput_items * rate;
         }
 
-        int
+        uint8_t
         conv_dec_impl::general_work (uint16_t noutput_items,
                                      gr_vector_int &ninput_items,
                                      gr_vector_const_void_star &input_items,
@@ -39,14 +39,14 @@ namespace gr {
             const float *in = (const float *) input_items[0];
             uint8_t *out = (uint8_t *) output_items[0];
 
-            const int maxNumOfStates = int(pow(2, constraintLength - 2));
+            const uint8_t maxNumOfStates = static_cast<uint8_t>(pow(2, constraintLength - 2));
 
             memset(pathMetric, INT8_MAX, sizeof(pathMetric));
             memset(paths, 0, sizeof(paths));
 
             pathMetric[0] = 0;
 
-            for (int inputItem = 0; inputItem < noutput_items; inputItem++) {
+            for (uint16_t inputItem = 0; inputItem < noutput_items; inputItem++) {
 
                 memset(branchMetric, INT8_MAX, sizeof(branchMetric));
                 memset(transmittedPaths, 0, sizeof(transmittedPaths));
@@ -115,14 +115,14 @@ namespace gr {
             optimalPath = pathMetric[0];
             optimalPathIndex = 0;
 
-            for (int path = 1; path < int(pow(2, (constraintLength - 1))); path++) {
+            for (uint8_t path = 1; path < uint8_t(pow(2, (constraintLength - 1))); path++) {
                 if (pathMetric[path] < optimalPath) {
                     optimalPath = pathMetric[path];
                     optimalPathIndex = path;
                 }
             }
 
-            for(int outIndex = 0; outIndex < noutput_items; outIndex++){
+            for(uint16_t outIndex = 0; outIndex < noutput_items; outIndex++){
                 *out = paths[optimalPathIndex][outIndex];
                 out++;
             }
