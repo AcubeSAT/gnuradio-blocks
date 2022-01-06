@@ -37,7 +37,6 @@ class qa_conv_enc(gr_unittest.TestCase):
         dst_bit_stream = open(r"../../python/encoder_dst_data", "r")
         expected_result = tuple(map(int, dst_bit_stream.readlines()))
         dst_bit_stream.close()
-
         conv_enc = a3sat.conv_enc()
         src = blocks.vector_source_b(src_data, False, 1, [])
         self.tb.connect(src, conv_enc)
