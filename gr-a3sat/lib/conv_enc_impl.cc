@@ -26,15 +26,15 @@ namespace gr {
         }
 
         void
-        conv_enc_impl::forecast(uint16_t noutput_items, gr_vector_int &ninput_items_required) {
+        conv_enc_impl::forecast(int noutput_items, gr_vector_int &ninput_items_required) {
             ninput_items_required[0] =  noutput_items/rate;
         }
 
         conv_enc_impl::~conv_enc_impl() {
         }
 
-        bool
-        conv_enc_impl::general_work (uint16_t noutput_items,
+        int
+        conv_enc_impl::general_work (int noutput_items,
                                      gr_vector_int &ninput_items,
                                      gr_vector_const_void_star &input_items,
                                      gr_vector_void_star &output_items) {
