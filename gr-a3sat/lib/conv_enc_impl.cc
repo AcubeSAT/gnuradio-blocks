@@ -67,19 +67,17 @@ namespace gr {
 
             /*!
              * @brief Multiplies the encoder's sliding window bits with each generator polynomial.
-             * The bit generated from the second generator is inversed according to the CCSDS 131.0-B-3
              */
             for(uint16_t generatorBit = 0; generatorBit < ninput_items[0] - (constraintLength - 1); generatorBit++) {
                 for (uint8_t iGenerator = 0; iGenerator < rate; iGenerator++) {
                     for (uint8_t stateBit = 0; stateBit < constraintLength; stateBit++) {
                         *out ^= in[generatorBit + stateBit] * generator[iGenerator][stateBit];
                     }
-                    if (iGenerator == 1){
-                        *out ^= 1;
-                    }
-                    else{
-                        *out ^= 0;
-                    }
+                    /*!
+                     * xor operation with the iGenerator is used, so that the bit generated from the second generator is inversed.
+                     * e.x. (bit = 1) iGenerator=0: 1 ^ iGenerator = 1, iGenerator=1: 1 ^ iGenerator = 0
+                     */
+                    *out ^= iGenerator;
                     out++;
                 }
             }

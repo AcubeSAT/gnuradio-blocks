@@ -148,6 +148,10 @@ namespace gr {
                 for (uint8_t stateBit = 0; stateBit < constraintLength; stateBit++) {
                     parityBit ^= state[stateBit] * generator[iGenerator][stateBit];
                 }
+                /*!
+                 * xor operation with the iGenerator is used, so that the parity bit when generated from the second generator is inversed.
+                 * e.x. (parityBit = 1) iGenerator=0: 1 ^ iGenerator = 1, iGenerator=1: 1 ^ iGenerator = 0
+                 */
                 branchMetric_2 += float(pow(voltageReference[parityBit^iGenerator] - transmittedSymbol[iGenerator], 2));
             }
             return branchMetric_2;

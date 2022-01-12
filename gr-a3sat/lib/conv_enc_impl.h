@@ -1,7 +1,3 @@
-/*
- * Copyright 2021 SpaceDot.
- */
-
 #ifndef INCLUDED_A3SAT_CONV_ENC_IMPL_H
 #define INCLUDED_A3SAT_CONV_ENC_IMPL_H
 
@@ -10,15 +6,15 @@
 
 namespace gr {
     namespace a3sat {
-/*!
- * @brief The encoder of the convolutional code of rate 1/2 bits ber symbol as specified in CCSDS 131.0-B-3.
- *        The generator polynomials of the encoder are g1(x) = x^6 + x^5 + x^4 + x^3 + 1    &   g2(x) = x^6 + x^4 + x^3 + x + 1
- *        The bit generated from the second generator is inversed as described in 3.3.2 section of CCSDS 131.0-B-3.
- * @ingroup a3sat
- *
- * Input: 2048 bit frame
- * Output: Encoded 4096 bit frame
- */
+        /*!
+         * @brief The encoder of the convolutional code of rate 1/2 bits ber symbol as specified in CCSDS 131.0-B-3.
+         *        The generator polynomials of the encoder are g1(x) = x^6 + x^5 + x^4 + x^3 + 1    &   g2(x) = x^6 + x^4 + x^3 + x + 1
+         *        The bit generated from the second generator is inversed as described in 3.3.2 section of CCSDS 131.0-B-3.
+         * @ingroup a3sat
+         *
+         * Input: 2048 bit frame
+         * Output: Encoded 4096 bit frame
+         */
         class conv_enc_impl : public conv_enc
         {
             /**
