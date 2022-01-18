@@ -22,7 +22,7 @@ namespace gr {
                 : gr::block("conv_enc",
                             gr::io_signature::make(1, 1, sizeof(bool)),
                             gr::io_signature::make(1, 1, sizeof(bool))) {
-            set_output_multiple(encodedCodewordLength);
+            set_output_multiple(rate);
         }
 
         void
