@@ -1,7 +1,3 @@
-/*
- * Copyright 2021 SpaceDot.
- */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -95,7 +91,11 @@ namespace gr {
                     q1[i] = initialDecodedMessage[parity];
                     q0[i] = 1 - q1[i];
                 }
-                while (checkDecoder(out)) {
+                for (int i = 0; i < sizeReceivedMessage; i++){
+                    Q1[i] = initialDecodedMessage[i];
+                }
+                uint8_t counter = 0;
+                while (checkDecoder(out) && counter < 50) {
 
                     uint64_t rowNode[totalRows] = {0};
                     uint64_t columnNode[totalColumns] = {0};
@@ -128,7 +128,7 @@ namespace gr {
                     }
                     for (int i = 0; i < sizeParity; i++) {
                         uint16_t positionOfParity = rowsParityBits[i];
-                        double possibility1 = initialDecodedMessage[positionOfParity];
+                        double possibility1 = Q1[positionOfParity];
                         uint64_t thisParity = positionColumns[positionOfParity];
                         uint64_t nextParity;
                         if (thisParity != positionColumns[totalColumns - 1]) {
@@ -160,7 +160,7 @@ namespace gr {
                     }
                     for (int i = 0; i < sizeReceivedMessage; i++) {
                         uint16_t positionOfParity = rowsParityBits[i];
-                        double possibility1 = initialDecodedMessage[positionOfParity];
+                        double possibility1 = Q1[positionOfParity];
                         uint64_t thisParity = positionColumns[i];
                         uint64_t nextParity;
                         if (thisParity != positionColumns[totalColumns - 1]) {
@@ -194,6 +194,7 @@ namespace gr {
                             out[i] = false;
                         }
                     }
+                    counter += 1;
                 }
                 for (int i = 0; i < sizeInitialMessage; i++) {
                     if (out[i]) {

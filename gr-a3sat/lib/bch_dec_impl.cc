@@ -1,7 +1,3 @@
-/*
- * Copyright 2021 SpaceDot.
- */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -116,7 +112,7 @@ namespace gr {
             uint8_t *in = (uint8_t *) input_items[0];
             uint8_t *out = (uint8_t *) output_items[0];
             static const uint8_t generator = 197;
-            for (int j = 0; j < noutput_items; j += n_bch) {
+            for (int j = 0; j < noutput_items; j += k_bch) {
                 uint8_t temp = 0;
                 uint8_t syndrome = 0;
                 uint8_t i = 1;
@@ -153,7 +149,7 @@ namespace gr {
                 out += k_bch;
                 in += n_bch;
             }
-            consume_each(ninput_items[0]);
+            consume_each((noutput_items / k_bch) * n_bch);
             return noutput_items;
         }
 
