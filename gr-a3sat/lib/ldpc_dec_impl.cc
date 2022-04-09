@@ -91,11 +91,12 @@ namespace gr {
                     q1[i] = initialDecodedMessage[parity];
                     q0[i] = 1 - q1[i];
                 }
-                for (int i = 0; i < sizeReceivedMessage; i++){
+                for (int i = 0; i < sizeReceivedMessage; i++) {
                     Q1[i] = initialDecodedMessage[i];
                 }
                 uint8_t counter = 0;
-                while (checkDecoder(out) && counter < 50) {
+                uint8_t maxRepetitions = 20;
+                while (checkDecoder(out) && counter < maxRepetitions) {
 
                     uint64_t rowNode[totalRows] = {0};
                     uint64_t columnNode[totalColumns] = {0};
@@ -159,8 +160,7 @@ namespace gr {
                         q1[i] *= K;
                     }
                     for (int i = 0; i < sizeReceivedMessage; i++) {
-                        uint16_t positionOfParity = rowsParityBits[i];
-                        double possibility1 = Q1[positionOfParity];
+                        double possibility1 = Q1[i];
                         uint64_t thisParity = positionColumns[i];
                         uint64_t nextParity;
                         if (thisParity != positionColumns[totalColumns - 1]) {
