@@ -4,9 +4,13 @@ This repository contains the implementation of Error Correction Codes applied to
 
 The applied error correction techniques are the following:
 - BCH for TC packets 
+<<<<<<< HEAD
 
 - LDPC for the S-Band payload data TM
 
+=======
+- LDPC for the S-Band payload data TM
+>>>>>>> 84c872d903df1d5e8fa96947c2eb403685824ced
 - Convolutional for the UHF TM data
 
 Each implementation follows the specifications described in the [CCSDS 131.0-B-3](https://public.ccsds.org/Pubs/131x0b3e1.pdf).
@@ -24,7 +28,6 @@ This folder includes the `gr-a3sat` GNU Radio out-of-tree (OOT) modules implemen
 ## Build & Install
 
 ### Requirements
-
 
 GNU Radio ( = 3.8 )
 CMake ( > 3.1.0 )
