@@ -1,0 +1,5 @@
+.*
+!/.gitignore
+venv/
+gr-a3sat/build/
+gr-a3sat/cmake-build-debug/
