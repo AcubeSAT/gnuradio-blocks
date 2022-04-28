@@ -16,5 +16,6 @@ install(FILES
     ldpc_enc.h
     ldpc_dec.h
     bch_enc.h
-    bch_dec.h DESTINATION include/a3sat
+    bch_dec.h
+    bch_pdu_encoder.h DESTINATION include/a3sat
 )

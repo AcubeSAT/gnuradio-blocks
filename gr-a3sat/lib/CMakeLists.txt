@@ -16,7 +16,8 @@ list(APPEND a3sat_sources
     ldpc_enc_impl.cc
     ldpc_dec_impl.cc
     bch_enc_impl.cc
-    bch_dec_impl.cc )
+    bch_dec_impl.cc
+    bch_pdu_encoder_impl.cc )
 
 set(a3sat_sources "${a3sat_sources}" PARENT_SCOPE)
 if(NOT a3sat_sources)

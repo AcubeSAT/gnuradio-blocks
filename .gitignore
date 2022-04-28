@@ -3,3 +3,4 @@
 venv/
 gr-a3sat/build/
 gr-a3sat/cmake-build-debug/
+gr-a3sat/lib/cmake-build-debug/

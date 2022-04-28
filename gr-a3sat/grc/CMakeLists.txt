@@ -11,5 +11,6 @@ install(FILES
     a3sat_ldpc_enc.block.yml
     a3sat_ldpc_dec.block.yml
     a3sat_bch_enc.block.yml
-    a3sat_bch_dec.block.yml DESTINATION share/gnuradio/grc/blocks
+    a3sat_bch_dec.block.yml
+    a3sat_bch_pdu_encoder.block.yml DESTINATION share/gnuradio/grc/blocks
 )

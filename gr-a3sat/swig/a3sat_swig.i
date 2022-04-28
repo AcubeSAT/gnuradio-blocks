@@ -14,6 +14,7 @@
 #include "a3sat/ldpc_dec.h"
 #include "a3sat/bch_enc.h"
 #include "a3sat/bch_dec.h"
+#include "a3sat/bch_pdu_encoder.h"
 %}
 
 %include "a3sat/conv_enc.h"
@@ -28,3 +29,5 @@ GR_SWIG_BLOCK_MAGIC2(a3sat, ldpc_dec);
 GR_SWIG_BLOCK_MAGIC2(a3sat, bch_enc);
 %include "a3sat/bch_dec.h"
 GR_SWIG_BLOCK_MAGIC2(a3sat, bch_dec);
+%include "a3sat/bch_pdu_encoder.h"
+GR_SWIG_BLOCK_MAGIC2(a3sat, bch_pdu_encoder);

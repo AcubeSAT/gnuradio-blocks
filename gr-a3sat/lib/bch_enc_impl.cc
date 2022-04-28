@@ -33,6 +33,7 @@ namespace gr {
         bch_enc_impl::~bch_enc_impl() {
         }
 
+
         int
         bch_enc_impl::general_work(int noutput_items,
                                    gr_vector_int &ninput_items,
@@ -76,6 +77,5 @@ namespace gr {
             consume_each((noutput_items / n_bch) * k_bch);
             return noutput_items;
         }
-
     } /* namespace a3sat */
 } /* namespace gr */
