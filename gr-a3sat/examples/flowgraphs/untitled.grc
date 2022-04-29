@@ -1,0 +1,122 @@
+options:
+  parameters:
+    author: A3SAT
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: A3SAT
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: bch_pdu_enc
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Not titled yet
+    window_size: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '32000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 12]
+    rotation: 0
+    state: enabled
+- name: a3sat_bch_pdu_encoder_0
+  id: a3sat_bch_pdu_encoder
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 344.0]
+    rotation: 0
+    state: true
+- name: satnogs_debug_msg_source_raw_0
+  id: satnogs_debug_msg_source_raw
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: '5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msg: '[51, 68, 85, 102]'
+    repeat: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 452.0]
+    rotation: 0
+    state: true
+- name: satnogs_debug_msg_source_raw_1
+  id: satnogs_debug_msg_source_raw
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msg: '[0]'
+    repeat: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 300.0]
+    rotation: 0
+    state: true
+- name: satnogs_multi_format_msg_sink_0
+  id: satnogs_multi_format_msg_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    filepath: ''
+    format: '0'
+    outstream: 'True'
+    timestamp: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 404.0]
+    rotation: 0
+    state: true
+
+connections:
+- [a3sat_bch_pdu_encoder_0, pdu, satnogs_multi_format_msg_sink_0, in]
+- [satnogs_debug_msg_source_raw_0, msg, a3sat_bch_pdu_encoder_0, acquisition]
+- [satnogs_debug_msg_source_raw_1, msg, a3sat_bch_pdu_encoder_0, idle]
+
+metadata:
+  file_format: 1

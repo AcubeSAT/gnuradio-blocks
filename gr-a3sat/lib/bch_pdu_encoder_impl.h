@@ -10,9 +10,10 @@ namespace gr {
     class bch_pdu_encoder_impl : public bch_pdu_encoder
     {
      private:
+        pmt::pmt_t idle_seq;
+
         void handle_acquired_sequence(pmt::pmt_t message);
         void handle_idle_sequence();
-        bool acquiring_signal = false;
 
      public:
       bch_pdu_encoder_impl();
