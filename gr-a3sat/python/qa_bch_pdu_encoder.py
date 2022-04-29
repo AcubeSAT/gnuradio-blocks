@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('../cmake-build-debug/swig')
+
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import a3sat_swig as a3sat
