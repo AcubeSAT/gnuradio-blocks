@@ -21,7 +21,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: Not titled yet
+    title: BCH PDU Encoder
     window_size: ''
   states:
     bus_sink: false
@@ -32,6 +32,30 @@ options:
     state: enabled
 
 blocks:
+- name: idle_message_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 124.0]
+    rotation: 0
+    state: enabled
+- name: message_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '3'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [168, 124.0]
+    rotation: 0
+    state: enabled
 - name: samp_rate
   id: variable
   parameters:
@@ -56,7 +80,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [688, 408.0]
+    coordinate: [512, 408.0]
     rotation: 0
     state: true
 - name: satnogs_debug_msg_source_raw_0
@@ -65,7 +89,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    delay: '5'
+    delay: message_rate
     maxoutbuf: '0'
     minoutbuf: '0'
     msg: '[51, 68, 85, 102]'
@@ -74,7 +98,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 452.0]
+    coordinate: [72, 484.0]
     rotation: 0
     state: true
 - name: satnogs_debug_msg_source_raw_1
@@ -83,7 +107,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    delay: '1'
+    delay: idle_message_rate
     maxoutbuf: '0'
     minoutbuf: '0'
     msg: '[0]'
@@ -92,7 +116,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [264, 300.0]
+    coordinate: [72, 244.0]
     rotation: 0
     state: true
 - name: satnogs_multi_format_msg_sink_0
@@ -109,7 +133,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [984, 380.0]
+    coordinate: [832, 404.0]
     rotation: 0
     state: true
 
