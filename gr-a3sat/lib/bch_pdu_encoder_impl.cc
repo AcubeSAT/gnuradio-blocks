@@ -28,7 +28,6 @@ namespace gr {
             }
 
             // Add the start sequence to the transmitted CLTU
-            uint8_t cltu_header[2] = {0b11101011, 0b10010000};
             memcpy(transmitted_cltu, cltu_header, 2);
 
             // Register message ports
@@ -75,15 +74,16 @@ namespace gr {
                     uncoded_frame[(i * 8) + 7 - bit] = (uint8_t) ((uncoded_frame_1[i] & bit_position[bit]) != 0x00);
                 }
             }
+
             uint8_t *uncoded_curr = uncoded_frame;
             for (int i = 0; i < (len + 1) * 8; i += n_bch) {
                 uint8_t remainder = 0;
                 uint8_t current_byte = 0;
                 uint8_t temp = 0;
 
-                memcpy(transmitted_cltu + 2 + i * n_bch, uncoded_frame_1, sizeof(uint8_t) * k_bch / 8);
+                memcpy(transmitted_cltu + 2 + i * n_bch / 8, uncoded_frame_1, sizeof(uint8_t) * k_bch / 8);
 
-                for (int bytes = 0; len < k_bch / 8; bytes++) {
+                for (int bytes = 0; bytes < k_bch / 8; bytes++) {
                     current_byte = 0;
 
                     for (int bit = 7; bit >= 0; bit--) {
@@ -101,9 +101,11 @@ namespace gr {
                         }
                     }
                 }
-                *(transmitted_cltu + 2 + (i + 1) * n_bch - 1) = remainder;
+                *(transmitted_cltu + 2 + (i + 1) * (n_bch / 8) - 1) = remainder;
 
             }
+
+            memcpy(transmitted_cltu + 2 + len + n_bch / 8, cltu_trailer, 8);
             message_port_pub(pmt::mp("pdu"), pmt::init_u8vector(len, transmitted_cltu));
         }
 
