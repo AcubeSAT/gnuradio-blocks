@@ -72,22 +72,17 @@ namespace gr {
 
         uint16_t len = pmt::blob_length(b);
 
-        uint8_t *uncoded_frame = (uint8_t *) pmt::blob_data(b);
-
-        // Determine how many codeblocks there are in the p
-        uint16_t num_of_codeblocks = len/56;
-
-        // Iterate over the yet uncoded codeblocks
-        for (uint16_t codeblock_i; codeblock_i < num_of_codeblocks; codeblock_i++){
-            uint8_t encoded_codeblock[64];
-
+        uint8_t *uncoded_frame_1 = (uint8_t *) pmt::blob_data(b);
+        for(int i = 0; i<len; i++) {
+            for (int bit = 0; bit <8 ; bit++) {
+                uncoded_frame[(i*len)+7-bit] = (uint8_t) ((uncoded_frame_1[i] & bit_position[bit]) != 0x00);
+            }
         }
-
         uint8_t* uncoded_curr = uncoded_frame;
         // skip header of cltu
         uint8_t* transmitted_cltu_codeblocks_curr = transmitted_cltu + 2;
 
-        for (int i = 0; i < len; i += n_bch) {
+        for (int i = 0; i < (len+1)*8; i += n_bch) {
             uint8_t remainder = 0;
             uint8_t current_byte = 0;
             uint8_t temp = 0;
@@ -95,7 +90,7 @@ namespace gr {
             memcpy(transmitted_cltu_codeblocks_curr, uncoded_curr, sizeof(uint8_t) * k_bch);
             transmitted_cltu_codeblocks_curr += k_bch;
 
-            for (int bytes = 0; bytes < k_bch / 8; bytes++) {
+            for (int bytes = 0; len < k_bch / 8; bytes++) {
                 current_byte = 0;
 
                 for (int bit = 7; bit >= 0; bit--) {

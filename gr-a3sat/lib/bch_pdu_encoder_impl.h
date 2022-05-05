@@ -31,6 +31,7 @@ namespace gr {
          * Buffer of the transmitted CLTU
          */
         uint8_t transmitted_cltu[MAX_PACKET_SIZE];
+        uint8_t uncoded_frame[MAX_PACKET_SIZE*8];
 
         void handle_acquired_sequence(pmt::pmt_t message);
         void handle_idle_sequence();
