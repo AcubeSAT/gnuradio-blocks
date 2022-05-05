@@ -76,16 +76,12 @@ namespace gr {
                 }
             }
             uint8_t *uncoded_curr = uncoded_frame;
-            // skip header of cltu
-            uint8_t *transmitted_cltu_codeblocks_curr = transmitted_cltu + 2;
-
             for (int i = 0; i < (len + 1) * 8; i += n_bch) {
                 uint8_t remainder = 0;
                 uint8_t current_byte = 0;
                 uint8_t temp = 0;
 
-                memcpy(transmitted_cltu_codeblocks_curr, uncoded_curr, sizeof(uint8_t) * k_bch);
-                transmitted_cltu_codeblocks_curr += k_bch;
+                memcpy(transmitted_cltu + 2 + i * n_bch, uncoded_frame_1, sizeof(uint8_t) * k_bch / 8);
 
                 for (int bytes = 0; len < k_bch / 8; bytes++) {
                     current_byte = 0;
@@ -105,13 +101,9 @@ namespace gr {
                         }
                     }
                 }
-                for (int bit = 7; bit >= 0; bit--) {
-                    *transmitted_cltu_codeblocks_curr = (uint8_t) (remainder & bit_position[bit]) != 0x00;
-                    transmitted_cltu_codeblocks_curr++;
-                }
-            }
+                *(transmitted_cltu + 2 + (i + 1) * n_bch - 1) = remainder;
 
-            // TODO: Add trailer
+            }
             message_port_pub(pmt::mp("pdu"), pmt::init_u8vector(len, transmitted_cltu));
         }
 
