@@ -27,7 +27,7 @@ class qa_bch_pdu_encoder(gr_unittest.TestCase):
         self.tb.msg_connect((satnogs_debug_msg_source_raw_0, 'msg'), (a3sat_bch_pdu_encoder_0, 'acquisition'))
         self.tb.msg_connect((satnogs_debug_msg_source_raw_1, 'msg'), (a3sat_bch_pdu_encoder_0, 'idle'))
         self.tb.run()
-        self.tb.stop()
+        # self.tb.stop()
 
 
 if __name__ == '__main__':
