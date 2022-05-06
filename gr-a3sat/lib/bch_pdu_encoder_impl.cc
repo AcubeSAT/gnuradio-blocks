@@ -76,7 +76,7 @@ namespace gr {
             }
 
             uint8_t *uncoded_curr = uncoded_frame;
-            for (int i = 0; i < (len + 1) * 8; i += n_bch) {
+            for (int i = 0; i < len / 7; i++) {
                 uint8_t remainder = 0;
                 uint8_t current_byte = 0;
                 uint8_t temp = 0;
