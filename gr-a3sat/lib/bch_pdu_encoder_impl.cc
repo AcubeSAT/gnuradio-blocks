@@ -105,7 +105,7 @@ namespace gr {
 
             }
 
-            memcpy(transmitted_cltu + 2 + len + n_bch / 8, cltu_trailer, 8);
+            memcpy(transmitted_cltu + 2 + len * n_bch / k_bch, cltu_trailer, 8);
             message_port_pub(pmt::mp("pdu"), pmt::init_u8vector(len, transmitted_cltu));
         }
 
