@@ -22,7 +22,7 @@ class qa_bch_pdu_encoder(gr_unittest.TestCase):
         satnogs_multi_format_msg_sink_0 = satnogs.multi_format_msg_sink(0, False, True, '')
         satnogs_debug_msg_source_raw_1 = satnogs.debug_msg_source_raw([0], 1, False)
         satnogs_debug_msg_source_raw_0 = satnogs.debug_msg_source_raw(
-            [51, 68, 85, 102, 42, 56, 10, 51, 68, 85, 102, 42, 56, 10], 5, True)
+            [51, 68, 85, 102, 42, 56, 10, 51, 68], 5, True)
         a3sat_bch_pdu_encoder_0 = a3sat.bch_pdu_encoder()
         self.tb.msg_connect((a3sat_bch_pdu_encoder_0, 'pdu'), (satnogs_multi_format_msg_sink_0, 'in'))
         self.tb.msg_connect((satnogs_debug_msg_source_raw_0, 'msg'), (a3sat_bch_pdu_encoder_0, 'acquisition'))

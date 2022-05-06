@@ -57,7 +57,7 @@ namespace gr {
             pmt::pmt_t b;
             static const uint8_t generator = 197;
             static const uint8_t bit_position[] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
-
+            static const uint8_t filler_bytes[] = {0x55, 0x55, 0x55, 0x55, 0x55, 0x55};
             if (pmt::is_blob(message)) {
                 b = message;
             } else if (pmt::is_pair(message)) {
@@ -68,7 +68,14 @@ namespace gr {
 
             uint16_t len = pmt::blob_length(b);
 
+            float number_of_codewords = (static_cast < float > (len)) / 7;
             uint8_t *uncoded_frame_1 = (uint8_t *) pmt::blob_data(b);
+            float temp = number_of_codewords - floor(number_of_codewords);
+            uint8_t fill = static_cast < uint8_t >(round(temp * 7));
+            memcpy(uncoded_frame_1 + fill, filler_bytes, 7 - fill);
+            len = len + 7 - fill;
+
+
             for (int i = 0; i < len; i++) {
                 for (int bit = 0; bit < 8; bit++) {
                     uncoded_frame[(i * 8) + 7 - bit] = (uint8_t) ((uncoded_frame_1[i] & bit_position[bit]) != 0x00);
