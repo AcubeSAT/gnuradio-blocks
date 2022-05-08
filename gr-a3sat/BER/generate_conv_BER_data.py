@@ -88,7 +88,7 @@ def conv_BER(test_repetitions):
         '''
         SNR = 10 * np.log10(1 / (4 * standard_deviation ** 2))
         avgNumOfErrors = average(error_counter)
-        avgBER = avgNumOfErrors / 2048
+        avgBER = avgNumOfErrors / INPUT_SIZE
         print(
             f"Seconds Passed = {(end - start)} - For SNR = {SNR} we have {avgNumOfErrors} errors or, {avgBER} error rate")
         f.write(str(SNR) + " " + str(avgBER) + "\n")
