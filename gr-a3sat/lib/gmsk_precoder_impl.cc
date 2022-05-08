@@ -19,8 +19,8 @@ namespace gr {
     
     gmsk_precoder_impl::gmsk_precoder_impl()
       : gr::block("gmsk_precoder",
-              gr::io_signature::make(1, 1, sizeof(bool)),
-              gr::io_signature::make(1, 1, sizeof(bool)))
+              gr::io_signature::make(1, 1, sizeof(uint8_t)),
+              gr::io_signature::make(1, 1, sizeof(uint8_t)))
     {}
 
     gmsk_precoder_impl::~gmsk_precoder_impl()
@@ -39,12 +39,12 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-       bool *in = (bool *) input_items[0];
-       bool *out = (bool *) output_items[0];
+       uint8_t *in = (uint8_t *) input_items[0];
+       uint8_t *out = (uint8_t *) output_items[0];
 
       for (uint16_t i = 0; i < ninput_items[0]; i++){
-          out[i] = in[i] + prev_bit + curr_k;
-          prev_bit = in[i];
+          out[i] = static_cast<bool>(in[i]) + prev_bit + curr_k;
+          prev_bit = static_cast<bool>(in[i]);
           curr_k += 1;
       }
       consume_each (noutput_items);

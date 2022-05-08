@@ -1,5 +1,5 @@
 id: a3sat_gmsk_precoder
-label: gmsk_precoder
+label: GMSK Precoder
 category: '[a3sat]'
 
 templates:
@@ -8,12 +8,12 @@ templates:
 
 inputs:
   - label: in
-    dtype: bool
+    dtype: byte
     vlen: 1
 
 outputs:
   - label: out
-    dtype: bool
+    dtype: byte
     vlen: 1
 
 file_format: 1
