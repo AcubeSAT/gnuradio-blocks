@@ -82,7 +82,7 @@ def conv_BER(test_repetitions):
         SNR = 10*log10(Px/Pn) where Px is the power of the signal and Pn is the power of the noise.
         In this case the signal is the bitstream meaning it only takes as values 1 and 0 with the same probability
         therefore E[X(n)] = 1/2 (its expected value is 1/2).
-        The power of the signal is 0 Px = σ_x^2 = E[(X(n))^2] - E[X(n)]^2 = 1/2 - 1/4 = 1/4.
+        The power of the signal is Px = σ_x^2 = E[(X(n))^2] - E[X(n)]^2 = 1/2 - 1/4 = 1/4.
         Pn is equal to the deviation Pn = σ^2.
         So we have SNR = 10*log10(1/(4*σ^2))
         '''
