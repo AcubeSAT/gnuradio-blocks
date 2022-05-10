@@ -41,7 +41,13 @@ namespace gr {
 
             void handle_idle_sequence();
 
+            void handle_terminate_sequence();
+
         public:
+
+            bool
+            stop();
+
             bch_pdu_encoder_impl();
 
             ~bch_pdu_encoder_impl();

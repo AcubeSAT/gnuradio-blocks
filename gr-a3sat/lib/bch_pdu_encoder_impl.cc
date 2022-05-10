@@ -34,6 +34,7 @@ namespace gr {
             message_port_register_in(pmt::mp("acquisition"));
             message_port_register_in(pmt::mp("idle"));
             message_port_register_out(pmt::mp("pdu"));
+            message_port_register_out(pmt::mp("terminate"));
 
             // Register message handlers
             set_msg_handler(pmt::mp("acquisition"),
@@ -45,12 +46,22 @@ namespace gr {
                             [this](pmt::pmt_t msg) {
                                 this->handle_idle_sequence();
                             });
+
+            set_msg_handler(pmt::mp("terminate"),
+                            [this](pmt::pmt_t msg) {
+                                this->handle_terminate_sequence();
+                            });
         }
 
         /*
          * Our virtual destructor.
          */
         bch_pdu_encoder_impl::~bch_pdu_encoder_impl() {
+        }
+
+        bool
+        bch_pdu_encoder_impl::stop() {
+            return true;
         }
 
         void bch_pdu_encoder_impl::handle_acquired_sequence(pmt::pmt_t message) {
@@ -72,8 +83,11 @@ namespace gr {
             uint8_t *uncoded_frame_1 = (uint8_t *) pmt::blob_data(b);
             float temp = number_of_codewords - floor(number_of_codewords);
             uint8_t fill = static_cast < uint8_t >(round(temp * 7));
-            memcpy(uncoded_frame_1 + fill, filler_bytes, 7 - fill);
-            len = len + 7 - fill;
+            if (fill > 0) {
+                memcpy(uncoded_frame_1 + fill, filler_bytes, 7 - fill);
+                len = len + 7 - fill;
+
+            }
 
 
             for (int i = 0; i < len; i++) {
@@ -113,10 +127,15 @@ namespace gr {
             }
 
             memcpy(transmitted_cltu + 2 + len * n_bch / k_bch, cltu_trailer, 8);
-            message_port_pub(pmt::mp("pdu"), pmt::init_u8vector(len, transmitted_cltu));
+            message_port_pub(pmt::mp("pdu"), pmt::init_u8vector(10 + len * n_bch / k_bch, transmitted_cltu));
         }
 
         void bch_pdu_encoder_impl::handle_idle_sequence() {
+            // Transmit idle
+            message_port_pub(pmt::mp("pdu"), idle_seq);
+        }
+
+        void bch_pdu_encoder_impl::handle_terminate_sequence() {
             // Transmit idle
             message_port_pub(pmt::mp("pdu"), idle_seq);
         }
