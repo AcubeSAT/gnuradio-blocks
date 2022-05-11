@@ -1,3 +1,10 @@
+<details>
+<summary>Click to expand</summary>
+
+[[_TOC_]]
+
+</details>
+
 # Error Correction Codes
 
 This repository contains the implementation of Error Correction Codes applied to the transmitted and received streams of data between the AcubeSAT nanosatellite and the Ground Station. 
@@ -55,3 +62,20 @@ This highly depends on the Linux distribution. You can use the CMAKE_INSTALL_PRE
 variable to alter the default installation path.
 E.g:
 cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+
+#### Docker
+
+##### Building the Custom Image
+
+Assuming you have [Docker CLI](https://docs.docker.com/engine/reference/commandline/cli/) configured for your [repository](https://docs.docker.com/engine/reference/commandline/login/) of choice:
+* `docker build -t <image_name> .`
+* `docker image tag <image_name>:latest <your_repository>/<image_name>:latest`
+* `docker push <your_repository>/<image_name>:latest`
+
+##### Using the Image Locally
+
+The Docker image can be used to provide you with an environment with all the needed dependencies installed/built. To take advantage of that, you can, for example, transfer (mount) the project file somewhere on the container, so that you don't have to copy the files over, or `git clone` again from inside the container. You can do that with [docker volumes](https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume). For example, if you were on the parent directory of `gnuradio-blocks` (otherwise, change the `$PWD/gnuradio-blocks` part), you would run:
+```sh
+docker run -ti -v $PWD/gnuradio-blocks:/gnuradio-blocks xlxs4/gnuradio
+```
+and you can access the project structure with `cd ../gnuradio-blocks`. Note that we use `$PWD` because docker wants you to use an absolute path when passing a host directory.
