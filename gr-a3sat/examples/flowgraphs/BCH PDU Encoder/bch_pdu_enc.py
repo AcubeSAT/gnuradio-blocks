@@ -5,10 +5,10 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # GNU Radio Python Flow Graph
-# Title: Not titled yet
+# Title: BCH PDU Encoder
 # Author: A3SAT
 # Copyright: A3SAT
-# GNU Radio version: 3.8.2.0
+# GNU Radio version: 3.8.5.0
 
 from distutils.version import StrictVersion
 
@@ -38,9 +38,9 @@ from gnuradio import qtgui
 class bch_pdu_enc(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Not titled yet")
+        gr.top_block.__init__(self, "BCH PDU Encoder")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Not titled yet")
+        self.setWindowTitle("BCH PDU Encoder")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -72,15 +72,16 @@ class bch_pdu_enc(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 32000
+        self.message_rate = message_rate = 0.3
+        self.idle_message_rate = idle_message_rate = 1
 
         ##################################################
         # Blocks
         ##################################################
-        self.satnogs_multi_format_msg_sink_0 = satnogs.multi_format_msg_sink(0, False, True, '')
-        self.satnogs_debug_msg_source_raw_1 = satnogs.debug_msg_source_raw([0], 1, True)
-        self.satnogs_debug_msg_source_raw_0 = satnogs.debug_msg_source_raw([51, 68, 85, 102], 5, False)
+        self.satnogs_multi_format_msg_sink_0 = satnogs.multi_format_msg_sink(2, True, False, '/home/konkapo/jj')
+        self.satnogs_debug_msg_source_raw_1 = satnogs.debug_msg_source_raw([0], idle_message_rate, False)
+        self.satnogs_debug_msg_source_raw_0 = satnogs.debug_msg_source_raw([51, 68, 85, 102], message_rate, False)
         self.a3sat_bch_pdu_encoder_0 = a3sat.bch_pdu_encoder()
-
 
 
         ##################################################
@@ -101,6 +102,18 @@ class bch_pdu_enc(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+
+    def get_message_rate(self):
+        return self.message_rate
+
+    def set_message_rate(self, message_rate):
+        self.message_rate = message_rate
+
+    def get_idle_message_rate(self):
+        return self.idle_message_rate
+
+    def set_idle_message_rate(self, idle_message_rate):
+        self.idle_message_rate = idle_message_rate
 
 
 
