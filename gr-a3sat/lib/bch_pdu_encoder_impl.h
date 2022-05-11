@@ -41,12 +41,17 @@ namespace gr {
 
             void handle_idle_sequence();
 
-            void handle_terminate_sequence();
-
+//            void handle_terminate_sequence();
+//
         public:
 
             bool
             stop();
+
+            int general_work(int noutput_items,
+                             gr_vector_int &ninput_items,
+                             gr_vector_const_void_star &input_items,
+                             gr_vector_void_star &output_items);
 
             bch_pdu_encoder_impl();
 

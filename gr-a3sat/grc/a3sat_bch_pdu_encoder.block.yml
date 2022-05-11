@@ -14,15 +14,18 @@ templates:
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
 inputs:
-- id: idle
-  domain: message
+  - id: idle
+    domain: message
 
-- id: acquisition
-  domain: message
+  - id: acquisition
+    domain: message
+
+#  - id: terminate
+#    domain: message
 
 outputs:
-- id: pdu
-  domain: message
+  - id: pdu
+    domain: message
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.

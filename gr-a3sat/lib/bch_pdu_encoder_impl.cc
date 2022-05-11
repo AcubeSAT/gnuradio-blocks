@@ -34,7 +34,7 @@ namespace gr {
             message_port_register_in(pmt::mp("acquisition"));
             message_port_register_in(pmt::mp("idle"));
             message_port_register_out(pmt::mp("pdu"));
-            message_port_register_out(pmt::mp("terminate"));
+//            message_port_register_in(pmt::mp("terminate"));
 
             // Register message handlers
             set_msg_handler(pmt::mp("acquisition"),
@@ -47,10 +47,10 @@ namespace gr {
                                 this->handle_idle_sequence();
                             });
 
-            set_msg_handler(pmt::mp("terminate"),
-                            [this](pmt::pmt_t msg) {
-                                this->handle_terminate_sequence();
-                            });
+//            set_msg_handler(pmt::mp("terminate"),
+//                            [this](pmt::pmt_t msg) {
+//                                this->handle_terminate_sequence();
+//                            });
         }
 
         /*
@@ -62,6 +62,13 @@ namespace gr {
         bool
         bch_pdu_encoder_impl::stop() {
             return true;
+        }
+
+        int bch_pdu_encoder_impl::general_work(int noutput_items,
+                                               gr_vector_int &ninput_items,
+                                               gr_vector_const_void_star &input_items,
+                                               gr_vector_void_star &output_items) {
+            return 0;
         }
 
         void bch_pdu_encoder_impl::handle_acquired_sequence(pmt::pmt_t message) {
@@ -135,10 +142,7 @@ namespace gr {
             message_port_pub(pmt::mp("pdu"), idle_seq);
         }
 
-        void bch_pdu_encoder_impl::handle_terminate_sequence() {
-            // Transmit idle
-            message_port_pub(pmt::mp("pdu"), idle_seq);
-        }
+
     } /* namespace a3sat */
 } /* namespace gr */
 
