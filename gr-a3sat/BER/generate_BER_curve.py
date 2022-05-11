@@ -1,6 +1,6 @@
-'''
+"""
 This file reads SNR-BER values from two .txt files and generates the BER curves
-'''
+"""
 import matplotlib.pyplot as plt
 
 

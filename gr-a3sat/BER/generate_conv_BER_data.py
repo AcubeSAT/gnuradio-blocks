@@ -1,4 +1,4 @@
-'''
+"""
 This script:
 - Generates a pseudorandom bitstream of length 2048
 - Encodes the pseudorandom bitstream using the convolutional encoder as implemented in ../lib/conv_enc_impl.cc
@@ -13,7 +13,7 @@ Note:
     "theoretical_BER_data.txt" includes another dataset taken from CCSDS 130.1-G-3 GREEN BOOK JUNE 2020 figure 4-6
     unquantized soft decision using https://automeris.io/WebPlotDigitizer/
     These two data sets are then plotted together using generate_BER_curve.py
-'''
+"""
 import sys
 
 sys.path.append("../build/swig")
@@ -78,14 +78,14 @@ def conv_BER(test_repetitions):
 
         end = time.time()
 
-        '''
+        """
         SNR = 10*log10(Px/Pn) where Px is the power of the signal and Pn is the power of the noise.
         In this case the signal is the bitstream meaning it only takes as values 1 and 0 with the same probability
         therefore E[X(n)] = 1/2 (its expected value is 1/2).
         The power of the signal is Px = σ_x^2 = E[(X(n))^2] - E[X(n)]^2 = 1/2 - 1/4 = 1/4.
         Pn is equal to the deviation Pn = σ^2.
         So we have SNR = 10*log10(1/(4*σ^2))
-        '''
+        """
         SNR = 10 * np.log10(1 / (4 * standard_deviation ** 2))
         avgNumOfErrors = average(error_counter)
         avgBER = avgNumOfErrors / INPUT_SIZE
@@ -96,4 +96,4 @@ def conv_BER(test_repetitions):
 
 
 # test repetitions should be more than 500 to have accurate results
-conv_BER(1500)
+conv_BER(100)
