@@ -1,0 +1,562 @@
+options:
+  parameters:
+    author: ''
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: uhf_band_gr_leo_decode
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: uhf_band_gr_leo_decode
+    window_size: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [18, 7]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: AUTH_GS
+  id: variable_tracker
+  parameters:
+    comm_freq_rx: 436e6
+    comm_freq_tx: 436e6
+    comment: ''
+    gs_alt: '0.056'
+    gs_lat: '22.959887'
+    gs_lon: '40.627233'
+    noise_figure: '0.4'
+    noise_temp: '245'
+    obs_end: '2023-07-03T15:32:00.000000Z'
+    obs_start: '2023-07-03T15:25:00.000000Z'
+    rx_antenna: Helical_Antenna
+    rx_bw: '20000'
+    satellite_info: AcubeSAT
+    time_resolution_us: 128*10000
+    tx_antenna: Helical_Antenna
+    tx_power_dbm: '41.14'
+    value: fine
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3, 474]
+    rotation: 0
+    state: true
+- name: AcubeSAT
+  id: variable_satellite
+  parameters:
+    comm_freq_rx: 436e6
+    comm_freq_tx: 436e6
+    comment: ''
+    noise_figure: '.4'
+    noise_temp: '315'
+    rx_antenna: Turnstile_Antenna
+    rx_bw: '20000'
+    tle_1: 1 69696U 16025E   23183.00000000  .00002000  00000-0  49111-4 0  6969
+    tle_2: 2 69696  97.3759 191.5890 0001000 000.0000 000.0000 15.24261762696969
+    tle_title: TLE_1
+    tx_antenna: Turnstile_Antenna
+    tx_power_dbm: '30'
+    value: '''ok'''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [14, 251]
+    rotation: 0
+    state: true
+- name: Helical_Antenna
+  id: variable_antenna
+  parameters:
+    aperture_efficiency: '70'
+    beamwidth: '0'
+    boom_length: '0'
+    circumference: '0.689'
+    comment: ''
+    diameter: '1'
+    frequency: 436e6
+    gain: '0'
+    lp: '0.5'
+    pointing_error: '0'
+    polarization: '0'
+    rolloff_gain: '0'
+    turn_spacing: '0.1725'
+    turns: '8'
+    type: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [273, 9]
+    rotation: 0
+    state: true
+- name: Turnstile_Antenna
+  id: variable_antenna
+  parameters:
+    aperture_efficiency: '0'
+    beamwidth: '72'
+    boom_length: '0'
+    circumference: '0'
+    comment: ''
+    diameter: '0'
+    frequency: 436e6
+    gain: '2.64 '
+    lp: '0.5'
+    pointing_error: '10'
+    polarization: '0'
+    rolloff_gain: '0'
+    turn_spacing: '0'
+    turns: '0'
+    type: '3'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [23, 84]
+    rotation: 0
+    state: true
+- name: UHF_Band_LEO_Model
+  id: variable_leo_model_def
+  parameters:
+    atmo_gases_attenuation: '1'
+    comment: ''
+    doppler_shift_enum: '0'
+    enable_link_margin: 'True'
+    fspl_attenuation_enum: '5'
+    mode: '1'
+    pointing_attenuation_enum: '6'
+    precipitation_attenuation: '3'
+    rainfall_rate: '25'
+    surface_watervap_density: '7.5'
+    temperature: '0'
+    tracker: AUTH_GS
+    value: '''fine'''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [449, 9]
+    rotation: 0
+    state: true
+- name: nfilts
+  id: variable
+  parameters:
+    comment: ''
+    value: '64'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [341, 1074]
+    rotation: 0
+    state: enabled
+- name: rrc_taps
+  id: variable
+  parameters:
+    comment: ''
+    value: firdes.root_raised_cosine(nfilts, nfilts, 1.0/float(sps), excess_bw, 11*sps*nfilts)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [191, 1074]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '128000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 7]
+    rotation: 0
+    state: enabled
+- name: variable_ieee802_15_4_encoder_1
+  id: variable_ieee802_15_4_encoder
+  parameters:
+    comment: ''
+    crc: satnogs.crc.CRC32_C
+    preamble: '0x55'
+    preamble_len: '7'
+    sync_word: '[79, 121, 97]'
+    var_len: 'True'
+    whitening: satnogs.whitening.make_ccsds(True)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [236, 775]
+    rotation: 0
+    state: true
+- name: variable_ieee802_15_4_variant_decoder_0
+  id: variable_ieee802_15_4_variant_decoder
+  parameters:
+    comment: ''
+    crc: satnogs.crc.CRC32_C
+    drop_invalid: 'False'
+    frame_len: '64'
+    preamble: '[0x55]*7'
+    preamble_thrsh: '14'
+    sync_thrsh: '5'
+    sync_word: '[79, 121, 97]'
+    var_len: 'True'
+    whitening: satnogs.whitening.make_ccsds(True)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [23, 775]
+    rotation: 0
+    state: true
+- name: a3sat_bch_dec_1
+  id: a3sat_bch_dec
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2092, 588]
+    rotation: 270
+    state: enabled
+- name: a3sat_bch_enc_1
+  id: a3sat_bch_enc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [797, 261]
+    rotation: 0
+    state: enabled
+- name: blocks_pack_k_bits_bb_0
+  id: blocks_pack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '8'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1059, 254]
+    rotation: 0
+    state: true
+- name: blocks_packed_to_unpacked_xx_1
+  id: blocks_packed_to_unpacked_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    bits_per_chunk: '1'
+    comment: ''
+    endianness: gr.GR_MSB_FIRST
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [545, 249]
+    rotation: 0
+    state: enabled
+- name: blocks_pdu_to_tagged_stream_0
+  id: blocks_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [476, 677]
+    rotation: 90
+    state: true
+- name: blocks_throttle_2
+  id: blocks_throttle
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [476, 457]
+    rotation: 90
+    state: true
+- name: cfo
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: eng_float
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [21, 1062]
+    rotation: 0
+    state: true
+- name: digital_gmsk_demod_0
+  id: digital_gmsk_demod
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq_error: '0.0'
+    gain_mu: '0.175'
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mu: '0.5'
+    omega_relative_limit: '0.005'
+    samples_per_symbol: '2'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1866, 194]
+    rotation: 0
+    state: true
+- name: digital_gmsk_mod_0
+  id: digital_gmsk_mod
+  parameters:
+    affinity: ''
+    alias: ''
+    bt: '0.35'
+    comment: ''
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: '2'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1260, 243]
+    rotation: 0
+    state: true
+- name: excess_bw
+  id: parameter
+  parameters:
+    alias: ''
+    comment: 'The BPSK excess bandwidth setup.
+
+      Used in filtering.'
+    hide: none
+    label: ''
+    short_id: ''
+    type: eng_float
+    value: '0.35'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [426, 1065]
+    rotation: 0
+    state: enabled
+- name: import_0_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import math
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [167, 969]
+    rotation: 0
+    state: true
+- name: leo_channel_model_1
+  id: leo_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    model: UHF_Band_LEO_Model
+    noise_type: '1'
+    sample_rate: '2000000'
+    value: '''fine'''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1515, 228]
+    rotation: 0
+    state: true
+- name: satnogs_ber_calculator_0
+  id: satnogs_ber_calculator
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    frame_size: '64'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nframes: '1000'
+    skip: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1170, 809]
+    rotation: 180
+    state: enabled
+- name: satnogs_debug_msg_source_0
+  id: satnogs_debug_msg_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: '0.01'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msg: TEST
+    repeat: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1481, 714]
+    rotation: 180
+    state: enabled
+- name: satnogs_frame_decoder_0
+  id: satnogs_frame_decoder
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decoder_object: variable_ieee802_15_4_variant_decoder_0
+    itype: byte
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1703, 830]
+    rotation: 180
+    state: enabled
+- name: satnogs_frame_encoder_0
+  id: satnogs_frame_encoder
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    encoder_object: variable_ieee802_15_4_encoder_1
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [815, 835]
+    rotation: 180
+    state: enabled
+- name: snr
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: eng_float
+    value: '12'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [102, 1064]
+    rotation: 0
+    state: true
+- name: sps
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: samples per symbol
+    short_id: ''
+    type: intx
+    value: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [12, 967]
+    rotation: 0
+    state: enabled
+
+connections:
+- [a3sat_bch_dec_1, '0', satnogs_frame_decoder_0, '0']
+- [a3sat_bch_enc_1, '0', blocks_pack_k_bits_bb_0, '0']
+- [blocks_pack_k_bits_bb_0, '0', digital_gmsk_mod_0, '0']
+- [blocks_packed_to_unpacked_xx_1, '0', a3sat_bch_enc_1, '0']
+- [blocks_pdu_to_tagged_stream_0, '0', blocks_throttle_2, '0']
+- [blocks_throttle_2, '0', blocks_packed_to_unpacked_xx_1, '0']
+- [digital_gmsk_demod_0, '0', a3sat_bch_dec_1, '0']
+- [digital_gmsk_mod_0, '0', leo_channel_model_1, '0']
+- [leo_channel_model_1, '0', digital_gmsk_demod_0, '0']
+- [satnogs_ber_calculator_0, pdu, satnogs_frame_encoder_0, pdu]
+- [satnogs_debug_msg_source_0, msg, satnogs_ber_calculator_0, trigger]
+- [satnogs_frame_decoder_0, out, satnogs_ber_calculator_0, received]
+- [satnogs_frame_encoder_0, pdu, blocks_pdu_to_tagged_stream_0, pdus]
+
+metadata:
+  file_format: 1

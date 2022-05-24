@@ -1,6 +1,6 @@
 options:
   parameters:
-    author: eleftheria
+    author: acubesat
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''

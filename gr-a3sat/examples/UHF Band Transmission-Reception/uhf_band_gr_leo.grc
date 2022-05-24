@@ -1,0 +1,470 @@
+options:
+  parameters:
+    author: ''
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: uhf_band_gr_leo
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: uhf_band_gr_leo
+    window_size: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [5, 6]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: AUTH_GS
+  id: variable_tracker
+  parameters:
+    comm_freq_rx: 436e6
+    comm_freq_tx: 436e6
+    comment: ''
+    gs_alt: '0.056'
+    gs_lat: '22.959887'
+    gs_lon: '40.627233'
+    noise_figure: '0.4'
+    noise_temp: '345'
+    obs_end: '2023-07-03T15:32:00.000000Z'
+    obs_start: '2023-07-03T15:25:00.000000Z'
+    rx_antenna: Helical_Antenna
+    rx_bw: '10000'
+    satellite_info: AcubeSAT
+    time_resolution_us: '1000'
+    tx_antenna: Helical_Antenna
+    tx_power_dbm: '30'
+    value: fine
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [6, 426]
+    rotation: 0
+    state: true
+- name: AcubeSAT
+  id: variable_satellite
+  parameters:
+    comm_freq_rx: 436e6
+    comm_freq_tx: 436e6
+    comment: ''
+    noise_figure: '1'
+    noise_temp: '315'
+    rx_antenna: Dipole_Antenna
+    rx_bw: '10000'
+    tle_1: 1 69696U 16025E   23183.00000000  .00002000  00000-0  49111-4 0  6969
+    tle_2: 2 69696  97.3759 191.5890 0001000 000.0000 000.0000 15.24261762696969
+    tle_title: TLE_1
+    tx_antenna: Dipole_Antenna
+    tx_power_dbm: '30'
+    value: '''ok'''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3, 205]
+    rotation: 0
+    state: true
+- name: Dipole_Antenna
+  id: variable_antenna
+  parameters:
+    aperture_efficiency: '0'
+    beamwidth: '108'
+    boom_length: '0'
+    circumference: '0'
+    comment: ''
+    diameter: '0'
+    frequency: 436e6
+    gain: '4.13'
+    lp: '0.5'
+    pointing_error: '80'
+    polarization: '2'
+    rolloff_gain: '0'
+    turn_spacing: '0'
+    turns: '0'
+    type: '5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1, 94]
+    rotation: 0
+    state: true
+- name: Helical_Antenna
+  id: variable_antenna
+  parameters:
+    aperture_efficiency: '70'
+    beamwidth: '0'
+    boom_length: '0'
+    circumference: '0.689'
+    comment: ''
+    diameter: '1'
+    frequency: 436e6
+    gain: '0'
+    lp: '0.5'
+    pointing_error: '0'
+    polarization: '0'
+    rolloff_gain: '0'
+    turn_spacing: '0.1725'
+    turns: '8'
+    type: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [297, 9]
+    rotation: 0
+    state: true
+- name: UHF_Band_LEO_Model
+  id: variable_leo_model_def
+  parameters:
+    atmo_gases_attenuation: '1'
+    comment: ''
+    doppler_shift_enum: '7'
+    enable_link_margin: 'True'
+    fspl_attenuation_enum: '5'
+    mode: '0'
+    pointing_attenuation_enum: '6'
+    precipitation_attenuation: '3'
+    rainfall_rate: '25'
+    surface_watervap_density: '7.5'
+    temperature: '0'
+    tracker: AUTH_GS
+    value: '''fine'''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [478, 4]
+    rotation: 0
+    state: true
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '100000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 7]
+    rotation: 0
+    state: enabled
+- name: samp_rate_0
+  id: variable
+  parameters:
+    comment: ''
+    value: '20000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 74]
+    rotation: 0
+    state: enabled
+- name: S_Band_Downlink
+  id: leo_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    model: UHF_Band_LEO_Model
+    noise_type: '1'
+    sample_rate: samp_rate
+    value: '''fine'''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [835, 220]
+    rotation: 0
+    state: true
+- name: analog_random_source_x_0
+  id: analog_random_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    max: '255'
+    maxoutbuf: '0'
+    min: '0'
+    minoutbuf: '0'
+    num_samps: '10000'
+    repeat: 'True'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [284, 224]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '10000000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [636, 248]
+    rotation: 0
+    state: true
+- name: blocks_throttle_0
+  id: blocks_throttle
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1163, 258]
+    rotation: 0
+    state: true
+- name: digital_gmsk_mod_0
+  id: digital_gmsk_mod
+  parameters:
+    affinity: ''
+    alias: ''
+    bt: '0.35'
+    comment: ''
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: '2'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [437, 240]
+    rotation: 0
+    state: true
+- name: digital_gmsk_mod_1
+  id: digital_gmsk_mod
+  parameters:
+    affinity: ''
+    alias: ''
+    bt: '0.5'
+    comment: ''
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: '2'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [415, 336]
+    rotation: 0
+    state: disabled
+- name: digital_gmsk_mod_2
+  id: digital_gmsk_mod
+  parameters:
+    affinity: ''
+    alias: ''
+    bt: '0.2'
+    comment: ''
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: '2'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [481, 455]
+    rotation: 0
+    state: disabled
+- name: qtgui_freq_sink_x_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '0.2'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"magenta"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    ctrlpanel: 'False'
+    fc: '0'
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label: Relative Gain
+    label1: GMSK  BT=0.2
+    label10: ''''''
+    label2: GMSK  BT=0.35
+    label3: GMSK  BT=0.5
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"GMSK different BT comparison"'
+    nconnections: '3'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: firdes.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [756, 391]
+    rotation: 0
+    state: disabled
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: ''
+    fc: '0'
+    fftsize: 1024*4
+    freqhalf: 'True'
+    grid: 'True'
+    gui_hint: ''
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"Received Signal"'
+    nconnections: '1'
+    showports: 'False'
+    type: complex
+    update_time: '0.10'
+    wintype: firdes.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1446, 235]
+    rotation: 0
+    state: true
+
+connections:
+- [S_Band_Downlink, '0', blocks_throttle_0, '0']
+- [analog_random_source_x_0, '0', digital_gmsk_mod_0, '0']
+- [analog_random_source_x_0, '0', digital_gmsk_mod_1, '0']
+- [analog_random_source_x_0, '0', digital_gmsk_mod_2, '0']
+- [blocks_multiply_const_vxx_0, '0', S_Band_Downlink, '0']
+- [blocks_throttle_0, '0', qtgui_waterfall_sink_x_0, '0']
+- [digital_gmsk_mod_0, '0', blocks_multiply_const_vxx_0, '0']
+- [digital_gmsk_mod_0, '0', qtgui_freq_sink_x_0, '1']
+- [digital_gmsk_mod_1, '0', qtgui_freq_sink_x_0, '2']
+- [digital_gmsk_mod_2, '0', qtgui_freq_sink_x_0, '0']
+
+metadata:
+  file_format: 1
