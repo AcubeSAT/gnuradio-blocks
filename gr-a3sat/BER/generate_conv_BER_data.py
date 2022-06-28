@@ -14,7 +14,7 @@ Note:
     unquantized soft decision using https://automeris.io/WebPlotDigitizer/
     These two data sets are then plotted together using generate_BER_curve.py
 """
-import sys
+import sys, os
 
 sys.path.append("../build/swig")
 

@@ -24,5 +24,5 @@ def generate_BER_curves(file_name_1, label_1, file_name_2, label_2, title):
     plt.show()
 
 
-generate_BER_curves("convolutional_BER_data.txt", "gr-a3sat", "Theoretical_BER_data.txt", "theoretical",
+generate_BER_curves("convolutional_BER_data.txt", "gr-a3sat", "theoretical_BER_data.txt", "Theoretical",
                     "Convolutional")
