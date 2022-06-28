@@ -1,19 +1,13 @@
 """
-This file reads SNR-BER values from two .txt files and generates the BER curves
+This script reads SNR-BER values from two files and generates the corresponding BER curves
 """
 import matplotlib.pyplot as plt
 
 
-def read_SNR_BER_values(file_name):
-    with open(file_name) as f:
-        SNR = []
-        BER = []
-        while True:
-            vals_str = f.readline().split()
-            if len(vals_str) != 2:  # If read last line
-                break
-            SNR.append(float(vals_str[0]))
-            BER.append(float(vals_str[1]))
+def read_SNR_BER_values(filename):
+    with open(filename) as f:
+        floats = [map(float, line.split()) for line in f]
+    SNR, BER = zip(*floats)
     return SNR, BER
 
 
@@ -30,5 +24,5 @@ def generate_BER_curves(file_name_1, label_1, file_name_2, label_2, title):
     plt.show()
 
 
-generate_BER_curves("convolutional_BER_data.txt", "gr-a3sat", "theoretical_BER_data.txt", "theoretical",
+generate_BER_curves("convolutional_BER_data.txt", "gr-a3sat", "Theoretical_BER_data.txt", "theoretical",
                     "Convolutional")

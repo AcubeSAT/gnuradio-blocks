@@ -2,11 +2,11 @@
 This script:
 - Generates a pseudorandom bitstream of length 2048
 - Encodes the pseudorandom bitstream using the convolutional encoder as implemented in ../lib/conv_enc_impl.cc
-_ Adds Gaussian Noise to each bit of the codeword with different values of standard deviation
+- Adds Gaussian Noise to each bit of the codeword with different values of standard deviation
     (which correspond to different values of SNR)
 - Decodes the noised codeword using the convolutional soft decoder as implemented in ../lib/conv_dec_impl.cc
 - Calculates the number of errors (different bits between original bitstream and the outuput of the decoder)
-- Repeats this process 500 times and calculates the average Bit Error Rate (BER) for each SNR value
+- Repeats this process test_repetition times and calculates the average Bit Error Rate (BER) for each SNR value
 - Prints this data to stdout and how long it takes to calculate BER for each SNR value
 - Saves this data in "convolutional_BER_data.txt" (but not how long it takes)
 Note:
@@ -18,24 +18,21 @@ import sys
 
 sys.path.append("../build/swig")
 
-from gnuradio import gr
-from gnuradio import blocks
+from gnuradio import blocks, gr
 import a3sat_swig as a3sat
 
 import random
 import numpy as np
 import time
 
-
-# Python program to get average of a list
-def average(lst):
-    return sum(lst) / len(lst)
+average = lambda l: sum(l) / len(l)
 
 
 def conv_BER(test_repetitions):
-    INPUT_SIZE = 2048  # Size of input to the encoder is 56 bits
-    with open("convolutional_BER_data.txt", "w"):  # Makes sure that the file is empty
-        pass
+    INPUT_SIZE = 2048
+    if os.path.getsize("convolutional_BER_data.txt"):  # If file is not empty
+        with open("convolutional_BER_data.txt", "w"):  # Make sure that the file is empty
+            pass
     with open("convolutional_BER_data.txt", "a") as f:
         # Generate different values for the standard deviation of noise to calculate the BER for different values of SNR
         for standard_deviation in list(np.arange(0.27, 0.5, 0.0001)):
@@ -87,12 +84,17 @@ def conv_BER(test_repetitions):
             So we have SNR = 10*log10(1/(4*σ^2))
             """
             SNR = 10 * np.log10(1 / (4 * standard_deviation ** 2))
-            avgNumOfErrors = average(error_counter)
-            avgBER = avgNumOfErrors / INPUT_SIZE
+            avg_errors_num = average(error_counter)
+            avg_BER = avg_errors_num / INPUT_SIZE
             print(
-                f"Seconds Passed = {(end - start)} - For SNR = {SNR} we have {avgNumOfErrors} errors or, {avgBER} error rate")
-            f.write(str(SNR) + " " + str(avgBER) + "\n")
+                f"Seconds Passed = {(end - start)} - For SNR = {SNR} we have {avg_errors_num} errors or, {avg_BER} error rate")
+            f.write(str(SNR) + " " + str(avg_BER) + "\n")
 
 
-# test repetitions should be more than 500 to get accurate results
+"""
+Higher test_repetitions values ensure more accurate results.
+If test_repetitions is not high enough, then the BER curve might show some spikes which do not correspond
+to the actual performance of the encoder/decoder.
+Suggested value: test_repetitions > 500
+"""
 conv_BER(600)
