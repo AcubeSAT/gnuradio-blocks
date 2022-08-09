@@ -41,12 +41,13 @@ namespace gr {
     {
        uint8_t *in = (uint8_t *) input_items[0];
        uint8_t *out = (uint8_t *) output_items[0];
+       out[0] = (in[0]+1)%2;
 
-      for (uint16_t i = 0; i < ninput_items[0]; i++){
-          out[i] = static_cast<bool>(in[i]) + prev_bit + curr_k;
-          prev_bit = static_cast<bool>(in[i]);
-          curr_k += 1;
+      for (uint16_t i = 0; i < ninput_items[0]-1; i++){
+          out[i+1] = (in[i+1]+in[i] + i+1)%2;
       }
+
+
       consume_each (noutput_items);
       
       return noutput_items;
