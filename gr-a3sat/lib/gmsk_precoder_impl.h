@@ -10,8 +10,7 @@ namespace gr {
     class gmsk_precoder_impl : public gmsk_precoder
     {
      private:
-      bool prev_bit = 0;
-      bool curr_k = 0;
+      bool prev_bit = 1;
 
      public:
       gmsk_precoder_impl();
