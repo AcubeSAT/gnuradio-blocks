@@ -45,9 +45,9 @@ namespace gr {
 
       for (uint16_t i = 0; i < ninput_items[0]-1; i++){
           out[i+1] = (in[i+1]+in[i] + i+1)%2;
-          prev_bit = in[i];
       }
 
+      prev_bit = in[ninput_items[0]-1];
 
       consume_each (noutput_items);
       
