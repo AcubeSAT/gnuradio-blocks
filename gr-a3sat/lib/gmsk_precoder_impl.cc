@@ -39,12 +39,13 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-       uint8_t *in = (uint8_t *) input_items[0];
-       uint8_t *out = (uint8_t *) output_items[0];
-       out[0] = (in[0]+1)%2;
+      uint8_t *in = (uint8_t *) input_items[0];
+      uint8_t *out = (uint8_t *) output_items[0];
+      out[0] = (in[0]+prev_bit)%2;
 
       for (uint16_t i = 0; i < ninput_items[0]-1; i++){
           out[i+1] = (in[i+1]+in[i] + i+1)%2;
+          prev_bit = in[i];
       }
 
 
